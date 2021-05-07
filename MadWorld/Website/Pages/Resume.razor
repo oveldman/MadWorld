@@ -1,0 +1,15 @@
+﻿@using Shared.Models; 
+@using Services.Interfaces;
+@page "/Resume"
+@inject IResumeService _resumeService;
+
+<p>Current name: @resumeModel.FullName</p>
+
+@code {
+    private ResumeModel resumeModel = new ResumeModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        resumeModel = await _resumeService.GetResume();
+    }
+}

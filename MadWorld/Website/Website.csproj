@@ -12,6 +12,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,6 +20,8 @@
     <Folder Include="Services\" />
     <Folder Include="wwwroot\js\" />
     <Folder Include="wwwroot\js\bootstrap\" />
+    <Folder Include="Services\Interfaces\" />
+    <Folder Include="Settings\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\typescript\site.ts" />

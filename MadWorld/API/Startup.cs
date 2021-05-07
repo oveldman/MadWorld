@@ -16,6 +16,8 @@ namespace API
 {
     public class Startup
     {
+        private readonly string AllowedOriginsAPI = "AllowedCalls";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -31,6 +33,15 @@ namespace API
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+            });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: AllowedOriginsAPI,
+                    builder =>
+                    {
+                        builder.WithOrigins("https://localhost:5001");
+                    });
             });
         }
 
@@ -49,6 +60,8 @@ namespace API
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors(AllowedOriginsAPI);
 
             app.UseEndpoints(endpoints =>
             {

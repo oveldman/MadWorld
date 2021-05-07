@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Website.Services
+namespace Website.Services.Interfaces
 {
     public interface ITest
     {

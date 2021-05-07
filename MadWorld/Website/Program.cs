@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Website.Services;
+using Website.Services.Interfaces;
+using Website.Settings;
 
 namespace Website
 {
@@ -20,6 +22,13 @@ namespace Website
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddScoped<ITest, Test>();
+            builder.Services.AddScoped<IResumeService, ResumeService>();
+
+            builder.Services.AddHttpClient(ApiUrls.MadWorldApi, client =>
+            {
+                client.BaseAddress = new Uri(@"https://localhost:5003/");
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
 
             await builder.Build().RunAsync();
         }
