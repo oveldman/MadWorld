@@ -17,6 +17,8 @@
   <ItemGroup>
     <Folder Include="wwwroot\typescript\" />
     <Folder Include="Services\" />
+    <Folder Include="wwwroot\js\" />
+    <Folder Include="wwwroot\js\bootstrap\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\typescript\site.ts" />
