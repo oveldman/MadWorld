@@ -1,0 +1,17 @@
+[Unit]
+Description=Mad-World API App running on Ubuntu
+
+[Service]
+WorkingDirectory=/root/Applications/Published/MadWorld/API/
+ExecStart=/usr/bin/dotnet /root/Applications/Published/MadWorld/API/API.dll
+Restart=always
+# Restart service after 10 seconds if the dotnet service crashes:
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=mad-world-api
+User=www-data
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+
+[Install]
+WantedBy=multi-user.target
