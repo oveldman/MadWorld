@@ -24,11 +24,21 @@ namespace Website
             builder.Services.AddScoped<ITest, Test>();
             builder.Services.AddScoped<IResumeService, ResumeService>();
 
-            builder.Services.AddHttpClient(ApiUrls.MadWorldApi, client =>
+            if (builder.HostEnvironment.IsDevelopment()) {
+                builder.Services.AddHttpClient(ApiUrls.MadWorldApi, client =>
+                {
+                    client.BaseAddress = new Uri(@"https://localhost:5003/");
+                    client.DefaultRequestHeaders.Add("Accept", "application/json");
+                });
+            }
+            else
             {
-                client.BaseAddress = new Uri(@"https://localhost:5003/");
-                client.DefaultRequestHeaders.Add("Accept", "application/json");
-            });
+                builder.Services.AddHttpClient(ApiUrls.MadWorldApi, client =>
+                {
+                    client.BaseAddress = new Uri(@"https://www.mad-world.nl/api/");
+                    client.DefaultRequestHeaders.Add("Accept", "application/json");
+                });
+            }
 
             await builder.Build().RunAsync();
         }
