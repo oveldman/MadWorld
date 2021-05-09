@@ -4,7 +4,12 @@
     {
         static void Main(string[] args)
         {
-            System.Console.WriteLine("Hello World!");
+            Startup startup = Startup.Create();
+            startup.Load();
+
+            System.Console.WriteLine("Start: insert resume insert!");
+            startup.Inserter.Insert();
+            System.Console.WriteLine("Finished: insert resume insert!");
         }
     }
 }

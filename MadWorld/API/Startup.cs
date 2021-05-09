@@ -2,11 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Business;
+using Business.Interfaces;
+using Database;
+using Database.Queries;
+using Database.Queries.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -44,6 +50,12 @@ namespace API
                         builder.WithOrigins("https://localhost:5001");
                     });
             });
+
+
+            services.AddDbContext<MadWorldContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("MadWorldContext"), b => b.MigrationsAssembly("API")));
+
+            AddApplicationClassesToScope(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,6 +85,15 @@ namespace API
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private void AddApplicationClassesToScope(IServiceCollection services)
+        {
+            //Business project
+            services.AddScoped<IResumeManager, ResumeManager>();
+
+            //Database project
+            services.AddScoped<IResumeQueries, ResumeQueries>();
         }
     }
 }

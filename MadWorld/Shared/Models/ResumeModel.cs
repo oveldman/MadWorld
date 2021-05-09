@@ -3,9 +3,8 @@ using System.Text.Json.Serialization;
 
 namespace Website.Shared.Models
 {
-    public class ResumeModel
+    public class ResumeModel : BaseModel
     {
-        [JsonPropertyName("fullName")]
         public string FullName { get; set; }
     }
 }
