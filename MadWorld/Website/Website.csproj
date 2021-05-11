@@ -22,6 +22,8 @@
     <Folder Include="wwwroot\js\bootstrap\" />
     <Folder Include="Services\Interfaces\" />
     <Folder Include="Settings\" />
+    <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\images\icons\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\typescript\site.ts" />

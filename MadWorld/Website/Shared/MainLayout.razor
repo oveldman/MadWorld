@@ -1,17 +1,20 @@
 @inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
+<header>
+    <NavMenu />
+</header>
+<main class="flex-shrink-0 flex-fill">
+    <div class="container">
+        @Body
     </div>
-
-    <div class="main">
-        <div class="top-row px-4">
-            <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
-        </div>
-
-        <div class="content px-4">
-            @Body
-        </div>
+</main>
+<footer id="footer" class="footer mt-auto py-3 bg-dark">
+    <div class="container">
+        <img class="my-auto github-logo" src="images/icons/Octocat.png">
+        <span class="text-light"><a href="https://github.com/oveldman/Mad-world" target="_blank">Oscar Veldman</a><small> - &#169; 2021-@currentYear Mad-World.nl</small></span>
     </div>
-</div>
+</footer>
+
+@code{
+    private int currentYear = DateTime.Now.Year;
+}
