@@ -1,6 +1,5 @@
 ﻿<!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -10,6 +9,10 @@
     <link href="css/bootstrap/bootstrap.css" rel="stylesheet" />
     <link href="css/app.css" rel="stylesheet" />
     <link href="Website.styles.css" rel="stylesheet" />
+
+    <!-- PWA -->
+    <link href="manifest.json" rel="manifest" />
+    <link rel="apple-touch-icon" sizes="512x512" href="image/icons/RieMasudaIcon.png" />
 </head>
 
 <body class="d-flex flex-column h-100">
@@ -212,6 +215,7 @@
     <script src="_framework/blazor.webassembly.js"></script>
     <script src="typescript/site.js"></script>
     <script src="js/bootstrap/bootstrap.js"></script>
+    <script>navigator.serviceWorker.register('service-worker.js');</script>
 </body>
 
 </html>

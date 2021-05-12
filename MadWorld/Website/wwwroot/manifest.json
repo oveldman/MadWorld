@@ -1,0 +1,15 @@
+﻿{
+  "name": "Mad-World",
+  "short_name": "MadWorld",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#013900",
+  "icons": [
+    {
+      "src": "images/icons/RieMasudaIcon.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

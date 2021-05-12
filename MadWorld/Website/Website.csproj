@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,6 +25,7 @@
     <Folder Include="Settings\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\images\icons\" />
+    <Folder Include="wwwroot\js\app\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\typescript\site.ts" />
@@ -32,5 +34,10 @@
     <ProjectReference Include="..\Shared\Shared.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ServiceWorker Include="wwwroot\service-worker.js">
+      <PublishedContent>wwwroot\service-worker.published.js</PublishedContent>
+    </ServiceWorker>
   </ItemGroup>
 </Project>
