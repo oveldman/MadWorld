@@ -10,10 +10,12 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="5.0.6" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tables\" />
     <Folder Include="Queries\" />
     <Folder Include="Queries\Interfaces\" />
+    <Folder Include="Tables\Identity\" />
   </ItemGroup>
 </Project>

@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Website.Services;
 using Website.Services.Interfaces;
 using Website.Settings;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace Website
 {
@@ -19,28 +20,37 @@ namespace Website
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
+            AddToScope(builder);
 
+            string apiUrl = @"https://www.mad-world.nl/api/";
+
+            if (builder.HostEnvironment.IsDevelopment()) {
+                apiUrl = @"https://localhost:5003/";
+            }
+
+            builder.Services.AddHttpClient(ApiUrls.MadWorldApi, client =>
+            {
+                client.BaseAddress = new Uri(apiUrl);
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
+
+            builder.Services.AddOidcAuthentication(options =>
+            {
+                // Configure your authentication provider options here.
+                // For more information, see https://aka.ms/blazor-standalone-auth
+                builder.Configuration.Bind("Local", options.ProviderOptions);
+            });
+
+
+            builder.Services.AddApiAuthorization();
+            await builder.Build().RunAsync();
+        }
+
+        private static void AddToScope(WebAssemblyHostBuilder builder)
+        {
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddScoped<ITest, Test>();
             builder.Services.AddScoped<IResumeService, ResumeService>();
-
-            if (builder.HostEnvironment.IsDevelopment()) {
-                builder.Services.AddHttpClient(ApiUrls.MadWorldApi, client =>
-                {
-                    client.BaseAddress = new Uri(@"https://localhost:5003/");
-                    client.DefaultRequestHeaders.Add("Accept", "application/json");
-                });
-            }
-            else
-            {
-                builder.Services.AddHttpClient(ApiUrls.MadWorldApi, client =>
-                {
-                    client.BaseAddress = new Uri(@"https://www.mad-world.nl/api/");
-                    client.DefaultRequestHeaders.Add("Accept", "application/json");
-                });
-            }
-
-            await builder.Build().RunAsync();
         }
     }
 }

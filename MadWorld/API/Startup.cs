@@ -7,6 +7,8 @@ using Business.Interfaces;
 using Database;
 using Database.Queries;
 using Database.Queries.Interfaces;
+using Database.Tables.Identity;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -51,6 +53,17 @@ namespace API
                     });
             });
 
+            services.AddDbContext<AuthenticationContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("AuthenticationContext"), b => b.MigrationsAssembly("API")));
+
+            services.AddDefaultIdentity<User>()
+                        .AddEntityFrameworkStores<AuthenticationContext>();
+
+            services.AddIdentityServer()
+                        .AddApiAuthorization<User, AuthenticationContext>();
+
+            services.AddAuthentication()
+                        .AddIdentityServerJwt();
 
             services.AddDbContext<MadWorldContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("MadWorldContext"), b => b.MigrationsAssembly("API")));
@@ -78,6 +91,8 @@ namespace API
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseIdentityServer();
 
             app.UseCors(AllowedOriginsAPI);
 
