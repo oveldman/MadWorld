@@ -14,6 +14,7 @@ cp ../../../Settings/appsettings.Development.json .
 cp ../../../Settings/appsettings.json .
 dotnet restore
 dotnet ef database update --context MadWorldContext
+dotnet ef database update --context AuthenticationContext
 dotnet publish --configuration Release --output ../../../../Published/MadWorld/API
 systemctl start kestrel-madworldapi.service
 echo "Dotnet API is deployed."

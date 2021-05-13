@@ -28,6 +28,7 @@
     <Folder Include="wwwroot\images\icons\" />
     <Folder Include="wwwroot\js\app\" />
     <Folder Include="Pages\Admin\" />
+    <Folder Include="Services\States\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\typescript\site.ts" />

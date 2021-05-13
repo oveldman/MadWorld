@@ -1,0 +1,15 @@
+﻿@page "/login"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Website.Services.Interfaces
+@inject HttpClient Http
+@inject IAuthenticationService _authenticationService
+
+<button class="btn btn-primary" @onclick="LoginInApi">Login</button>
+
+@code {
+    private void LoginInApi()
+    {
+        _authenticationService.Login("test", "test");
+    }
+}

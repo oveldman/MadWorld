@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
-@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Website.Services.Interfaces;
 @inject NavigationManager Navigation
-@inject SignOutSessionStateManager SignOutManager
+@inject IAuthenticationService _authenticationService;
 
 <!-- Fixed navbar -->
 <nav class="navbar navbar-expand-md navbar-dark fixed-top menubar">
@@ -48,7 +48,7 @@
                     </Authorized>
                     <NotAuthorized>
                         <li class="nav-item px-3">
-                            <NavLink class="nav-link" href="#">
+                            <NavLink class="nav-link" href="login">
                                 <span class="oi oi-account-login" aria-hidden="true"></span> Login
                             </NavLink>
                         </li>
@@ -59,9 +59,10 @@
     </div>
 </nav>
 
-@code { private async Task BeginSignOut(MouseEventArgs args)
-            {
-                await SignOutManager.SetSignOutState();
-                Navigation.NavigateTo("authentication/logout");
-            }
+@code {
+    private void BeginSignOut()
+    {
+        _authenticationService.Logout();
+        Navigation.NavigateTo("/");
     }
+}
