@@ -41,7 +41,6 @@ namespace Website
                 // Configure your authentication provider options here.
                 // For more information, see https://aka.ms/blazor-standalone-auth
                 builder.Configuration.Bind("Local", options.ProviderOptions);
-
             });
 
             builder.Services.AddApiAuthorization();
@@ -54,6 +53,7 @@ namespace Website
             builder.Services.AddScoped<ITest, Test>();
             builder.Services.AddScoped<IResumeService, ResumeService>();
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+            builder.Services.AddScoped<IAdminService, AdminService>();
             builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationProvider>();
         }
     }

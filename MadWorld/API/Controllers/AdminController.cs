@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Website.Shared.Models;
 
 namespace API.Controllers
 {
@@ -12,10 +14,21 @@ namespace API.Controllers
     [Route("[controller]")]
     public class AdminController : ControllerBase
     {
-        [HttpGet]
-        public string Index()
+        private readonly ILogger<AdminController> _logger;
+
+        public AdminController(ILogger<AdminController> logger)
         {
-            return "Nice!";
+            _logger = logger;
+        }
+
+        [HttpGet]
+        public AdminModel Index()
+        {
+            return new AdminModel()
+            {
+                Succeed = true,
+                WelcomeMessage = "Welcome dude!"
+            };
         }
     }
 }
