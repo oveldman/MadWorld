@@ -1,6 +1,6 @@
 #!/bash/sh
 #Variables
-DOTNET_PROGRAM = '~/dotnet/dotnet'
+DOTNET_PROGRAM=~/dotnet/dotnet
 
 #Get latest sources and updates
 echo "Start script."
