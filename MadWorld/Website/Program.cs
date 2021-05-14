@@ -11,8 +11,6 @@ using Website.Services;
 using Website.Services.Interfaces;
 using Website.Settings;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-using Website.Services.States;
-using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Website
 {
@@ -41,8 +39,8 @@ namespace Website
                 // Configure your authentication provider options here.
                 // For more information, see https://aka.ms/blazor-standalone-auth
                 builder.Configuration.Bind("Local", options.ProviderOptions);
-
             });
+
 
             builder.Services.AddApiAuthorization();
             await builder.Build().RunAsync();
@@ -53,8 +51,6 @@ namespace Website
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddScoped<ITest, Test>();
             builder.Services.AddScoped<IResumeService, ResumeService>();
-            builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
-            builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationProvider>();
         }
     }
 }
