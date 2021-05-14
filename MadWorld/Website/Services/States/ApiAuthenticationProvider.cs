@@ -19,7 +19,8 @@ namespace Website.Services.States
             var identity = new ClaimsIdentity(new[]
                                 {
                                     new Claim(ClaimTypes.Name, username),
-                                    new Claim(ClaimTypes.Email, "test@test.com")
+                                    new Claim(ClaimTypes.Email, "test@test.com"),
+                                    new Claim("access_token", "Bearer token: %&^*%^&")
                                 }, "Fake Authentication");
 
             claimsPrincipal = new ClaimsPrincipal(identity);
