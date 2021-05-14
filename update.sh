@@ -15,16 +15,10 @@ systemctl stop kestrel-madworldapi.service
 cd MadWorld/API
 cp ../../../Settings/appsettings.Development.json .
 cp ../../../Settings/appsettings.json .
-<<<<<<< HEAD
 $DOTNET_PROGRAM restore
 $DOTNET_PROGRAM ef database update --context MadWorldContext
 $DOTNET_PROGRAM ef database update --context AuthenticationContext
 $DOTNET_PROGRAM publish --configuration Release --output ../../../../Published/MadWorld/API
-=======
-dotnet restore
-dotnet ef database update --context MadWorldContext
-dotnet publish --configuration Release --output ../../../../Published/MadWorld/API
->>>>>>> parent of e5e25e0 (Fake login)
 systemctl start kestrel-madworldapi.service
 echo "Dotnet API is deployed."
 
