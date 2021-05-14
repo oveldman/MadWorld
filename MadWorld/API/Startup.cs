@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using API.Managers;
+using API.Managers.Interfaces;
 using Business;
 using Business.Interfaces;
 using Database;
@@ -10,6 +13,8 @@ using Database.Queries.Interfaces;
 using Database.Tables.Identity;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -22,6 +27,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace API
@@ -40,11 +46,36 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            string securityKey = Configuration.GetSection("Secrets:AuthenicationKey")?.Value;
+            string issuer = Configuration.GetSection("Settings:Authentication:IssuerUrl")?.Value;
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description =
+                        "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                    Array.Empty<string>()
+                    }
+                });
             });
 
             services.AddCors(options =>
@@ -52,7 +83,9 @@ namespace API
                 options.AddPolicy(name: AllowedOriginsAPI,
                     builder =>
                     {
-                        builder.WithOrigins("https://localhost:5001");
+                        builder.WithOrigins("https://localhost:5001")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
                     });
             });
 
@@ -66,12 +99,40 @@ namespace API
                         .AddApiAuthorization<User, AuthenticationContext>();
 
             services.AddAuthentication()
-                        .AddIdentityServerJwt();
+                        .AddIdentityServerJwt()
+                        .AddJwtBearer(options =>
+                        {
+                            options.SaveToken = true;
+                            options.TokenValidationParameters = new TokenValidationParameters
+                            {
+                                ValidateIssuer = true,
+                                ValidateAudience = true,
+                                ValidateLifetime = true,
+                                ValidateIssuerSigningKey = true,
+
+                                ValidIssuer = issuer,
+                                ValidAudience = issuer,
+                                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey))
+                            };
+                        });
 
             services.AddDbContext<MadWorldContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("MadWorldContext"), b => b.MigrationsAssembly("API")));
 
+            services.AddAuthorization(options =>
+            {
+                options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
+                    .RequireAuthenticatedUser()
+                    .Build();
+            });
+
             AddApplicationClassesToScope(services);
+
+            services.AddScoped<IAuthenticationManager, AuthenticationManager>(serviceProvider =>
+            {
+                SignInManager<User> signInManager = serviceProvider.GetService<SignInManager<User>>();
+                return new AuthenticationManager(issuer, securityKey, signInManager);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

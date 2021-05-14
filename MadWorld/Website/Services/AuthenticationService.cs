@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
 using Website.Services.Interfaces;
 using Website.Services.States;
 using Website.Settings;
+using Website.Shared.Models.Authentication;
 
 namespace Website.Services
 {
@@ -18,9 +21,22 @@ namespace Website.Services
             _state = authenticationStateProvider;
         }
 
-        public void Login(string username, string password)
+        public async Task<LoginResponse> Login(string username, string password)
         {
-            (_state as ApiAuthenticationProvider).LoginNotify(username);
+            var requestBody = new LoginRequest()
+            {
+                Username = username,
+                Password = password
+            };
+
+            HttpResponseMessage response = await _client.PostAsJsonAsync("authentication/login", requestBody);
+            LoginResponse loginResponse = await response.Content.ReadFromJsonAsync<LoginResponse>();
+
+            if (loginResponse.Succeed) {
+                (_state as ApiAuthenticationProvider).LoginNotify(loginResponse);
+            }
+
+            return loginResponse;
         }
 
         public void Logout()

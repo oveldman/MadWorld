@@ -2,14 +2,41 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using Website.Services.Interfaces
+@using Website.Shared.Models.Authentication
 @inject HttpClient Http
 @inject IAuthenticationService _authenticationService
 
+<div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Email address</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" @bind="Username">
+    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+</div>
+<div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Password</label>
+    <input type="password" class="form-control" id="exampleInputPassword1" @bind="Password">
+</div>
+
 <button class="btn btn-primary" @onclick="LoginInApi">Login</button>
 
+@if (HasError)
+{
+    <div class="alert alert-danger" role="alert">
+        <p>Username and/or password isn't correct!</p>
+    </div>
+}
+
+
 @code {
-    private void LoginInApi()
+
+    private bool HasError = false;
+
+    private string Username = string.Empty;
+    private string Password = string.Empty;
+
+    private async Task LoginInApi()
     {
-        _authenticationService.Login("test", "test");
+        HasError = false;
+        LoginResponse loginResponse = await _authenticationService.Login(Username, Password);
+        HasError = !loginResponse.Succeed;
     }
 }
