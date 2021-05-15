@@ -6,3 +6,7 @@
     background-image: linear-gradient(45deg, rgb(0, 51, 0) 0%, #009900 70%);
 }
 
+.dropdown-menu-custom {
+    background-color: #009900;
+}
+

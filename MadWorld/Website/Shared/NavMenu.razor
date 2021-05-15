@@ -35,15 +35,18 @@
                 </li>
                 <AuthorizeView>
                     <Authorized>
-                        <li class="nav-item px-3">
-                            <NavLink class="nav-link" href="admin">
-                                <span class="oi oi-clipboard" aria-hidden="true"></span> Admin
-                            </NavLink>
-                        </li>
-                        <li class="nav-item px-3">
-                            <NavLink class="nav-link" @onclick="BeginSignOut">
-                                <span class="oi oi-clipboard" aria-hidden="true"></span> Logout
-                            </NavLink>
+                        <li class="nav-item px-3 dropdown">
+                            <a id="account-dropdown" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @onclick="ExpendAccount">
+                                <span class="oi oi-key" aria-hidden="true"></span> Account
+                            </a>
+                            <div class="dropdown-menu-custom dropdown-menu @menuAccountExpended" aria-labelledby="account-dropdown">
+                                <NavLink class="nav-link" href="admin">
+                                    <span class="oi oi-grid-three-up" aria-hidden="true"></span> Admin
+                                </NavLink>
+                                <NavLink class="nav-link" @onclick="BeginSignOut">
+                                    <span class="oi oi-account-logout" aria-hidden="true"></span> Logout
+                                </NavLink>
+                            </div>
                         </li>
                     </Authorized>
                     <NotAuthorized>
@@ -60,6 +63,14 @@
 </nav>
 
 @code {
+
+    private string menuAccountExpended = string.Empty;
+
+    private void ExpendAccount()
+    {
+        menuAccountExpended = string.IsNullOrEmpty(menuAccountExpended) ? "show" : string.Empty;
+    }
+
     private void BeginSignOut()
     {
         _authenticationService.Logout();

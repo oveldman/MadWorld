@@ -33,8 +33,6 @@ namespace Website.Services
             var currentUserState = await _state.GetAuthenticationStateAsync();
             string token = currentUserState.User?.Claims?.FirstOrDefault(c => c.Type == "access_token")?.Value;
 
-            System.Console.WriteLine("Bearer " + token);
-
             if (!string.IsNullOrEmpty(token)) {
                 _client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
             }
