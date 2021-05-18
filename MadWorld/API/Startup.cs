@@ -168,6 +168,9 @@ namespace API
 
         private void AddApplicationClassesToScope(IServiceCollection services)
         {
+            //API manager
+            services.AddScoped<IAccountManager, AccountManager>();
+
             //Business project
             services.AddScoped<IResumeManager, ResumeManager>();
 

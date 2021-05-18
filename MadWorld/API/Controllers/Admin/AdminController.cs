@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Website.Shared.Models;
 
-namespace API.Controllers
+namespace API.Controllers.Admin
 {
     [Authorize]
     [ApiController]

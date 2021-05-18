@@ -26,5 +26,6 @@
   <ItemGroup>
     <Folder Include="Managers\" />
     <Folder Include="Managers\Interfaces\" />
+    <Folder Include="Controllers\Admin\" />
   </ItemGroup>
 </Project>
