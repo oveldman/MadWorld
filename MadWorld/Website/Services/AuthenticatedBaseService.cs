@@ -25,6 +25,13 @@ namespace Website.Services
             return await _client.GetFromJsonAsync<T>(url);
         }
 
+        protected async Task<T> SendPostRequest<T, Y>(string url, Y request)
+        {
+            await SetBearerTokenIfEmpty();
+            HttpResponseMessage response = await _client.PostAsJsonAsync(url, request);
+            return await response.Content.ReadFromJsonAsync<T>();
+        }
+
         private async Task SetBearerTokenIfEmpty()
         {
             if (_client.DefaultRequestHeaders.Any(h => h.Key

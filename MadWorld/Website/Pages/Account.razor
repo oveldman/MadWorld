@@ -1,5 +1,64 @@
 ﻿@page "/account"
 
+@using Website.Shared.Models;
+@using Website.Shared.Models.Account;
+@using Website.Services.Interfaces;
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize]
+@inject IAccountService _accountService;
+
+@if (showChangePasswordMessage)
+{
+    <div class="alert @changePasswordmessageType" role="alert">
+        <span>@changePasswordMessage</span>
+    </div>
+}
+<EditForm EditContext="@passwordContext">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <p>Change here you password</p>
+    </div>
+    <div class="mb-3">
+        <label for="OldPassword" class="form-label">Old password</label>
+        <InputText type="password" class="form-control" id="OldPassword" @bind-Value="passwordRequest.OldPassword" DisplayName="Old Password" />
+    </div>
+    <div class="mb-3">
+        <label for="NewPassword" class="form-label">New password</label>
+        <InputText type="password" class="form-control" id="NewPassword" @bind-Value="passwordRequest.NewPassword" DisplayName="New Password" />
+    </div>
+    <div class="mb-3">
+        <label for="PasswordConfirm" class="form-label">Confirm password</label>
+        <InputText type="password" class="form-control" id="PasswordConfirm" @bind-Value="passwordRequest.PasswordConfirm" DisplayName="Confirm Password" />
+    </div>
+
+    <button class="btn btn-primary" type="button" @onclick="@ChangePassword">Change password</button>
+</EditForm>
+
 @code {
+    private bool showChangePasswordMessage = false;
+    private string changePasswordmessageType = "alert-danger";
+    private string changePasswordMessage = string.Empty;
+
+    private PasswordRequest passwordRequest = new PasswordRequest();
+    private EditContext passwordContext;
+
+    protected override void OnInitialized()
+    {
+        passwordContext = new(passwordRequest);
+    }
+
+    private async Task ChangePassword()
+    {
+        if (passwordContext.Validate())
+        {
+            BaseModel response = await _accountService.ChangePassword(passwordRequest);
+            showChangePasswordMessage = true;
+            changePasswordmessageType = response.Succeed ? "alert-success" : "alert-danger";
+            changePasswordMessage = response.Succeed ? "Your password is succesfully changed" : response.ErrorMessage;
+        }
+    }
 
 } 

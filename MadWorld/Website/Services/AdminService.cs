@@ -9,9 +9,7 @@ namespace Website.Services
 {
     public class AdminService : AuthenticatedBaseService, IAdminService
     {
-        public AdminService(IHttpClientFactory clientFactory, AuthenticationStateProvider state) : base(clientFactory, state)
-        {
-        }
+        public AdminService(IHttpClientFactory clientFactory, AuthenticationStateProvider state) : base(clientFactory, state) { }
 
         public async Task<AdminModel> GetIndex()
         {
