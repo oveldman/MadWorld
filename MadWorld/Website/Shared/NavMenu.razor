@@ -37,10 +37,13 @@
                     <Authorized>
                         <li class="nav-item px-3 dropdown">
                             <a id="account-dropdown" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @onclick="ExpendAccount">
-                                <span class="oi oi-key" aria-hidden="true"></span> Account
+                                <span class="oi oi-key" aria-hidden="true"></span> Extra's
                             </a>
                             <div class="dropdown-menu-custom dropdown-menu @menuAccountExpended" aria-labelledby="account-dropdown">
-                                <NavLink class="nav-link" href="admin"> 
+                                <NavLink class="nav-link" href="account">
+                                    <span class="oi oi-eye" aria-hidden="true"></span> Account
+                                </NavLink>
+                                <NavLink class="nav-link" href="admin">
                                     <span class="oi oi-grid-three-up" aria-hidden="true"></span> Admin
                                 </NavLink>
                                 <NavLink class="nav-link" @onclick="BeginSignOut">
