@@ -39,6 +39,12 @@ docker pull postgres
 docker run --name mad-world-db -e POSTGRES_PASSWORD=notmyrealpassword -e POSTGRES_DB=MadWorldDB -d -p 8080:5432 postgres
 docker run --name auth-mad-world-db -e POSTGRES_PASSWORD=notmyrealpassword -e POSTGRES_DB=AuthenticationMadWorldDB -d -p 8081:5432 postgres
 
+# Libgdiplus
+apt-get update 
+apt-get install -y --no-install-recommends libgdiplus libc6-dev
+apt-get clean
+rm -rf /var/lib/apt/lists/*
+
 # After a reboot:
 # docker start mad-world-db
 # auth-mad-world-db
