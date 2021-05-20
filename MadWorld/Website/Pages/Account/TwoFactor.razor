@@ -1,0 +1,80 @@
+﻿@page "/account/twofactor"
+
+@using Website.Shared.Models.Account;
+@using Website.Services.Interfaces;
+@using Microsoft.AspNetCore.Authorization;
+
+@attribute [Authorize]
+@inject IAccountService _accountService;
+
+@if (showTwoFactorMessage)
+{
+    <div class="alert alert-danger" role="alert">
+        <span>@twoFactorMessage</span>
+    </div>
+}
+
+@if (pageIsReady)
+{
+    @if (showQR)
+    {
+        <img src="@qrCodeStr" style="width: 200px; height: 200px" />
+        <input type="text" @bind="token" />
+        <button @onclick="TurnTwoFactorOn" class="btn btn-primary">Turn on two factor</button>
+    }
+    else
+    {
+        <button @onclick="TurnTwoFactorOff" class="btn btn-primary">Turn off two factor</button>
+    }
+}
+
+@code {
+    private bool pageIsReady { get; set; }
+    private string qrCodeStr { get; set; }
+    private bool showQR { get; set; }
+    private string token { get; set; }
+
+    private bool showTwoFactorMessage { get; set; }
+    private string twoFactorMessage { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        NewTwoFactorResponse twoFactorInfo = await _accountService.GetTwoFactorInfo();
+        UpdatePage(twoFactorInfo);
+        pageIsReady = true;
+    }
+
+    private async Task TurnTwoFactorOn()
+    {
+        TwoFactorRequest tokenRequest = new TwoFactorRequest
+        {
+            Token = token
+        };
+
+        NewTwoFactorResponse twoFactorInfo = await _accountService.TurnTwoFactorOn(tokenRequest);
+        UpdatePage(twoFactorInfo);
+    }
+
+    private async Task TurnTwoFactorOff()
+    {
+        NewTwoFactorResponse twoFactorInfo = await _accountService.TurnTwoFactorOff();
+        UpdatePage(twoFactorInfo);
+    }
+
+    private void SetQrCode(string applicationName, string secret, string qrCode)
+    {
+        qrCodeStr = $"data:image/png;base64,{qrCode}";
+    }
+
+    private void UpdatePage(NewTwoFactorResponse twoFactorInfo)
+    {
+        showQR = !twoFactorInfo.IsTwoFactorOn;
+        if (showQR)
+        {
+            SetQrCode(twoFactorInfo.ApplicationName, twoFactorInfo.Secret, twoFactorInfo.QRBase64);
+        }
+
+        showTwoFactorMessage = !twoFactorInfo.Succeed;
+        twoFactorMessage = twoFactorInfo.ErrorMessage;
+    }
+}

@@ -15,5 +15,20 @@ namespace Website.Services
         {
             return await SendPostRequest<BaseModel, PasswordRequest>("account/changepassword", passwordRequest);
         }
+
+        public async Task<NewTwoFactorResponse> GetTwoFactorInfo()
+        {
+            return await SendGetRequest<NewTwoFactorResponse>("account/GetNewTwoFactorAuthentication");
+        }
+
+        public async Task<NewTwoFactorResponse> TurnTwoFactorOn(TwoFactorRequest twofactorRequest)
+        {
+            return await SendPostRequest<NewTwoFactorResponse, TwoFactorRequest>("account/SetTwoFactorOn", twofactorRequest);
+        }
+
+        public async Task<NewTwoFactorResponse> TurnTwoFactorOff()
+        {
+            return await SendGetRequest<NewTwoFactorResponse>("account/SetTwoFactorOff");
+        }
     }
 }

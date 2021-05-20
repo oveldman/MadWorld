@@ -44,5 +44,29 @@ namespace API.Controllers
                 ErrorMessage = "New password and password confirm doesn't much"
             };
         }
+
+        [HttpGet]
+        [Route("GetNewTwoFactorAuthentication")]
+        public async Task<NewTwoFactorResponse> GetNewTwoFactorAuthentication()
+        {
+            var username = User.FindFirst(ClaimTypes.Name).Value;
+            return await _accountManager.GetNewTwoFactorAuthentication(username, true);
+        }
+
+        [HttpPost]
+        [Route("SetTwoFactorOn")]
+        public async Task<NewTwoFactorResponse> SetTwoFactorOn(TwoFactorRequest twofactorRequest)
+        {
+            var username = User.FindFirst(ClaimTypes.Name).Value;
+            return await _accountManager.GetNewTwoFactorTurnOn(username, twofactorRequest.Token);
+        }
+
+        [HttpGet]
+        [Route("SetTwoFactorOff")]
+        public async Task<NewTwoFactorResponse> SetTwoFactorOff()
+        {
+            var username = User.FindFirst(ClaimTypes.Name).Value;
+            return await _accountManager.GetNewTwoFactorTurnOff(username);
+        }
     }
 }

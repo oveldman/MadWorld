@@ -5,5 +5,6 @@ namespace Database.Tables.Identity
 {
     public class User : IdentityUser
     {
+        public string TwoFactorSecret { get; set; }
     }
 }

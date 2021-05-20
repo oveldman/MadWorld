@@ -29,6 +29,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using TwoFactorAuthNet;
 
 namespace API
 {
@@ -47,6 +48,7 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             string securityKey = Configuration.GetSection("Secrets:AuthenicationKey")?.Value;
+            string twoFactorKey = Configuration.GetSection("Secrets:TwoFactorKey")?.Value;
             string issuer = Configuration.GetSection("Settings:Authentication:IssuerUrl")?.Value;
 
             services.AddControllers();
@@ -133,6 +135,11 @@ namespace API
                 SignInManager<User> signInManager = serviceProvider.GetService<SignInManager<User>>();
                 return new AuthenticationManager(issuer, securityKey, signInManager);
             });
+
+            //Extern packages
+            services.AddScoped<TwoFactorAuth, TwoFactorAuth>(serviceProvider => {
+                return new TwoFactorAuth("Key");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -168,14 +175,16 @@ namespace API
 
         private void AddApplicationClassesToScope(IServiceCollection services)
         {
-            //API manager
+            //API managers
             services.AddScoped<IAccountManager, AccountManager>();
 
             //Business project
             services.AddScoped<IResumeManager, ResumeManager>();
+            services.AddScoped<IUserExtremeManager, UserExtremeManager>();
 
             //Database project
             services.AddScoped<IResumeQueries, ResumeQueries>();
+            services.AddScoped<IAccountQueries, AccountQueries>();
         }
     }
 }

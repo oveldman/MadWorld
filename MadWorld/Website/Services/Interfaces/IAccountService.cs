@@ -8,5 +8,8 @@ namespace Website.Services.Interfaces
     public interface IAccountService
     {
         Task<BaseModel> ChangePassword(PasswordRequest passwordRequest);
+        Task<NewTwoFactorResponse> GetTwoFactorInfo();
+        Task<NewTwoFactorResponse> TurnTwoFactorOn(TwoFactorRequest twofactorRequest);
+        Task<NewTwoFactorResponse> TurnTwoFactorOff();
     }
 }

@@ -1,4 +1,4 @@
-﻿@page "/account"
+﻿@page "/account/settings"
 
 @using Website.Shared.Models;
 @using Website.Shared.Models.Account;
@@ -23,19 +23,21 @@
     </div>
     <div class="mb-3">
         <label for="OldPassword" class="form-label">Old password</label>
-        <InputText type="password" class="form-control" id="OldPassword" @bind-Value="passwordRequest.OldPassword" DisplayName="Old Password" />
+        <InputText type="password" class="form-control" id="OldPassword" @bind-Value="passwordRequest.OldPassword" />
     </div>
     <div class="mb-3">
         <label for="NewPassword" class="form-label">New password</label>
-        <InputText type="password" class="form-control" id="NewPassword" @bind-Value="passwordRequest.NewPassword" DisplayName="New Password" />
+        <InputText type="password" class="form-control" id="NewPassword" @bind-Value="passwordRequest.NewPassword" />
     </div>
     <div class="mb-3">
         <label for="PasswordConfirm" class="form-label">Confirm password</label>
-        <InputText type="password" class="form-control" id="PasswordConfirm" @bind-Value="passwordRequest.PasswordConfirm" DisplayName="Confirm Password" />
+        <InputText type="password" class="form-control" id="PasswordConfirm" @bind-Value="passwordRequest.PasswordConfirm" />
     </div>
 
     <button class="btn btn-primary" type="button" @onclick="@ChangePassword">Change password</button>
 </EditForm>
+
+<NavLink class="btn btn-primary" href="account/twofactor">Activate two factor</NavLink>
 
 @code {
     private bool showChangePasswordMessage = false;

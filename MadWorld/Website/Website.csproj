@@ -29,6 +29,7 @@
     <Folder Include="wwwroot\js\app\" />
     <Folder Include="Pages\Admin\" />
     <Folder Include="Services\States\" />
+    <Folder Include="Pages\Account\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\typescript\site.ts" />
@@ -42,5 +43,9 @@
     <ServiceWorker Include="wwwroot\service-worker.js">
       <PublishedContent>wwwroot\service-worker.published.js</PublishedContent>
     </ServiceWorker>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\typescript\site.js.map" />
+    <Content Remove="wwwroot\typescript\site.js" />
   </ItemGroup>
 </Project>
