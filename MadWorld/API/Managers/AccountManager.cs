@@ -43,28 +43,40 @@ namespace API.Managers
 
         public async Task<NewTwoFactorResponse> GetNewTwoFactorAuthentication(string username, bool refreshToken)
         {
-            bool succeed = false;
-            string newSecret = string.Empty;
-
-            User user = await _userManager.FindByNameAsync(username);
-
-            if (user != null && !user.TwoFactorEnabled) {
-                newSecret = refreshToken ? _twoFactorAuth.CreateSecret(160) : user.TwoFactorSecret;
-                succeed = _userExtremeManager.UpdateNewSecret(username, newSecret);
-            }
-
-            succeed = user.TwoFactorEnabled || succeed;
-
-            string applicationName = "Mad-World";
-
-            return new NewTwoFactorResponse
+            try
             {
-                Succeed = succeed,
-                ApplicationName = applicationName,
-                IsTwoFactorOn = user?.TwoFactorEnabled ?? false,
-                Secret = newSecret,
-                QRBase64 = GenerateQrCode(applicationName, newSecret)
-            };
+                bool succeed = false;
+                string newSecret = string.Empty;
+
+                User user = await _userManager.FindByNameAsync(username);
+
+                if (user != null && !user.TwoFactorEnabled)
+                {
+                    newSecret = refreshToken ? _twoFactorAuth.CreateSecret(160) : user.TwoFactorSecret;
+                    succeed = _userExtremeManager.UpdateNewSecret(username, newSecret);
+                }
+
+                succeed = user.TwoFactorEnabled || succeed;
+
+                string applicationName = "Mad-World";
+
+                return new NewTwoFactorResponse
+                {
+                    Succeed = succeed,
+                    ApplicationName = applicationName,
+                    IsTwoFactorOn = user?.TwoFactorEnabled ?? false,
+                    Secret = newSecret,
+                    QRBase64 = GenerateQrCode(applicationName, newSecret)
+                };
+            }
+            catch (Exception ex)
+            {
+                return new NewTwoFactorResponse
+                {
+                    Succeed = false,
+                    ErrorMessage = ex.Message
+                };
+            }
         }
 
         public async Task<NewTwoFactorResponse> GetNewTwoFactorTurnOff(string username)
