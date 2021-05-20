@@ -38,3 +38,7 @@ apt-get install docker-ce docker-ce-cli containerd.io
 docker pull postgres
 docker run --name mad-world-db -e POSTGRES_PASSWORD=notmyrealpassword -e POSTGRES_DB=MadWorldDB -d -p 8080:5432 postgres
 docker run --name auth-mad-world-db -e POSTGRES_PASSWORD=notmyrealpassword -e POSTGRES_DB=AuthenticationMadWorldDB -d -p 8081:5432 postgres
+
+# After a reboot:
+# docker start mad-world-db
+# auth-mad-world-db
