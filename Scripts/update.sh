@@ -9,7 +9,7 @@ dotnet tool update --global dotnet-ef
 #update API
 echo "Start deploying dotnet API."
 systemctl stop kestrel-madworldapi.service
-cd MadWorld/API
+cd ../MadWorld/API
 cp ../../../Settings/appsettings.Development.json .
 cp ../../../Settings/appsettings.json .
 dotnet restore
