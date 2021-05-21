@@ -138,7 +138,7 @@ namespace API
 
             //Extern packages
             services.AddScoped<TwoFactorAuth, TwoFactorAuth>(serviceProvider => {
-                return new TwoFactorAuth("Key");
+                return new TwoFactorAuth(twoFactorKey);
             });
         }
 
