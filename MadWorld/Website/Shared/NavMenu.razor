@@ -74,9 +74,9 @@
         menuAccountExpended = string.IsNullOrEmpty(menuAccountExpended) ? "show" : string.Empty;
     }
 
-    private void BeginSignOut()
+    private async Task BeginSignOut()
     {
-        _authenticationService.Logout();
+        await _authenticationService.Logout();
         Navigation.NavigateTo("/");
     }
 }

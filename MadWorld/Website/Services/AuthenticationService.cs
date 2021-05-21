@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using Website.Services.Interfaces;
 using Website.Services.States;
@@ -15,11 +16,13 @@ namespace Website.Services
     {
         private HttpClient _client;
         private AuthenticationStateProvider _state;
+        private ILocalStorageService _localStorage;
 
-        public AuthenticationService(AuthenticationStateProvider authenticationStateProvider, IHttpClientFactory clientFactory)
+        public AuthenticationService(AuthenticationStateProvider authenticationStateProvider, IHttpClientFactory clientFactory, ILocalStorageService localStorage)
         {
             _client = clientFactory.CreateClient(ApiUrls.MadWorldApi);
             _state = authenticationStateProvider;
+            _localStorage = localStorage;
         }
 
         public async Task<LoginResponse> Login(string username, string password)
@@ -53,15 +56,23 @@ namespace Website.Services
 
             if (loginResponse.Succeed)
             {
+                loginResponse = await SetLoginResponseInSession(loginResponse);
                 (_state as ApiAuthenticationProvider).LoginNotify(loginResponse);
             }
 
             return loginResponse;
         }
 
-        public void Logout()
+        public async Task Logout()
         {
+            await SetLoginResponseInSession(null);
             (_state as ApiAuthenticationProvider).LogoutNotify();
+        }
+
+        private async Task<LoginResponse> SetLoginResponseInSession(LoginResponse response)
+        {
+            await _localStorage.SetItemAsync(LocalStorageNames.Login, response);
+            return response;
         }
     }
 }

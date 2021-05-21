@@ -43,40 +43,29 @@ namespace API.Managers
 
         public async Task<NewTwoFactorResponse> GetNewTwoFactorAuthentication(string username, bool refreshToken)
         {
-            try
+            bool succeed = false;
+            string newSecret = string.Empty;
+
+            User user = await _userManager.FindByNameAsync(username);
+
+            if (user != null && !user.TwoFactorOn)
             {
-                bool succeed = false;
-                string newSecret = string.Empty;
-
-                User user = await _userManager.FindByNameAsync(username);
-
-                if (user != null && !user.TwoFactorOn)
-                {
-                    newSecret = refreshToken ? _twoFactorAuth.CreateSecret(160) : user.TwoFactorSecret;
-                    succeed = _userExtremeManager.UpdateNewSecret(username, newSecret);
-                }
-
-                succeed = user.TwoFactorOn || succeed;
-
-                string applicationName = "Mad-World";
-
-                return new NewTwoFactorResponse
-                {
-                    Succeed = succeed,
-                    ApplicationName = applicationName,
-                    IsTwoFactorOn = user?.TwoFactorOn ?? false,
-                    Secret = newSecret,
-                    QRBase64 = GenerateQrCode(applicationName, newSecret)
-                };
+                newSecret = refreshToken ? _twoFactorAuth.CreateSecret(160) : user.TwoFactorSecret;
+                succeed = _userExtremeManager.UpdateNewSecret(username, newSecret);
             }
-            catch (Exception ex)
+
+            succeed = user.TwoFactorOn || succeed;
+
+            string applicationName = "Mad-World";
+
+            return new NewTwoFactorResponse
             {
-                return new NewTwoFactorResponse
-                {
-                    Succeed = false,
-                    ErrorMessage = ex.Message
-                };
-            }
+                Succeed = succeed,
+                ApplicationName = applicationName,
+                IsTwoFactorOn = user?.TwoFactorOn ?? false,
+                Secret = newSecret,
+                QRBase64 = GenerateQrCode(applicationName, newSecret)
+            };
         }
 
         public async Task<NewTwoFactorResponse> GetNewTwoFactorTurnOff(string username)

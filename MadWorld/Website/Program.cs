@@ -13,6 +13,7 @@ using Website.Settings;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Website.Services.States;
 using Microsoft.AspNetCore.Components.Authorization;
+using Blazored.LocalStorage;
 
 namespace Website
 {
@@ -44,6 +45,8 @@ namespace Website
             });
 
             builder.Services.AddApiAuthorization();
+            builder.Services.AddBlazoredLocalStorage();
+
             await builder.Build().RunAsync();
         }
 
