@@ -133,7 +133,10 @@ namespace API
             services.AddScoped<IAuthenticationManager, AuthenticationManager>(serviceProvider =>
             {
                 SignInManager<User> signInManager = serviceProvider.GetService<SignInManager<User>>();
-                return new AuthenticationManager(issuer, securityKey, signInManager);
+                UserManager<User> userManager = serviceProvider.GetService<UserManager<User>>();
+                IUserExtremeManager userExtremeManager = serviceProvider.GetService<IUserExtremeManager>();
+                TwoFactorAuth twoFactorAuth = serviceProvider.GetService<TwoFactorAuth>();
+                return new AuthenticationManager(issuer, twoFactorAuth, securityKey, userExtremeManager, signInManager, userManager);
             });
 
             //Extern packages

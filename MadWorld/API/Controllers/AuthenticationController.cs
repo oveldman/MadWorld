@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using API.Managers.Interfaces;
 using Database.Tables.Identity;
@@ -9,13 +10,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Website.Shared.Models;
+using Website.Shared.Models.Account;
 using Website.Shared.Models.Authentication;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace API.Controllers
 {
-    [Authorize]
+    [AllowAnonymous]
     [ApiController]
     [Route("[controller]")]
     public class AuthenticationController : ControllerBase
@@ -32,12 +34,18 @@ namespace API.Controllers
         }
 
 
-        [AllowAnonymous]
         [HttpPost]
         [Route("Login")]
         public async Task<LoginResponse> Login(LoginRequest loginRequest)
         {
             return await _authenticationManager.AuthenticateAsync(loginRequest.Username, loginRequest.Password);
+        }
+
+        [HttpPost]
+        [Route("TwoFactor")]
+        public LoginResponse TwoFactor(TwoFactorRequest twoFactorRequest)
+        {
+            return _authenticationManager.VerifyTwoFactor(twoFactorRequest.Session, twoFactorRequest.Token);
         }
 
         /*

@@ -8,5 +8,6 @@ namespace Website.Services.Interfaces
     {
         Task<LoginResponse> Login(string username, string password);
         void Logout();
+        Task<LoginResponse> VerifyTwoFactor(string token, Guid? session);
     }
 }

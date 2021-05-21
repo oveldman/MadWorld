@@ -50,13 +50,13 @@ namespace API.Managers
 
                 User user = await _userManager.FindByNameAsync(username);
 
-                if (user != null && !user.TwoFactorEnabled)
+                if (user != null && !user.TwoFactorOn)
                 {
                     newSecret = refreshToken ? _twoFactorAuth.CreateSecret(160) : user.TwoFactorSecret;
                     succeed = _userExtremeManager.UpdateNewSecret(username, newSecret);
                 }
 
-                succeed = user.TwoFactorEnabled || succeed;
+                succeed = user.TwoFactorOn || succeed;
 
                 string applicationName = "Mad-World";
 
@@ -64,7 +64,7 @@ namespace API.Managers
                 {
                     Succeed = succeed,
                     ApplicationName = applicationName,
-                    IsTwoFactorOn = user?.TwoFactorEnabled ?? false,
+                    IsTwoFactorOn = user?.TwoFactorOn ?? false,
                     Secret = newSecret,
                     QRBase64 = GenerateQrCode(applicationName, newSecret)
                 };
@@ -85,7 +85,7 @@ namespace API.Managers
 
             if (user != null)
             {
-                await _userManager.SetTwoFactorEnabledAsync(user, false);
+                _userExtremeManager.SetTwoFactorEnabled(user, false);
                 return await GetNewTwoFactorAuthentication(username, true);
             }
 
@@ -104,7 +104,7 @@ namespace API.Managers
 
             if (userFound && verified)
             {
-                await _userManager.SetTwoFactorEnabledAsync(user, true);
+                 _userExtremeManager.SetTwoFactorEnabled(user, true);
             }
 
             if (!userFound)

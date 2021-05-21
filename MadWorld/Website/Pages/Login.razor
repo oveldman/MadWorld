@@ -4,39 +4,104 @@
 @using Website.Services.Interfaces
 @using Website.Shared.Models.Authentication
 @inject HttpClient Http
+@inject NavigationManager Navigation
 @inject IAuthenticationService _authenticationService
 
-<div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" @bind="Username">
-    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-</div>
-<div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1" @bind="Password">
-</div>
-
-<button class="btn btn-primary" @onclick="LoginInApi">Login</button>
-
-@if (HasError)
+@if (hasError)
 {
     <div class="alert alert-danger" role="alert">
-        <p>Username and/or password isn't correct!</p>
+        <p>@errorMessage</p>
     </div>
 }
 
+@if (showLogin)
+{
+    <div class="mb-3">
+        <label for="email" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" @bind="Username">
+        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" @bind="Password">
+    </div>
+
+    <button class="btn btn-primary" @onclick="LoginInApi">Login</button>
+}
+else
+{
+    <div class="mb-3">
+        <label for="token" class="form-label">Two Factor Token</label>
+        <input type="text" class="form-control" id="token" aria-describedby="emailHelp" @bind="Token">
+    </div>
+
+    <button class="btn btn-primary" @onclick="VerifiedTwoFactor">Verify </button>
+}
 
 @code {
 
-    private bool HasError = false;
+    private bool showLogin = true;
+
+    private bool hasError = false;
+    private string errorMessage = string.Empty;
 
     private string Username = string.Empty;
     private string Password = string.Empty;
 
+    private string Token = string.Empty;
+    private Guid? Session = new Guid();
+
     private async Task LoginInApi()
     {
-        HasError = false;
+        Reset();
         LoginResponse loginResponse = await _authenticationService.Login(Username, Password);
-        HasError = !loginResponse.Succeed;
+        SetError(!loginResponse.Succeed, loginResponse.ErrorMessage);
+
+        if (!hasError)
+        {
+            if (loginResponse.RequiresTwoFactor)
+            {
+                UpdatePage(loginResponse);
+            }
+            else
+            {
+                RedirectToHome();
+            }
+        }
+
+    }
+
+    private async Task VerifiedTwoFactor()
+    {
+        Reset();
+        LoginResponse loginResponse = await _authenticationService.VerifyTwoFactor(Token, Session);
+        SetError(!loginResponse.Succeed, loginResponse.ErrorMessage);
+
+        if (loginResponse.Succeed)
+        {
+            RedirectToHome();
+        }
+    }
+
+    private void UpdatePage(LoginResponse loginResponse)
+    {
+        showLogin = false;
+        Session = loginResponse.TwoFactorSession;
+    }
+
+    private void RedirectToHome()
+    {
+        Navigation.NavigateTo("/");
+    }
+
+    private void Reset()
+    {
+        hasError = false;
+    }
+
+    private void SetError(bool isError, string newErrorMessage)
+    {
+        hasError = isError;
+        errorMessage = newErrorMessage;
     }
 }

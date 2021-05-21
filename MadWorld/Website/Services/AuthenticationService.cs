@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Website.Services.Interfaces;
 using Website.Services.States;
 using Website.Settings;
+using Website.Shared.Models.Account;
 using Website.Shared.Models.Authentication;
 
 namespace Website.Services
@@ -32,7 +33,26 @@ namespace Website.Services
             HttpResponseMessage response = await _client.PostAsJsonAsync("authentication/login", requestBody);
             LoginResponse loginResponse = await response.Content.ReadFromJsonAsync<LoginResponse>();
 
-            if (loginResponse.Succeed) {
+            if (loginResponse.Succeed && !loginResponse.RequiresTwoFactor) {
+                (_state as ApiAuthenticationProvider).LoginNotify(loginResponse);
+            }
+
+            return loginResponse;
+        }
+
+        public async Task<LoginResponse> VerifyTwoFactor(string token, Guid? session)
+        {
+            var requestBody = new TwoFactorRequest()
+            {
+                Token = token,
+                Session = session
+            };
+
+            HttpResponseMessage response = await _client.PostAsJsonAsync("authentication/twofactor", requestBody);
+            LoginResponse loginResponse = await response.Content.ReadFromJsonAsync<LoginResponse>();
+
+            if (loginResponse.Succeed)
+            {
                 (_state as ApiAuthenticationProvider).LoginNotify(loginResponse);
             }
 
