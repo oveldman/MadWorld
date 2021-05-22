@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using API.Managers;
 using API.Managers.Interfaces;
+using API.Models;
 using Business;
 using Business.Interfaces;
 using Database;
@@ -144,6 +145,8 @@ namespace API
             services.AddScoped<TwoFactorAuth, TwoFactorAuth>(serviceProvider => {
                 return new TwoFactorAuth(twoFactorKey);
             });
+
+            ApiSettings.SetSettings(issuer);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
