@@ -72,7 +72,8 @@ namespace API.Managers
 
             return new LoginResponse
             {
-                ErrorMessage = "Token is not valid or session is expired"
+                ErrorMessage = "Token is not valid or session is expired",
+                TwoFactorSession = session
             };
         }
 
@@ -85,7 +86,7 @@ namespace API.Managers
 
             var signinCredentials = new SigningCredentials(_securityKey, SecurityAlgorithms.HmacSha256);
 
-            DateTime validUntil = DateTime.Now.AddMinutes(30);
+            DateTime validUntil = DateTime.Now.AddHours(1);
 
             var tokenOptions = new JwtSecurityToken(
                 issuer: _issuer,
