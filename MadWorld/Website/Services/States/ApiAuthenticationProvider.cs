@@ -90,7 +90,9 @@ namespace Website.Services.States
 
         private async Task<bool> TryLoginFromSession(LoginResponse loginResponse)
         {
-            if (loginResponse.Expires < DateTime.Now)
+            Console.WriteLine(loginResponse.Expires < DateTime.Now);
+
+            if (loginResponse.Expires > DateTime.Now)
             {
                 LoginNotify(loginResponse);
                 return true;

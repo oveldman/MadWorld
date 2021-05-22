@@ -13,7 +13,7 @@
     margin-top: 50px;
 }
 
-@media (min-width: 767px) {
+@media (min-width: 840px) {
     .page {
         flex-direction: row;
     }

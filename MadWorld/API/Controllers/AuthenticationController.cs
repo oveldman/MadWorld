@@ -50,7 +50,6 @@ namespace API.Controllers
 
         /*
         [HttpGet]
-        [AllowAnonymous]
         [Route("FirstTime")]
         public async Task<BaseModel> FirstTime()
         {
