@@ -71,8 +71,7 @@ namespace Website.Services
 
         private async Task<LoginResponse> SetLoginResponseInSession(LoginResponse response)
         {
-            await _localStorage.SetItemAsync(LocalStorageNames.Login, response);
-            return response;
+            return await (_state as ApiAuthenticationProvider).SetLoginResponseInSession(response);
         }
     }
 }

@@ -103,8 +103,8 @@ namespace API.Managers
             loginModel.AccessToken = tokenString;
             loginModel.Type = "Bearer";
             loginModel.Username = username;
-            loginModel.Issued = DateTime.Now.ToString();
-            loginModel.Expires = validUntil.ToString();
+            loginModel.Issued = DateTime.Now;
+            loginModel.Expires = validUntil;
             loginModel.Roles.Add("Admin");
 
             // Ticks  divide by 10000000 makes time in seconds. 

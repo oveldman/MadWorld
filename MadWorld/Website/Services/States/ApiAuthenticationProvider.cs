@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -23,6 +24,7 @@ namespace Website.Services.States
         {
             await Task.FromResult(0);
             await CheckAccountInLocalStorage();
+            await CheckSessionExpired();
             Initialized = true;
             return new AuthenticationState(claimsPrincipal);
         }
@@ -33,7 +35,8 @@ namespace Website.Services.States
                                 {
                                     new Claim(ClaimTypes.Name, loginResponse.Username),
                                     new Claim(ClaimTypes.Email,loginResponse.Username),
-                                    new Claim("access_token", loginResponse.AccessToken)
+                                    new Claim(ClaimTypesExtra.AccessToken, loginResponse.AccessToken),
+                                    new Claim(ClaimTypesExtra.Expired, loginResponse.Expires.Value.ToString())
                                 }, "MadWorld");
 
             foreach (string role in loginResponse.Roles)
@@ -53,6 +56,26 @@ namespace Website.Services.States
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
         }
 
+        public async Task<LoginResponse> SetLoginResponseInSession(LoginResponse response)
+        {
+            await _localStorage.SetItemAsync(LocalStorageNames.Login, response);
+            return response;
+        }
+
+        private async Task CheckSessionExpired()
+        {
+            if (!claimsPrincipal.Identity.IsAuthenticated) return;
+
+            Claim expiredClaim = claimsPrincipal.FindFirst(c => c.Type.Equals(ClaimTypesExtra.Expired));
+            DateTime expiredDate = DateTime.Parse(expiredClaim?.Value);
+
+            if (expiredDate < DateTime.Now)
+            {
+                await SetLoginResponseInSession(null);
+                LogoutNotify();
+            }
+        }
+
         private async Task CheckAccountInLocalStorage()
         {
             if (Initialized || claimsPrincipal.Identity.IsAuthenticated) return;
@@ -61,7 +84,22 @@ namespace Website.Services.States
 
             if (loginResponse != null)
             {
+                await TryLoginFromSession(loginResponse);
+            }
+        }
+
+        private async Task<bool> TryLoginFromSession(LoginResponse loginResponse)
+        {
+            if (loginResponse.Expires < DateTime.Now)
+            {
                 LoginNotify(loginResponse);
+                return true;
+            }
+            else
+            {
+                await SetLoginResponseInSession(null);
+                LogoutNotify();
+                return false;
             }
         }
     }

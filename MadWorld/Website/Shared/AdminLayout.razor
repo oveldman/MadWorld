@@ -2,17 +2,15 @@
 
 <header>
     <NavMenu />
+</header>
+<div class="page">
     <div class="sidebar">
         <NavMenuAdmin />
     </div>
-</header>
-<main class="flex-shrink-0 flex-fill">
-    <div class="container mt-3">
-        @Body
-    </div>
-</main>
+    <main class="flex-shrink-0 flex-fill">
+        <div class="container mt-3">
+            @Body
+        </div>
+    </main>
+</div>
 <MainFooter />
-
-@code{
-    private int currentYear = DateTime.Now.Year;
-}
