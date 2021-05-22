@@ -29,5 +29,6 @@
     <Folder Include="Managers\" />
     <Folder Include="Managers\Interfaces\" />
     <Folder Include="Controllers\Admin\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 </Project>

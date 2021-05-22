@@ -49,7 +49,8 @@ namespace API
         {
             string securityKey = Configuration.GetSection("Secrets:AuthenicationKey")?.Value;
             string twoFactorKey = Configuration.GetSection("Secrets:TwoFactorKey")?.Value;
-            string issuer = Configuration.GetSection("Settings:Authentication:IssuerUrl")?.Value;
+            string issuerUrl = Configuration.GetSection("Settings:Authentication:IssuerUrl")?.Value;
+            string issuer = Configuration.GetSection("Settings:Authentication:Issuer")?.Value;
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -112,8 +113,8 @@ namespace API
                                 ValidateLifetime = true,
                                 ValidateIssuerSigningKey = true,
 
-                                ValidIssuer = issuer,
-                                ValidAudience = issuer,
+                                ValidIssuer = issuerUrl,
+                                ValidAudience = issuerUrl,
                                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey))
                             };
                         });
@@ -136,7 +137,7 @@ namespace API
                 UserManager<User> userManager = serviceProvider.GetService<UserManager<User>>();
                 IUserExtremeManager userExtremeManager = serviceProvider.GetService<IUserExtremeManager>();
                 TwoFactorAuth twoFactorAuth = serviceProvider.GetService<TwoFactorAuth>();
-                return new AuthenticationManager(issuer, twoFactorAuth, securityKey, userExtremeManager, signInManager, userManager);
+                return new AuthenticationManager(issuerUrl, twoFactorAuth, securityKey, userExtremeManager, signInManager, userManager);
             });
 
             //Extern packages

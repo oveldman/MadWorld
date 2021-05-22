@@ -17,16 +17,16 @@ namespace API.Managers
 {
     public class AuthenticationManager : IAuthenticationManager
     {
-        private readonly string _issuer;
+        private readonly string _issuerUrl;
         private readonly IUserExtremeManager _userExtremeManager;
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly SymmetricSecurityKey _securityKey;
         private readonly TwoFactorAuth _twoFactorAuth;
 
-        public AuthenticationManager(string issuer, TwoFactorAuth twoFactorAuth, string key, IUserExtremeManager userExtremeManager, SignInManager<User> signInManager, UserManager<User> userManager)
+        public AuthenticationManager(string issuerUrl, TwoFactorAuth twoFactorAuth, string key, IUserExtremeManager userExtremeManager, SignInManager<User> signInManager, UserManager<User> userManager)
         {
-            _issuer = issuer;
+            _issuerUrl = issuerUrl;
             _securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
             _twoFactorAuth = twoFactorAuth;
             _signInManager = signInManager;
@@ -89,8 +89,8 @@ namespace API.Managers
             DateTime validUntil = DateTime.Now.AddHours(1);
 
             var tokenOptions = new JwtSecurityToken(
-                issuer: _issuer,
-                audience: _issuer,
+                issuer: _issuerUrl,
+                audience: _issuerUrl,
                 claims: new List<Claim>() {
                         new Claim(ClaimTypes.Name, username)
                 },

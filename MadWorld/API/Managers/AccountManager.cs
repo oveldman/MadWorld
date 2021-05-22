@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Managers.Interfaces;
+using API.Models;
 using Business.Interfaces;
 using Database.Tables.Identity;
 using Microsoft.AspNetCore.Identity;
@@ -56,7 +57,7 @@ namespace API.Managers
 
             succeed = user.TwoFactorOn || succeed;
 
-            string applicationName = "Mad-World";
+            string applicationName = ApiSettings.Issuer;
 
             return new NewTwoFactorResponse
             {
@@ -120,7 +121,7 @@ namespace API.Managers
         {
             if (string.IsNullOrEmpty(secret)) return string.Empty;
 
-            string qrUrl = $"otpauth://totp/LABEL:{applicationName}?secret={secret}&issuer=localhost";
+            string qrUrl = $"otpauth://totp/{applicationName}?secret={secret}&issuer={ApiSettings.Issuer}";
 
             using (MemoryStream stream = new MemoryStream())
             {
