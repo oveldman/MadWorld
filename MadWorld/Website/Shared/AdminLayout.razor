@@ -1,0 +1,18 @@
+﻿@inherits LayoutComponentBase
+
+<header>
+    <NavMenu />
+    <div class="sidebar">
+        <NavMenuAdmin />
+    </div>
+</header>
+<main class="flex-shrink-0 flex-fill">
+    <div class="container mt-3">
+        @Body
+    </div>
+</main>
+<MainFooter />
+
+@code{
+    private int currentYear = DateTime.Now.Year;
+}
