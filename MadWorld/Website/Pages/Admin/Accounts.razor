@@ -1,0 +1,42 @@
+﻿@page "/admin/accounts"
+@layout AdminLayout
+
+@using Microsoft.AspNetCore.Authorization
+@using Website.Services.Interfaces;
+@using Website.Shared.Models.Admin;
+@attribute [Authorize]
+@inject NavigationManager Navigation;
+@inject IAdminService _adminService;
+
+<h3 class="p-3 text-center">Mad-World Accounts</h3>
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Two factor enabled</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in users)
+        {
+            <tr @onclick="() => EditAccount(user)">
+                <td>@user.Username</td>
+                <td><input type="checkbox" class="form-check-input" @bind="@user.TwoFactorEnabled" disabled /></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<UserModel> users = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        users = await _adminService.GetUsers();
+    }
+
+    private void EditAccount(UserModel user)
+    {
+        Navigation.NavigateTo($"/admin/accounts/edit/{user.Id}");
+    }
+}

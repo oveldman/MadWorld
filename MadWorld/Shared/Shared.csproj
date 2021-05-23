@@ -9,5 +9,6 @@
     <Folder Include="Models\" />
     <Folder Include="Models\Authentication\" />
     <Folder Include="Models\Account\" />
+    <Folder Include="Models\Admin\" />
   </ItemGroup>
 </Project>

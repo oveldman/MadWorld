@@ -1,0 +1,12 @@
+﻿@page "/admin/accounts/edit/{id}"
+@layout AdminLayout
+
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+<p>Edit account of id: @Id</p>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+}

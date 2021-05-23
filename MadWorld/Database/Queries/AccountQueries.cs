@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Database.Queries.Interfaces;
 using Database.Tables.Identity;
@@ -17,6 +18,11 @@ namespace Database.Queries
         public User FindUserBySession(Guid? session)
         {
             return _context.Users.FirstOrDefault(u => u.TwoFactorSession == session);
+        }
+
+        public List<User> GetUsers()
+        {
+            return _context.Users.ToList();
         }
 
         public bool SetSecretToken(string username, string twofactorSecret)

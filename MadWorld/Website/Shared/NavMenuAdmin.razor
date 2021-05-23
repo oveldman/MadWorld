@@ -10,8 +10,13 @@
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="/admin">
+            <NavLink class="nav-link" href="/admin" Match="NavLinkMatch.All">
                 <span class="oi oi-grid-three-up" aria-hidden="true"></span> Admin
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/admin/accounts">
+                <span class="oi oi-grid-three-up" aria-hidden="true"></span> Accounts
             </NavLink>
         </li>
     </ul>

@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
 @using Website.Services.Interfaces;
-@inject NavigationManager Navigation
+@inject NavigationManager Navigation;
 @inject IAuthenticationService _authenticationService;
 
 <!-- Fixed navbar -->
@@ -40,7 +40,7 @@
                                 <span class="oi oi-key" aria-hidden="true"></span> Extra's
                             </a>
                             <div class="dropdown-menu-custom dropdown-menu @menuAccountExpended" aria-labelledby="account-dropdown">
-                                <NavLink class="nav-link" href="account/settings">
+                                <NavLink class="nav-link" href="account">
                                     <span class="oi oi-eye" aria-hidden="true"></span> Account
                                 </NavLink>
                                 <NavLink class="nav-link" href="admin">

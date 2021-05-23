@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Business.Interfaces;
 using Database.Queries.Interfaces;
 using Database.Tables.Identity;
@@ -24,6 +25,11 @@ namespace Business
             }
 
             return null;
+        }
+
+        public List<User> GetAllUsers()
+        {
+            return _accountQueries.GetUsers();
         }
 
         public bool SetTwoFactorEnabled(User user, bool enabled)
