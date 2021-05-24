@@ -22,5 +22,12 @@
   <ItemGroup>
     <ProjectReference Include="..\Business\Business.csproj" />
     <ProjectReference Include="..\Database\Database.csproj" />
+    <ProjectReference Include="..\Common\Common.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Business\" />
+    <Folder Include="Fake\" />
+    <Folder Include="Fake\Business\" />
+    <Folder Include="Fake\Business\UserExtremeManager\" />
   </ItemGroup>
 </Project>

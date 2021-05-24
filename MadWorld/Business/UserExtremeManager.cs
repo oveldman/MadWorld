@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Business.Interfaces;
+using Common;
 using Database.Queries.Interfaces;
 using Database.Tables.Identity;
 
@@ -19,7 +20,7 @@ namespace Business
         {
             User user = _accountQueries.FindUserBySession(session);
 
-            if (user.TwoFactorSessionExpire > DateTime.Now)
+            if (user?.TwoFactorSessionExpire > SystemTime.Now())
             {
                 return user;
             }
