@@ -86,7 +86,7 @@ namespace API.Managers
 
             var signinCredentials = new SigningCredentials(_securityKey, SecurityAlgorithms.HmacSha256);
 
-            DateTime validUntil = DateTime.Now.AddHours(1);
+            DateTime validUntil = DateTime.Now.AddMinutes(1);
 
             var tokenOptions = new JwtSecurityToken(
                 issuer: _issuerUrl,
