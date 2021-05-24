@@ -1,8 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Website.Settings;
 @using Website.Services.Interfaces;
 @inject NavigationManager Navigation;
 @inject IAuthenticationService _authenticationService;
-
 <!-- Fixed navbar -->
 <nav class="navbar navbar-expand-md navbar-dark fixed-top menubar">
     <div class="container-fluid">
@@ -77,6 +77,5 @@
     private async Task BeginSignOut()
     {
         await _authenticationService.Logout();
-        Navigation.NavigateTo("/");
-    }
-}
+        Navigation.NavigateTo(WebsiteUrls.Home);
+    } }

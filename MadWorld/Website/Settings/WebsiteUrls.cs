@@ -1,10 +1,8 @@
 ﻿using System;
 namespace Website.Settings
 {
-    public class WebsiteUrls
+    public static class WebsiteUrls
     {
-        public WebsiteUrls()
-        {
-        }
+        public static readonly string Home = "/";
     }
 }

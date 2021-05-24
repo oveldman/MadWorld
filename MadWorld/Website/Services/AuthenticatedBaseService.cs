@@ -67,7 +67,7 @@ namespace Website.Services
 
         private bool ForceReload()
         {
-            _navigation.NavigateTo("/", true);
+            _navigation.NavigateTo(WebsiteUrls.Home, true);
             return false;
         }
     }

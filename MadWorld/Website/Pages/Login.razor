@@ -1,8 +1,9 @@
 ﻿@page "/login"
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-@using Website.Services.Interfaces
-@using Website.Shared.Models.Authentication
+@using Website.Settings;
+@using Website.Services.Interfaces;
+@using Website.Shared.Models.Authentication;
 @inject HttpClient Http
 @inject NavigationManager Navigation
 @inject IAuthenticationService _authenticationService
@@ -91,7 +92,7 @@ else
 
     private void RedirectToHome()
     {
-        Navigation.NavigateTo("/");
+        Navigation.NavigateTo(WebsiteUrls.Home);
     }
 
     private void Reset()
