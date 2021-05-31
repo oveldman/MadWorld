@@ -30,5 +30,6 @@
     <Folder Include="Managers\Interfaces\" />
     <Folder Include="Controllers\Admin\" />
     <Folder Include="Models\" />
+    <Folder Include="Controllers\BackendInfo\" />
   </ItemGroup>
 </Project>

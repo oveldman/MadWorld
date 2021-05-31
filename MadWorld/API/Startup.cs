@@ -186,12 +186,14 @@ namespace API
             services.AddScoped<IAccountManager, AccountManager>();
 
             //Business project
+            services.AddScoped<IStatusManager, StatusManager>();
             services.AddScoped<IResumeManager, ResumeManager>();
             services.AddScoped<IUserExtremeManager, UserExtremeManager>();
 
             //Database project
-            services.AddScoped<IResumeQueries, ResumeQueries>();
             services.AddScoped<IAccountQueries, AccountQueries>();
+            services.AddScoped<IGeneralQueries, GeneralGueries>();
+            services.AddScoped<IResumeQueries, ResumeQueries>();
         }
     }
 }

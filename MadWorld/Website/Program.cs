@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Website.Services.States;
 using Microsoft.AspNetCore.Components.Authorization;
 using Blazored.LocalStorage;
+using Website.Services.BackofficeInfo;
 
 namespace Website
 {
@@ -58,6 +59,7 @@ namespace Website
             builder.Services.AddScoped<IAccountService, AccountService>();
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<IResumeService, ResumeService>();
+            builder.Services.AddScoped<IStatusService, StatusService>();
             builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationProvider>();
         }
     }

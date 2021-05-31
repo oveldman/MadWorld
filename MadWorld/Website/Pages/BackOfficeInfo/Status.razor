@@ -1,0 +1,94 @@
+﻿@page "/status"
+@using Website.Services.Interfaces;
+@inject IStatusService _statusService;
+
+<h1>Status page Mad-World</h1>
+
+@if (!loaded)
+{
+    <p>loading......</p>
+}
+else
+{
+    @if (serviceOnline)
+    {
+        <div class="row">
+            <div class="col col-lg-1">
+                <img class="status-icon" src="images/icons/Online.png" />
+            </div>
+            <div class="col">
+                <p>API is online</p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="col col-lg-1">
+            <img class="status-icon" src="images/icons/Offline.ico" />
+        </div>
+        <div class="col">
+            <p>API is offline</p>
+        </div>
+    }
+
+    @if (authenticatinDatabaseOnline)
+    {
+        <div class="row">
+            <div class="col col-lg-1">
+                <img class="status-icon" src="images/icons/Online.png" />
+            </div>
+            <div class="col">
+                <p>Authentication database is online</p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col col-lg-1">
+                <img class="status-icon" src="images/icons/Offline.ico" />
+            </div>
+            <div class="col">
+                <p>Authentication database is offline</p>
+            </div>
+        </div>
+    }
+
+    @if (madWorldDatabaseOnline)
+    {
+        <div class="row">
+            <div class="col col-lg-1">
+                <img class="status-icon" src="images/icons/Online.png" />
+            </div>
+            <div class="col">
+                <p>Mad-World database is online</p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col col-lg-1">
+                <img class="status-icon" src="images/icons/Offline.ico" />
+            </div>
+            <div class="col">
+                <p>Mad-World database is offline</p>
+            </div>
+        </div>
+    }
+}
+
+@code {
+    private bool loaded = false;
+    private bool serviceOnline = false;
+    private bool authenticatinDatabaseOnline = false;
+    private bool madWorldDatabaseOnline = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        serviceOnline = await _statusService.CheckStatus();
+        authenticatinDatabaseOnline = await _statusService.CheckDatabaseAuthentication();
+        madWorldDatabaseOnline = await _statusService.CheckDatabaseMadWorld();
+        loaded = true;
+    }
+}

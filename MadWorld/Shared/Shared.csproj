@@ -10,5 +10,6 @@
     <Folder Include="Models\Authentication\" />
     <Folder Include="Models\Account\" />
     <Folder Include="Models\Admin\" />
+    <Folder Include="Models\BackendInfo\" />
   </ItemGroup>
 </Project>
