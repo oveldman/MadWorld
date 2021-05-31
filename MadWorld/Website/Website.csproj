@@ -49,6 +49,5 @@
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\typescript\site.js.map" />
-    <Content Remove="wwwroot\typescript\site.js" />
   </ItemGroup>
 </Project>
