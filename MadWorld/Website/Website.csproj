@@ -47,7 +47,4 @@
       <PublishedContent>wwwroot\service-worker.published.js</PublishedContent>
     </ServiceWorker>
   </ItemGroup>
-  <ItemGroup>
-    <Content Remove="wwwroot\typescript\site.js.map" />
-  </ItemGroup>
 </Project>
