@@ -87,7 +87,7 @@ namespace API
                 options.AddPolicy(name: AllowedOriginsAPI,
                     builder =>
                     {
-                        builder.WithOrigins("https://localhost:5001")
+                        builder.WithOrigins("https://localhost:5001", "https://www.mad-world.nl", "https://mad-world.nl")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                     });
