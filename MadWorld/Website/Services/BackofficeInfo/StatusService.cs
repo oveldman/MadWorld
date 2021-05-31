@@ -21,7 +21,7 @@ namespace Website.Services.BackofficeInfo
         {
             try
             {
-                var result = await _client.GetAsync("/status/CheckConnectionAPI");
+                var result = await _client.GetAsync("status/CheckConnectionAPI");
                 return result.IsSuccessStatusCode;
             }
             catch (Exception)
@@ -34,7 +34,7 @@ namespace Website.Services.BackofficeInfo
         {
             try
             {
-                var result = await _client.GetFromJsonAsync<DatabaseStatus>("/status/CheckConnectionDatabaseAuthentication");
+                DatabaseStatus result = await _client.GetFromJsonAsync<DatabaseStatus>("status/CheckConnectionDatabaseAuthentication");
                 return result.IsOnline;
             }
             catch (Exception)
@@ -47,7 +47,7 @@ namespace Website.Services.BackofficeInfo
         {
             try
             {
-                var result = await _client.GetFromJsonAsync<DatabaseStatus>("/status/CheckConnectionDatabaseMadWorld");
+                DatabaseStatus result = await _client.GetFromJsonAsync<DatabaseStatus>("status/CheckConnectionDatabaseMadWorld");
                 return result.IsOnline;
             }
             catch (Exception)
