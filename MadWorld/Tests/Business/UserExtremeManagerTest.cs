@@ -21,7 +21,6 @@ namespace Tests.Business
             mock.Setup(queries => queries.FindUserBySession(session)).Returns(UserFoundData());
             UserExtremeManager userManager = new UserExtremeManager(mock.Object);
 
-
             SystemTime.SetDateTime(DateTime.Parse("05/24/2021 10:30:00"));
 
             // Act
