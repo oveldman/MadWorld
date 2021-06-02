@@ -3,7 +3,7 @@ using Business;
 using Common;
 using Database.Queries.Interfaces;
 using Database.Tables.Identity;
-using Tests.Fake.Business.UserExtremeManager;
+using Moq;
 using Xunit;
 
 namespace Tests.Business
@@ -17,8 +17,11 @@ namespace Tests.Business
             Guid? session = Guid.Parse("6b976751-e0c9-43c6-9aef-57bfba4ecfa9");
 
             // Setup
-            IAccountQueries accountQueries = new AccountQueriesUserFoundBySession();
-            UserExtremeManager userManager = new UserExtremeManager(accountQueries);
+            var mock = new Mock<IAccountQueries>();
+            mock.Setup(queries => queries.FindUserBySession(session)).Returns(UserFoundData());
+            UserExtremeManager userManager = new UserExtremeManager(mock.Object);
+
+
             SystemTime.SetDateTime(DateTime.Parse("05/24/2021 10:30:00"));
 
             // Act
@@ -38,8 +41,9 @@ namespace Tests.Business
             Guid? session = Guid.Parse("6b976751-e0c9-43c6-9aef-57bfba4ecfa9");
 
             // Setup
-            IAccountQueries accountQueries = new AccountQueriesUserFoundBySession();
-            UserExtremeManager userManager = new UserExtremeManager(accountQueries);
+            var mock = new Mock<IAccountQueries>();
+            mock.Setup(queries => queries.FindUserBySession(session)).Returns(UserFoundData());
+            UserExtremeManager userManager = new UserExtremeManager(mock.Object);
             SystemTime.SetDateTime(DateTime.Parse("05/24/2021 09:30:00"));
 
             // Act
@@ -59,8 +63,9 @@ namespace Tests.Business
             Guid? session = Guid.Parse("6b976751-e0c9-43c6-9aef-57bfba4ecfa9");
 
             // Setup
-            IAccountQueries accountQueries = new AccountQueriesUserNotFound();
-            UserExtremeManager userManager = new UserExtremeManager(accountQueries);
+            var mock = new Mock<IAccountQueries>();
+            mock.Setup(queries => queries.FindUserBySession(session)).Returns<User>(null);
+            UserExtremeManager userManager = new UserExtremeManager(mock.Object);
             SystemTime.SetDateTime(DateTime.Parse("05/24/2021 10:30:00"));
 
             // Act
@@ -71,6 +76,18 @@ namespace Tests.Business
 
             // Teardown
             SystemTime.ResetDateTime();
+        }
+
+        private User UserFoundData()
+        {
+            return new User
+            {
+                UserName = "test@test.nl",
+                TwoFactorEnabled = true,
+                TwoFactorSessionExpire = DateTime.Parse("05/24/2021 10:00:00"),
+                TwoFactorSession = Guid.Parse("6b976751-e0c9-43c6-9aef-57bfba4ecfa9"),
+                TwoFactorOn = true,
+            };
         }
     }
 }
