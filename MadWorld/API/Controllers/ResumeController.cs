@@ -26,6 +26,8 @@ namespace API.Controllers
         [HttpGet]
         public ResumeModel Get()
         {
+            _logger.LogInformation("Lolz");
+
             var resume = _resumeManager.GetLastResume();
 
             return new ResumeModel

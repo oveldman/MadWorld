@@ -18,5 +18,9 @@
     <Folder Include="Queries\Interfaces\" />
     <Folder Include="Tables\Identity\" />
     <Folder Include="Models\" />
+    <Folder Include="Logging\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 </Project>

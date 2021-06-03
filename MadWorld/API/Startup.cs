@@ -9,6 +9,7 @@ using API.Models;
 using Business;
 using Business.Interfaces;
 using Database;
+using Database.Logging;
 using Database.Queries;
 using Database.Queries.Interfaces;
 using Database.Tables.Identity;
@@ -130,8 +131,6 @@ namespace API
                     .Build();
             });
 
-            AddApplicationClassesToScope(services);
-
             services.AddScoped<IAuthenticationManager, AuthenticationManager>(serviceProvider =>
             {
                 SignInManager<User> signInManager = serviceProvider.GetService<SignInManager<User>>();
@@ -144,6 +143,16 @@ namespace API
             //Extern packages
             services.AddScoped<TwoFactorAuth, TwoFactorAuth>(serviceProvider => {
                 return new TwoFactorAuth(twoFactorKey);
+            });
+
+            var optionsBuilder = new DbContextOptionsBuilder<MadWorldContext>();
+            optionsBuilder.UseNpgsql(Configuration.GetConnectionString("MadWorldContext"), b => b.MigrationsAssembly("API"));
+
+            AddApplicationClassesToScope(services, optionsBuilder);
+
+            services.AddLogging(logginerBuilder => {
+                logginerBuilder.AddMadWorldLogger(optionsBuilder.Options, MadWorldLoggerConfiguration.GetConfig())
+                .AddConsole();
             });
 
             ApiSettings.SetSettings(issuer);
@@ -180,8 +189,14 @@ namespace API
             });
         }
 
-        private void AddApplicationClassesToScope(IServiceCollection services)
+        private void AddApplicationClassesToScope(IServiceCollection services, DbContextOptionsBuilder<MadWorldContext> builderOptions)
         {
+            //Logging
+            services.AddScoped(_ => MadWorldLoggerConfiguration.GetConfig());
+            services.AddScoped<ILogger, MadWorldDbLogger>();
+            services.AddSingleton(_ => MadWorldLoggerConfiguration.GetConfig());
+            services.AddSingleton(typeof(ILogger<>), typeof(MadWorldDbLogger<>));
+
             //API managers
             services.AddScoped<IAccountManager, AccountManager>();
 
@@ -194,6 +209,8 @@ namespace API
             services.AddScoped<IAccountQueries, AccountQueries>();
             services.AddScoped<IGeneralQueries, GeneralGueries>();
             services.AddScoped<IResumeQueries, ResumeQueries>();
+            services.AddScoped<ILoggerQueries, LoggerQueries>();
+            services.AddSingleton<ILoggerQueriesSingleton, LoggerQueries>(_ => new LoggerQueries(new MadWorldContext(builderOptions.Options)));
         }
     }
 }
