@@ -35,7 +35,7 @@ namespace Database.Queries
                 return _context.Logs.Where(l =>
                             (startDate == null || l.Created > startDate)
                                 && (endDate == null || l.Created < endDate))
-                            .OrderBy(l => l.Created)
+                            .OrderByDescending(l => l.Created)
                             .ToList();
             }
 
