@@ -40,7 +40,7 @@ namespace Database.Queries
             }
 
             return _context.Logs
-                            .OrderBy(l => l.Created)
+                            .OrderByDescending(l => l.Created)
                             .Take(100)
                             .ToList();
         }

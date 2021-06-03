@@ -204,6 +204,7 @@ namespace API
             services.AddScoped<IStatusManager, StatusManager>();
             services.AddScoped<IResumeManager, ResumeManager>();
             services.AddScoped<IUserExtremeManager, UserExtremeManager>();
+            services.AddScoped<ILoggingManager, LoggingManager>();
 
             //Database project
             services.AddScoped<IAccountQueries, AccountQueries>();

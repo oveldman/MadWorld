@@ -1,0 +1,39 @@
+﻿@page "/logging"
+
+@layout AdminLayout
+
+@using Website.Shared.Models.BackendInfo;
+@using Microsoft.AspNetCore.Authorization;
+@using Website.Services.Interfaces;
+
+@attribute [Authorize]
+@inject ILoggingService _loggingService;
+
+@foreach (var log in logs)
+{
+    <p>@log.Text</p>
+    <p>@log.Created</p>
+    <hr />
+}
+
+@code {
+    DateTime? startDate = null;
+    DateTime? endDate = null;
+
+    List<LogItem> logs = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetLogging();
+    }
+
+    private async Task GetLogging()
+    {
+        var response = await _loggingService.GetLogging(startDate, endDate);
+
+        if (response.Succeed)
+        {
+            logs = response.Logs;
+        }
+    }
+}

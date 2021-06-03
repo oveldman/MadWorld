@@ -60,6 +60,7 @@ namespace Website
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<IResumeService, ResumeService>();
             builder.Services.AddScoped<IStatusService, StatusService>();
+            builder.Services.AddScoped<ILoggingService, LoggingService>();
             builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationProvider>();
         }
     }
