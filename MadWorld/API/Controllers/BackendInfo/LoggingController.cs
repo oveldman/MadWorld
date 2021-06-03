@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Business.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,11 +18,12 @@ namespace API.Controllers.BackendInfo
     public class LoggingController : ControllerBase
     {
         private readonly ILogger<LoggingController> _logger;
+        private readonly ILoggingManager _loggingManager;
 
-
-        public LoggingController(ILogger<LoggingController> logger)
+        public LoggingController(ILogger<LoggingController> logger, ILoggingManager loggingManager)
         {
             _logger = logger;
+            _loggingManager = loggingManager;
         }
 
         [HttpPost]
@@ -30,7 +32,8 @@ namespace API.Controllers.BackendInfo
         {
             return new LoggingResponse
             {
-                Succeed = true
+                Succeed = true,
+                Logs = _loggingManager.GetLogging(request.StartTime, request.EndTime)
             };
         }
     }
