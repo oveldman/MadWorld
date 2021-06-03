@@ -1,25 +1,33 @@
 ﻿using System;
+using AutoFixture.Xunit2;
 using Business;
 using Common;
 using Database.Queries.Interfaces;
 using Database.Tables.Identity;
+using FluentAssertions;
 using Moq;
+using Tests.Setup;
 using Xunit;
 
 namespace Tests.Business
 {
     public class UserExtremeManagerTest
     {
-        [Fact]
-        public void FindUserByTwoFactorSession_Session_UserFoundSessionNotValid()
+        [Theory]
+        [AutoDomainData]
+        public void FindUserByTwoFactorSession_Session_UserFoundSessionNotValid(
+            [Frozen] Mock<IAccountQueries> accountQueriesMock,
+            Guid? session,
+            User userFromMockDB,
+            UserExtremeManager userManager
+            )
         {
             // Test data
-            Guid? session = Guid.Parse("6b976751-e0c9-43c6-9aef-57bfba4ecfa9");
+            userFromMockDB.TwoFactorSession = session;
+            userFromMockDB.TwoFactorSessionExpire = DateTime.Parse("05/24/2021 10:00:00");
 
             // Setup
-            var mock = new Mock<IAccountQueries>();
-            mock.Setup(queries => queries.FindUserBySession(session)).Returns(UserFoundData());
-            UserExtremeManager userManager = new UserExtremeManager(mock.Object);
+            accountQueriesMock.Setup(queries => queries.FindUserBySession(session)).Returns(userFromMockDB);
 
             SystemTime.SetDateTime(DateTime.Parse("05/24/2021 10:30:00"));
 
@@ -33,38 +41,43 @@ namespace Tests.Business
             SystemTime.ResetDateTime();
         }
 
-        [Fact]
-        public void FindUserByTwoFactorSession_Session_UserFoundSessionValid()
+        [Theory]
+        [AutoDomainData]
+        public void FindUserByTwoFactorSession_Session_UserFoundSessionValid(
+            [Frozen] Mock<IAccountQueries> accountQueriesMock,
+            Guid? session,
+            User userFromMockDB,
+            UserExtremeManager userManager
+            )
         {
             // Test data
-            Guid? session = Guid.Parse("6b976751-e0c9-43c6-9aef-57bfba4ecfa9");
+            userFromMockDB.TwoFactorSession = session;
+            userFromMockDB.TwoFactorSessionExpire = DateTime.Parse("05/24/2021 10:00:00");
 
             // Setup
-            var mock = new Mock<IAccountQueries>();
-            mock.Setup(queries => queries.FindUserBySession(session)).Returns(UserFoundData());
-            UserExtremeManager userManager = new UserExtremeManager(mock.Object);
+            accountQueriesMock.Setup(queries => queries.FindUserBySession(session)).Returns(userFromMockDB);
             SystemTime.SetDateTime(DateTime.Parse("05/24/2021 09:30:00"));
 
             // Act
             User user = userManager.FindUserByTwoFactorSession(session);
 
             // Assert
-            Assert.Equal(user.TwoFactorSession, session);
+            user.Should().BeEquivalentTo(userFromMockDB);
 
             // Teardown
             SystemTime.ResetDateTime();
         }
 
-        [Fact]
-        public void FindUserByTwoFactorSession_Session_UserNotFound()
+        [Theory]
+        [AutoDomainData]
+        public void FindUserByTwoFactorSession_Session_UserNotFound(
+            [Frozen] Mock<IAccountQueries> accountQueriesMock,
+            Guid? session,
+            UserExtremeManager userManager
+            )
         {
-            // Test data
-            Guid? session = Guid.Parse("6b976751-e0c9-43c6-9aef-57bfba4ecfa9");
-
             // Setup
-            var mock = new Mock<IAccountQueries>();
-            mock.Setup(queries => queries.FindUserBySession(session)).Returns<User>(null);
-            UserExtremeManager userManager = new UserExtremeManager(mock.Object);
+            accountQueriesMock.Setup(queries => queries.FindUserBySession(session)).Returns<User>(null);
             SystemTime.SetDateTime(DateTime.Parse("05/24/2021 10:30:00"));
 
             // Act
@@ -75,18 +88,6 @@ namespace Tests.Business
 
             // Teardown
             SystemTime.ResetDateTime();
-        }
-
-        private User UserFoundData()
-        {
-            return new User
-            {
-                UserName = "test@test.nl",
-                TwoFactorEnabled = true,
-                TwoFactorSessionExpire = DateTime.Parse("05/24/2021 10:00:00"),
-                TwoFactorSession = Guid.Parse("6b976751-e0c9-43c6-9aef-57bfba4ecfa9"),
-                TwoFactorOn = true,
-            };
         }
     }
 }
