@@ -33,8 +33,8 @@ namespace Database.Queries
         {
             if (startDate.HasValue || endDate.HasValue) {
                 return _context.Logs.Where(l =>
-                            (startDate == null || l.Created > startDate)
-                                && (endDate == null || l.Created < endDate))
+                            (startDate == null || l.Created > startDate.Value)
+                                && (endDate == null || l.Created < endDate.Value.AddDays(1)))
                             .OrderByDescending(l => l.Created)
                             .ToList();
             }
