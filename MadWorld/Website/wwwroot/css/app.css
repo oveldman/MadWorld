@@ -2,6 +2,7 @@
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    padding-bottom: 40px;
 }
 
 a, .btn-link {
