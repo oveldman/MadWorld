@@ -16,6 +16,7 @@
     <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="5.0.6" />
     <PackageReference Include="Blazored.LocalStorage" Version="4.1.1" />
+    <PackageReference Include="BlazorTable" Version="1.15.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,6 +34,9 @@
     <Folder Include="Pages\Account\" />
     <Folder Include="Services\BackofficeInfo\" />
     <Folder Include="Pages\BackOfficeInfo\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="BlazorTable" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\typescript\site.ts" />

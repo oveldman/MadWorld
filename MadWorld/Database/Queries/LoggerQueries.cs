@@ -31,6 +31,8 @@ namespace Database.Queries
 
         public List<Log> GetLogs(DateTime? startDate, DateTime? endDate)
         {
+            //End date gets a day extra because that day needs to be included
+
             if (startDate.HasValue || endDate.HasValue) {
                 return _context.Logs.Where(l =>
                             (startDate == null || l.Created > startDate.Value)

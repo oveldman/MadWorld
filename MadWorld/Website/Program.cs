@@ -15,6 +15,7 @@ using Website.Services.States;
 using Microsoft.AspNetCore.Components.Authorization;
 using Blazored.LocalStorage;
 using Website.Services.BackofficeInfo;
+using BlazorTable;
 
 namespace Website
 {
@@ -62,6 +63,9 @@ namespace Website
             builder.Services.AddScoped<IStatusService, StatusService>();
             builder.Services.AddScoped<ILoggingService, LoggingService>();
             builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationProvider>();
+
+            //Extern packages
+            builder.Services.AddBlazorTable();
         }
     }
 }
