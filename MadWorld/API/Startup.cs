@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using API.Managers;
 using API.Managers.Interfaces;
 using API.Models;
+using API.SignalR;
 using Business;
 using Business.Interfaces;
 using Database;
@@ -24,6 +25,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -53,6 +55,13 @@ namespace API
             string twoFactorKey = Configuration.GetSection("Secrets:TwoFactorKey")?.Value;
             string issuerUrl = Configuration.GetSection("Settings:Authentication:IssuerUrl")?.Value;
             string issuer = Configuration.GetSection("Settings:Authentication:Issuer")?.Value;
+
+            services.AddSignalR();
+            services.AddResponseCompression(opts =>
+            {
+                opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+                    new[] { "application/octet-stream" });
+            });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -181,11 +190,13 @@ namespace API
             app.UseAuthentication();
             app.UseIdentityServer();
 
+            app.UseResponseCompression();
             app.UseCors(AllowedOriginsAPI);
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<PlanningPokerHub>("/PlanningPoker");
             });
         }
 

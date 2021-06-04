@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Blazored.LocalStorage;
 using Website.Services.BackofficeInfo;
 using BlazorTable;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Website
 {
@@ -38,6 +39,12 @@ namespace Website
                 client.BaseAddress = new Uri(apiUrl);
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
             });
+
+            builder.Services.AddScoped<HubConnection>(_ =>
+                    new HubConnectionBuilder()
+                .WithUrl($"{apiUrl}PlanningPoker")
+                .Build()
+            );
 
             builder.Services.AddOidcAuthentication(options =>
             {
