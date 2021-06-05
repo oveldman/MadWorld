@@ -1,58 +1,71 @@
 ﻿@page "/PlanningPoker"
 @page "/PlanningPoker/Find"
-@using Microsoft.AspNetCore.SignalR.Client
-@inject NavigationManager NavigationManager
-@implements IAsyncDisposable
-@inject HubConnection hubConnection
 
-<div class="form-group">
-    <label>
-        User:
-        <input @bind="userInput" />
-    </label>
-</div>
-<div class="form-group">
-    <label>
-        Message:
-        <input @bind="messageInput" size="50" />
-    </label>
-</div>
-<button @onclick="Send" disabled="@(!IsConnected)">Send</button>
+@using Blazored.LocalStorage;
+@using Website.Settings;
+@using Website.Shared.Models.PlanningPoker;
 
-<hr>
+@inject NavigationManager Navigation;
+@inject ILocalStorageService _localStorage;
 
-<ul id="messagesList">
-    @foreach (var message in messages)
-    {
-        <li>@message</li>
-    }
-</ul>
+<h1>Planning poker</h1>
+<p>Which room do you want to join?</p>
+<EditForm EditContext="@roomContext">
+    <DataAnnotationsValidator />
+    <div class="form-floating mb-3">
+        <InputText class="form-control" id="roomname" @bind-Value="account.RoomName" />
+        <label for="roomname">Room name</label>
+    </div>
+    <ValidationMessage For="@(() => account.RoomName)" />
+    <div class="form-floating mb-3">
+        <InputText class="form-control" id="username" @bind-Value="account.Username" />
+        <label for="username">Username</label>
+    </div>
+    <ValidationMessage For="@(() => account.Username)" />
+    <button type="button" class="btn btn-primary" @onclick="JoinRoom">Join</button>
+    <button type="button" class="btn btn-primary" @onclick="CreateRoom">Create new room</button>
+</EditForm>
+
 
 @code {
-    private List<string> messages = new List<string>();
-    private string userInput;
-    private string messageInput;
+    private PokerAccount account = new PokerAccount();
+    private EditContext roomContext;
+
+    protected override void OnInitialized()
+    {
+        roomContext = new(account);
+    }
 
     protected override async Task OnInitializedAsync()
     {
-        hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
-        {
-            var encodedMsg = $"{user}: {message}";
-            messages.Add(encodedMsg);
-            StateHasChanged();
-        });
-
-        await hubConnection.StartAsync();
+        await GetAccountFromStorage();
     }
 
-    async Task Send() =>
-        await hubConnection.SendAsync("SendMessage", userInput, messageInput);
-
-    public bool IsConnected =>
-        hubConnection.State == HubConnectionState.Connected;
-
-    public async ValueTask DisposeAsync()
+    private async Task JoinRoom()
     {
-        await hubConnection.DisposeAsync();
+        if (roomContext.Validate())
+        {
+            await SetAccountFromStorage();
+            Navigation.NavigateTo($"/PlanningPoker/Room/{account.RoomName}");
+        }
+    }
+
+    private async Task CreateRoom()
+    {
+        account.RoomName = Guid.NewGuid().ToString().Substring(0, 8);
+        await JoinRoom();
+    }
+
+    private async Task GetAccountFromStorage()
+    {
+        var pokerAccount = await _localStorage.GetItemAsync<PokerAccount>(LocalStorageNames.PlanningPokerAccount);
+
+        account = pokerAccount != null ? pokerAccount : account;
+        roomContext = new(account);
+    }
+
+    private async Task SetAccountFromStorage()
+    {
+        await _localStorage.SetItemAsync(LocalStorageNames.PlanningPokerAccount, account);
     }
 }
