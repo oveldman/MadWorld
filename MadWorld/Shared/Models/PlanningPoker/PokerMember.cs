@@ -1,13 +1,11 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-
 namespace Website.Shared.Models.PlanningPoker
 {
-    public class PokerAccount
+    public class PokerMember
     {
-        [Required]
+        public int ID { get; set; }
         public string RoomName { get; set; }
-        [Required]
         public string Username { get; set; }
+        public double CardValue { get; set; }
     }
 }

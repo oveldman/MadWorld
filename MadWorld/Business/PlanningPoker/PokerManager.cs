@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Business.Models.PlanningPoker;
 using Business.PlanningPoker.Interfaces;
@@ -27,6 +28,50 @@ namespace Business.PlanningPoker
             return true;
         }
 
+        public List<PokerUser> GetUsersFromRoom(string roomname)
+        {
+            PokerRoom room = Session.Rooms.FirstOrDefault(r => r.Name.Equals(roomname));
+            return room != null ? room.Users : new List<PokerUser>();
+        }
+
+        public string RemoveUserFromRoom(string connectionID)
+        {
+            if (string.IsNullOrEmpty(connectionID))
+            {
+                return string.Empty;
+            }
+
+            string roomname = string.Empty;
+
+            PokerRoom room = FindRoomByUserID(connectionID);
+
+            if (room != null)
+            {
+                roomname = room.Name;
+                RemoveUser(room, connectionID);
+                RemoveRoomIfEmty(room);
+            }
+
+            return roomname;
+        }
+
+        private void AddUser(PokerRoom room, string connectionID, string username)
+        {
+            int biggestID = room.Users.Any() ? room.Users.Max(u => u.Id) : 0;
+
+            room.Users.Add(new PokerUser
+            {
+                Id = biggestID + 1,
+                ConnectionId = connectionID,
+                Name = username
+            });
+        }
+
+        private PokerRoom FindRoomByUserID(string connectionID)
+        {
+            return Session.Rooms.FirstOrDefault(r => r.Users.Any(u => u.ConnectionId.Equals(connectionID)));
+        }
+
         private PokerRoom GetRoom(string roomname)
         {
             if (Session.Rooms.Any(r => r.Name.Equals(roomname)))
@@ -43,13 +88,17 @@ namespace Business.PlanningPoker
             return newRoom;
         }
 
-        private void AddUser(PokerRoom room, string connectionID, string username)
+        private void RemoveRoomIfEmty(PokerRoom room)
         {
-            room.Users.Add(new PokerUser {
-                Id = room.Users.Count + 1,
-                ConnectionId = connectionID,
-                Name = username
-            });
+            if (!room.Users.Any())
+            {
+                Session.Rooms.Remove(room);
+            }
+        }
+
+        private void RemoveUser(PokerRoom room, string connectionID)
+        {
+            room.Users.Remove(room.Users.FirstOrDefault(u => u.ConnectionId.Equals(connectionID)));
         }
     }
 }
