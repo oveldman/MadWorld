@@ -28,6 +28,19 @@ namespace Business.PlanningPoker
             return true;
         }
 
+        public string GetRoomName(string connectionID)
+        {
+            PokerRoom room = FindRoomByUserID(connectionID);
+            return room != null ? room.Name : string.Empty;
+        }
+
+        public PokerUser GetUser(string connectionID)
+        {
+            PokerRoom room = FindRoomByUserID(connectionID);
+            PokerUser user = room.Users.FirstOrDefault(u => u.ConnectionId.Equals(connectionID));
+            return user ?? new PokerUser();
+        }
+
         public List<PokerUser> GetUsersFromRoom(string roomname)
         {
             PokerRoom room = Session.Rooms.FirstOrDefault(r => r.Name.Equals(roomname));

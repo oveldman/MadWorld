@@ -8,6 +8,8 @@ namespace Business.PlanningPoker.Interfaces
     {
         bool CreateOrAddToRoom(string roomname, string connectionID, string username);
         List<PokerUser> GetUsersFromRoom(string roomname);
+        PokerUser GetUser(string connectionID);
+        string GetRoomName(string connectionID);
         string RemoveUserFromRoom(string connectionID);
     }
 }

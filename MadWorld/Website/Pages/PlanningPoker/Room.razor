@@ -14,10 +14,15 @@
 
 <hr />
 
+<button type="button" class="btn btn-primary" @onclick="SendValue" disabled="@(!IsConnected)">Set Value</button>
+<button type="button" class="btn btn-primary" @onclick="ResetValue" disabled="@(!IsConnected)">Reset</button>
+
+<hr />
+
 <ul id="messagesList">
     @foreach (var member in members)
     {
-        <li>@member.Username</li>
+        <li>@member.Username : @cards.FirstOrDefault(c => c.MemberID == member.ID)?.CardValue</li>
     }
 </ul>
 
@@ -26,13 +31,38 @@
     public string Id { get; set; }
 
     private PokerAccount account = new PokerAccount();
-    private List<PokerMember> members = new List <PokerMember>();
+    private List<PokerMember> members = new List<PokerMember>();
+    private List<PokerCard> cards = new List<PokerCard>();
 
     protected override async Task OnInitializedAsync()
     {
         hubConnection.On<List<PokerMember>>("MembersChanged", (newMembers) =>
         {
             members = newMembers;
+            StateHasChanged();
+        });
+
+        hubConnection.On<bool>("ResetCards", (reset) =>
+        {
+            if (reset) {
+                cards = new List<PokerCard>();
+            }
+            StateHasChanged();
+        });
+
+        hubConnection.On<PokerCard>("SetCard", (newCard) =>
+        {
+            PokerCard currentCard = cards.FirstOrDefault(c => c.MemberID == newCard.MemberID);
+
+            if (currentCard != null)
+            {
+                currentCard.CardValue = newCard.CardValue;
+            }
+            else
+            {
+                cards.Add(newCard);
+            }
+
             StateHasChanged();
         });
 
@@ -45,6 +75,17 @@
 
     public bool IsConnected =>
         hubConnection.State == HubConnectionState.Connected;
+
+    public async Task SendValue()
+    {
+        double cardValue = 5;
+        await hubConnection.SendAsync("SetCard", account.Username, cardValue);
+    }
+
+    public async Task ResetValue()
+    {
+        await hubConnection.SendAsync("ResetCards", account.Username);
+    }
 
     public async ValueTask DisposeAsync()
     {
