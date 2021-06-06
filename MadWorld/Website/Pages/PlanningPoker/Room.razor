@@ -1,10 +1,16 @@
 ﻿@page "/PlanningPoker/Room/{id}"
-@using Microsoft.AspNetCore.SignalR.Client
-@inject NavigationManager NavigationManager
-@implements IAsyncDisposable
-@inject HubConnection hubConnection
+@using Microsoft.AspNetCore.SignalR.Client;
+@using Blazored.LocalStorage;
+@using Website.Settings;
+@using Website.Shared.Models.PlanningPoker;
 
-<h1>@Id</h1>
+@inject NavigationManager NavigationManager;
+@implements IAsyncDisposable;
+@inject HubConnection hubConnection;
+@inject ILocalStorageService _localStorage;
+@inject NavigationManager Navigation;
+
+<h1>@Id : @account.Username</h1>
 
 <div class="form-group">
     <label>
@@ -36,6 +42,7 @@
     private List<string> messages = new List<string>();
     private string userInput;
     private string messageInput;
+    private PokerAccount account = new PokerAccount();
 
     protected override async Task OnInitializedAsync()
     {
@@ -46,7 +53,11 @@
             StateHasChanged();
         });
 
+        await GetAccount();
+
         await hubConnection.StartAsync();
+
+        await hubConnection.SendAsync("JoinRoom", Id, account.Username);
     }
 
     async Task Send() =>
@@ -58,5 +69,18 @@
     public async ValueTask DisposeAsync()
     {
         await hubConnection.DisposeAsync();
+    }
+
+    private async Task<PokerAccount> GetAccount()
+    {
+        var pokerAccount = await _localStorage.GetItemAsync<PokerAccount>(LocalStorageNames.PlanningPokerAccount);
+
+        if (pokerAccount == null || !pokerAccount.RoomName.Equals(Id))
+        {
+            Navigation.NavigateTo($"/PlanningPoker/Find");
+        }
+
+        account = pokerAccount;
+        return pokerAccount;
     }
 }

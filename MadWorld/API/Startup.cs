@@ -9,6 +9,9 @@ using API.Models;
 using API.SignalR;
 using Business;
 using Business.Interfaces;
+using Business.Models.PlanningPoker;
+using Business.PlanningPoker;
+using Business.PlanningPoker.Interfaces;
 using Database;
 using Database.Logging;
 using Database.Queries;
@@ -211,11 +214,15 @@ namespace API
             //API managers
             services.AddScoped<IAccountManager, AccountManager>();
 
+            //API Hub
+            services.AddSingleton<PokerSession>();
+
             //Business project
             services.AddScoped<IStatusManager, StatusManager>();
             services.AddScoped<IResumeManager, ResumeManager>();
             services.AddScoped<IUserExtremeManager, UserExtremeManager>();
             services.AddScoped<ILoggingManager, LoggingManager>();
+            services.AddScoped<IPokerManager, PokerManager>();
 
             //Database project
             services.AddScoped<IAccountQueries, AccountQueries>();

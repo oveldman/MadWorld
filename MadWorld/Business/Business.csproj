@@ -10,5 +10,15 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interfaces\" />
+    <Folder Include="Models\" />
+    <Folder Include="Models\PlanningPoker\" />
+    <Folder Include="PlanningPoker\" />
+    <Folder Include="PlanningPoker\Interfaces\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Models\" />
+    <None Remove="Models\PlanningPoker\" />
+    <None Remove="PlanningPoker\" />
+    <None Remove="PlanningPoker\Interfaces\" />
   </ItemGroup>
 </Project>
