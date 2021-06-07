@@ -36,6 +36,7 @@
     <Folder Include="Services\BackofficeInfo\" />
     <Folder Include="Pages\BackOfficeInfo\" />
     <Folder Include="Pages\PlanningPoker\" />
+    <Folder Include="wwwroot\images\pokercards\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="BlazorTable" />
@@ -54,5 +55,8 @@
     <ServiceWorker Include="wwwroot\service-worker.js">
       <PublishedContent>wwwroot\service-worker.published.js</PublishedContent>
     </ServiceWorker>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\images\pokercards\" />
   </ItemGroup>
 </Project>

@@ -14,17 +14,36 @@
 
 <hr />
 
-<button type="button" class="btn btn-primary" @onclick="SendValue" disabled="@(!IsConnected)">Set Value</button>
 <button type="button" class="btn btn-primary" @onclick="ResetValue" disabled="@(!IsConnected)">Reset</button>
+<button type="button" class="btn btn-primary" @onclick="RevealCards" disabled="@(!IsConnected)">Reveal</button>
 
 <hr />
 
-<ul id="messagesList">
+<div class="row">
     @foreach (var member in members)
     {
-        <li>@member.Username : @cards.FirstOrDefault(c => c.MemberID == member.ID)?.CardValue</li>
+        int? cardIndex = (int?)cards.FirstOrDefault(c => c.MemberID == member.ID)?.CardValue;
+        string cardname = cardIndex != null ? cardIndex.ToString() : "Empty" ;
+        cardname = revealCards || cardIndex == null || member.SessionID == currentSession ? cardname : "Back";
+        string imageCardPath = $"images/pokercards/Card{cardname}.png";
+        <div class="col">
+            <img class="poker-card" src="@imageCardPath" />
+            <p>@member.Username</p>
+        </div>
     }
-</ul>
+</div>
+
+<hr />
+
+<div class="row">
+    @foreach (PokerCardTypes card in Enum.GetValues(typeof(PokerCardTypes)))
+    {
+        string imageCardPath = $"images/pokercards/Card{(int)card}.png";
+        <div class="col">
+            <img class="poker-card" src="@imageCardPath" @onclick="() => SendValue(card)" />
+        </div>
+    }
+</div>
 
 @code {
     [Parameter]
@@ -33,6 +52,8 @@
     private PokerAccount account = new PokerAccount();
     private List<PokerMember> members = new List<PokerMember>();
     private List<PokerCard> cards = new List<PokerCard>();
+    private bool revealCards = false;
+    private Guid currentSession = Guid.NewGuid();
 
     protected override async Task OnInitializedAsync()
     {
@@ -44,8 +65,10 @@
 
         hubConnection.On<bool>("ResetCards", (reset) =>
         {
-            if (reset) {
+            if (reset)
+            {
                 cards = new List<PokerCard>();
+                revealCards = false;
             }
             StateHasChanged();
         });
@@ -66,20 +89,30 @@
             StateHasChanged();
         });
 
+        hubConnection.On<bool>("RevealCards", (showCards) =>
+        {
+            revealCards = showCards;
+            StateHasChanged();
+        });
+
         await GetAccount();
 
         await hubConnection.StartAsync();
 
-        await hubConnection.SendAsync("JoinRoom", Id, account.Username);
+        await hubConnection.SendAsync("JoinRoom", Id, account.Username, currentSession);
     }
 
     public bool IsConnected =>
         hubConnection.State == HubConnectionState.Connected;
 
-    public async Task SendValue()
+    public async Task SendValue(PokerCardTypes card)
     {
-        double cardValue = 5;
-        await hubConnection.SendAsync("SetCard", account.Username, cardValue);
+        await hubConnection.SendAsync("SetCard", account.Username, card);
+    }
+
+    public async Task RevealCards()
+    {
+        await hubConnection.SendAsync("RevealCards", account.Username);
     }
 
     public async Task ResetValue()

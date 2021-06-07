@@ -18,15 +18,15 @@ namespace API.SignalR
             _pokerManager = pokerManager;
         }
 
-        public async Task JoinRoom(string roomName, string username)
+        public async Task JoinRoom(string roomName, string username, Guid currentSession)
         {
             var connectionIdUser = Context.ConnectionId;
-            _pokerManager.CreateOrAddToRoom(roomName, connectionIdUser, username);
+            _pokerManager.CreateOrAddToRoom(roomName, connectionIdUser, username, currentSession);
             await Groups.AddToGroupAsync(connectionIdUser, roomName);
             await RoomMembersChanged(roomName);
         }
 
-        public async Task SetCard(string username, double cardValue)
+        public async Task SetCard(string username, PokerCardTypes cardValue)
         {
             string connectionIdUser = Context.ConnectionId;
             string roomname = _pokerManager.GetRoomName(connectionIdUser);
@@ -39,6 +39,13 @@ namespace API.SignalR
             };
 
             await Clients.Group(roomname).SendAsync("SetCard", card);
+        }
+
+        public async Task RevealCards(string username)
+        {
+            string connectionIdUser = Context.ConnectionId;
+            string roomname = _pokerManager.GetRoomName(connectionIdUser);
+            await Clients.Group(roomname).SendAsync("RevealCards", true);
         }
 
         public async Task ResetCards(string username)
@@ -55,6 +62,7 @@ namespace API.SignalR
             {
                 ID = u.Id,
                 Username = u.Name,
+                SessionID = u.ClientSession,
                 RoomName = roomname
             }).ToList();
 

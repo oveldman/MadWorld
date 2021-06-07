@@ -5,6 +5,7 @@ namespace Website.Shared.Models.PlanningPoker
     {
         public int ID { get; set; }
         public string RoomName { get; set; }
+        public Guid SessionID { get; set; }
         public string Username { get; set; }
     }
 }

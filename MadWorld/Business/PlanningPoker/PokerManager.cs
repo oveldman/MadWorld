@@ -15,7 +15,7 @@ namespace Business.PlanningPoker
             Session = session;
         }
 
-        public bool CreateOrAddToRoom(string roomname, string connectionID, string username)
+        public bool CreateOrAddToRoom(string roomname, string connectionID, string username, Guid currentSession)
         {
             if (string.IsNullOrEmpty(roomname) || string.IsNullOrEmpty(connectionID) || string.IsNullOrEmpty(username))
             {
@@ -23,7 +23,7 @@ namespace Business.PlanningPoker
             }
 
             PokerRoom room = GetRoom(roomname);
-            AddUser(room, connectionID, username);
+            AddUser(room, connectionID, username, currentSession);
 
             return true;
         }
@@ -68,13 +68,14 @@ namespace Business.PlanningPoker
             return roomname;
         }
 
-        private void AddUser(PokerRoom room, string connectionID, string username)
+        private void AddUser(PokerRoom room, string connectionID, string username, Guid currentSession)
         {
             int biggestID = room.Users.Any() ? room.Users.Max(u => u.Id) : 0;
 
             room.Users.Add(new PokerUser
             {
                 Id = biggestID + 1,
+                ClientSession = currentSession,
                 ConnectionId = connectionID,
                 Name = username
             });
