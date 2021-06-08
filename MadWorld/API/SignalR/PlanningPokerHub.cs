@@ -20,6 +20,8 @@ namespace API.SignalR
 
         public async Task JoinRoom(string roomName, string username, Guid currentSession)
         {
+            if (string.IsNullOrEmpty(roomName) || string.IsNullOrEmpty(username)) return;
+
             var connectionIdUser = Context.ConnectionId;
             _pokerManager.CreateOrAddToRoom(roomName, connectionIdUser, username, currentSession);
             await Groups.AddToGroupAsync(connectionIdUser, roomName);
@@ -38,6 +40,7 @@ namespace API.SignalR
                 CardValue = cardValue
             };
 
+            if (string.IsNullOrEmpty(roomname) || string.IsNullOrEmpty(pokerUser?.ConnectionId)) return;
             await Clients.Group(roomname).SendAsync("SetCard", card);
         }
 
@@ -45,6 +48,8 @@ namespace API.SignalR
         {
             string connectionIdUser = Context.ConnectionId;
             string roomname = _pokerManager.GetRoomName(connectionIdUser);
+
+            if (string.IsNullOrEmpty(roomname)) return;
             await Clients.Group(roomname).SendAsync("RevealCards", true);
         }
 
@@ -52,11 +57,15 @@ namespace API.SignalR
         {
             string connectionIdUser = Context.ConnectionId;
             string roomname = _pokerManager.GetRoomName(connectionIdUser);
+
+            if (string.IsNullOrEmpty(roomname)) return;
             await Clients.Group(roomname).SendAsync("ResetCards", true);
         }
 
         private async Task RoomMembersChanged(string roomname)
         {
+            if (string.IsNullOrEmpty(roomname)) return;
+
             List<PokerUser> users = _pokerManager.GetUsersFromRoom(roomname);
             List<PokerMember> members = users.Select(u => new PokerMember
             {
@@ -73,6 +82,8 @@ namespace API.SignalR
         {
             var connectionIdUser = Context.ConnectionId;
             string roomname = _pokerManager.RemoveUserFromRoom(connectionIdUser);
+
+            if (string.IsNullOrEmpty(roomname)) return;
             await RoomMembersChanged(roomname);
             await base.OnDisconnectedAsync(exception);
         }
