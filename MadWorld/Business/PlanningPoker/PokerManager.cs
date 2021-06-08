@@ -37,6 +37,8 @@ namespace Business.PlanningPoker
         public PokerUser GetUser(string connectionID)
         {
             PokerRoom room = FindRoomByUserID(connectionID);
+            if (room == null) return new PokerUser();
+
             PokerUser user = room.Users.FirstOrDefault(u => u.ConnectionId.Equals(connectionID));
             return user ?? new PokerUser();
         }

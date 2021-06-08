@@ -35,5 +35,9 @@
     <Folder Include="Setup\" />
     <Folder Include="Database\" />
     <Folder Include="Database\Queries\" />
+    <Folder Include="Business\PlanningPoker\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Business\PlanningPoker\" />
   </ItemGroup>
 </Project>
