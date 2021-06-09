@@ -83,8 +83,10 @@ namespace API.SignalR
             var connectionIdUser = Context.ConnectionId;
             string roomname = _pokerManager.RemoveUserFromRoom(connectionIdUser);
 
-            if (string.IsNullOrEmpty(roomname)) return;
-            await RoomMembersChanged(roomname);
+            if (!string.IsNullOrEmpty(roomname)) {
+                await RoomMembersChanged(roomname);
+            }
+
             await base.OnDisconnectedAsync(exception);
         }
     }
