@@ -5,7 +5,6 @@
         static void Main(string[] args)
         {
             bool startInsert = false;
-            bool startBlob = true;
 
             if (startInsert) {
                 Startup startup = Startup.Create();
@@ -15,13 +14,6 @@
                 startup.Inserter.Insert();
                 System.Console.WriteLine("Finished: insert resume insert!");
             }
-
-            if (startBlob)
-            {
-                BlobsExperiment blobs = new();
-                blobs.Start();
-            }
-
         }
     }
 }
