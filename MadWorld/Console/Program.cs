@@ -4,12 +4,24 @@
     {
         static void Main(string[] args)
         {
-            Startup startup = Startup.Create();
-            startup.Load();
+            bool startInsert = false;
+            bool startBlob = true;
 
-            System.Console.WriteLine("Start: insert resume insert!");
-            startup.Inserter.Insert();
-            System.Console.WriteLine("Finished: insert resume insert!");
+            if (startInsert) {
+                Startup startup = Startup.Create();
+                startup.Load();
+
+                System.Console.WriteLine("Start: insert resume insert!");
+                startup.Inserter.Insert();
+                System.Console.WriteLine("Finished: insert resume insert!");
+            }
+
+            if (startBlob)
+            {
+                BlobsExperiment blobs = new();
+                blobs.Start();
+            }
+
         }
     }
 }

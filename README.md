@@ -6,4 +6,6 @@
 [Custom ILogger](https://docs.microsoft.com/en-us/dotnet/core/extensions/custom-logging-provider)\
 [BlazorTable Github](https://github.com/IvanJosipovic/BlazorTable)\
 [BlazorTable Examples](https://blazortable.netlify.app/)\
-[SignalR](https://docs.microsoft.com/en-us/aspnet/core/tutorials/signalr-blazor?view=aspnetcore-5.0&tabs=visual-studio&pivots=webassembly)
+[SignalR](https://docs.microsoft.com/en-us/aspnet/core/tutorials/signalr-blazor?view=aspnetcore-5.0&tabs=visual-studio&pivots=webassembly)\
+[Azurite Docker](https://github.com/Azure/Azurite)\
+[Azure Blobs Docker](https://hub.docker.com/_/microsoft-azure-blob-storage)
