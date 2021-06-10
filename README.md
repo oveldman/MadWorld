@@ -8,4 +8,4 @@
 [BlazorTable Examples](https://blazortable.netlify.app/)\
 [SignalR](https://docs.microsoft.com/en-us/aspnet/core/tutorials/signalr-blazor?view=aspnetcore-5.0&tabs=visual-studio&pivots=webassembly)\
 [Azurite Docker](https://github.com/Azure/Azurite)\
-[Azure Blobs Docker](https://hub.docker.com/_/microsoft-azure-blob-storage)
+[Blobfuse](https://github.com/Azure/azure-storage-fuse)
