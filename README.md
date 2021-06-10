@@ -7,5 +7,3 @@
 [BlazorTable Github](https://github.com/IvanJosipovic/BlazorTable)\
 [BlazorTable Examples](https://blazortable.netlify.app/)\
 [SignalR](https://docs.microsoft.com/en-us/aspnet/core/tutorials/signalr-blazor?view=aspnetcore-5.0&tabs=visual-studio&pivots=webassembly)\
-[Azurite Docker](https://github.com/Azure/Azurite)\
-[Blobfuse](https://github.com/Azure/azure-storage-fuse)
