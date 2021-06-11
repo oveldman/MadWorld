@@ -7,5 +7,6 @@ namespace Datalayer.FileStorage.Interfaces
     {
         StorageResult Create();
         StorageResult CreateIfNotExists();
+        IStorageFile GetFile(string name);
     }
 }

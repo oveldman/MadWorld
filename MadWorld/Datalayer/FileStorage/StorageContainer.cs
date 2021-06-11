@@ -58,5 +58,10 @@ namespace Datalayer.FileStorage
                 Succeed = true
             };
         }
+
+        public IStorageFile GetFile(string name)
+        {
+            return new StorageFile(_settings, ContainerPath, name);
+        }
     }
 }
