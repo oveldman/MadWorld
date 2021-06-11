@@ -2,8 +2,8 @@
 using AutoFixture.Xunit2;
 using Business;
 using Common;
-using Database.Queries.Interfaces;
-using Database.Tables.Identity;
+using Datalayer.Database.Queries.Interfaces;
+using Datalayer.Database.Tables.Identity;
 using FluentAssertions;
 using Moq;
 using Tests.Setup;

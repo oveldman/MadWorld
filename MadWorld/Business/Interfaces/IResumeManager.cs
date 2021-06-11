@@ -1,5 +1,5 @@
 ﻿using System;
-using Database.Tables;
+using Datalayer.Database.Tables;
 
 namespace Business.Interfaces
 {

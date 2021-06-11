@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Database.Queries.Interfaces
+namespace Datalayer.Database.Queries.Interfaces
 {
     public interface IGeneralQueries
     {

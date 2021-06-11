@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoFixture.Xunit2;
-using Database;
-using Database.Queries;
-using Database.Tables;
+using Datalayer.Database;
+using Datalayer.Database.Queries;
+using Datalayer.Database.Tables;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -12,7 +12,7 @@ using Moq;
 using Tests.Setup;
 using Xunit;
 
-namespace Tests.Database.Queries
+namespace Tests.Datalayer.Database.Queries
 {
     public class LoggerQueriesTest
     {

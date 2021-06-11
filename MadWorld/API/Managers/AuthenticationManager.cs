@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using API.Managers.Interfaces;
 using Business.Interfaces;
-using Database.Tables.Identity;
+using Datalayer.Database.Tables.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using TwoFactorAuthNet;

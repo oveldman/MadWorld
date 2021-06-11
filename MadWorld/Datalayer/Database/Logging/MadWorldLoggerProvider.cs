@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using Database.Queries;
-using Database.Queries.Interfaces;
+using Datalayer.Database.Queries;
+using Datalayer.Database.Queries.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Database.Logging
+namespace Datalayer.Database.Logging
 {
     public class MadWorldLoggerProvider : ILoggerProvider
     {

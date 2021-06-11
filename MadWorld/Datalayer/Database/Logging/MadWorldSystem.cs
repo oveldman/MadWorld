@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Database.Logging
+namespace Datalayer.Database.Logging
 {
     public class MadWorldSystem
     {

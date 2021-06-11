@@ -1,6 +1,6 @@
 ﻿using System;
 using Business.Interfaces;
-using Database.Queries.Interfaces;
+using Datalayer.Database.Queries.Interfaces;
 
 namespace Business
 {

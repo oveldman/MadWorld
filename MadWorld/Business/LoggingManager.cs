@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Business.Interfaces;
-using Database.Queries.Interfaces;
-using Database.Tables;
+using Datalayer.Database.Queries.Interfaces;
+using Datalayer.Database.Tables;
 using Microsoft.Extensions.Logging;
 using Website.Shared.Models.BackendInfo;
 

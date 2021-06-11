@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using AutoFixture.Xunit2;
 using Business;
-using Database.Queries.Interfaces;
-using Database.Tables;
+using Datalayer.Database.Queries.Interfaces;
+using Datalayer.Database.Tables;
 using FluentAssertions;
 using Moq;
 using Tests.Setup;

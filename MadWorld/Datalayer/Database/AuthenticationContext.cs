@@ -1,12 +1,12 @@
 ﻿using System;
-using Database.Tables.Identity;
+using Datalayer.Database.Tables.Identity;
 using IdentityServer4.EntityFramework.Extensions;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
-namespace Database
+namespace Datalayer.Database
 {
     public class AuthenticationContext : ApiAuthorizationDbContext<User>
     {

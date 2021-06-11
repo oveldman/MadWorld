@@ -1,6 +1,6 @@
 ﻿using System;
-using Database;
-using Database.Tables;
+using Datalayer.Database;
+using Datalayer.Database.Tables;
 
 namespace Console
 {

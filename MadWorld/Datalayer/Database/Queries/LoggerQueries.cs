@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Database.Queries.Interfaces;
-using Database.Tables;
+using Datalayer.Database.Queries.Interfaces;
+using Datalayer.Database.Tables;
 
-namespace Database.Queries
+namespace Datalayer.Database.Queries
 {
     public class LoggerQueries : ILoggerQueries, ILoggerQueriesSingleton
     {

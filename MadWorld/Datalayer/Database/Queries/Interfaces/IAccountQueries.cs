@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Database.Tables.Identity;
+using Datalayer.Database.Tables.Identity;
 
-namespace Database.Queries.Interfaces
+namespace Datalayer.Database.Queries.Interfaces
 {
     public interface IAccountQueries
     {

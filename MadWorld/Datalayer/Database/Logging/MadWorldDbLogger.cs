@@ -1,10 +1,10 @@
 ﻿using System;
 using Common;
-using Database.Queries.Interfaces;
-using Database.Tables;
+using Datalayer.Database.Queries.Interfaces;
+using Datalayer.Database.Tables;
 using Microsoft.Extensions.Logging;
 
-namespace Database.Logging
+namespace Datalayer.Database.Logging
 {
     public class MadWorldDbLogger : ILogger
     {

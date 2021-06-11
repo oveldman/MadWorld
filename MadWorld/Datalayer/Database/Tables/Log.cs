@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Database.Tables
+namespace Datalayer.Database.Tables
 {
     public class Log
     {

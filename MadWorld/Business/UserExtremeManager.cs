@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using Business.Interfaces;
 using Common;
-using Database.Queries.Interfaces;
-using Database.Tables.Identity;
+using Datalayer.Database.Queries.Interfaces;
+using Datalayer.Database.Tables.Identity;
 
 namespace Business
 {

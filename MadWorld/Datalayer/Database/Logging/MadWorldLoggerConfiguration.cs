@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.Logging;
 
-namespace Database.Logging
+namespace Datalayer.Database.Logging
 {
     public class MadWorldLoggerConfiguration
     {

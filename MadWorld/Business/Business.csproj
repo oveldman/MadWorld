@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Database\Database.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
+    <ProjectReference Include="..\Datalayer\Datalayer.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interfaces\" />

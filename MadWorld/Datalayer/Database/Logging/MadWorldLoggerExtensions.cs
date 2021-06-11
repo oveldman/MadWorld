@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Configuration;
 
-namespace Database.Logging
+namespace Datalayer.Database.Logging
 {
     public static class MadWorldLoggerExtensions
     {

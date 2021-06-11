@@ -1,8 +1,8 @@
 ﻿using System;
-using Database.Tables;
+using Datalayer.Database.Tables;
 using Microsoft.EntityFrameworkCore;
 
-namespace Database
+namespace Datalayer.Database
 {
     public class MadWorldContext : DbContext
     {

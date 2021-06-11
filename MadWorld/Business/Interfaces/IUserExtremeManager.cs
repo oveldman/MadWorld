@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Database.Tables.Identity;
+using Datalayer.Database.Tables.Identity;
 
 namespace Business.Interfaces
 {

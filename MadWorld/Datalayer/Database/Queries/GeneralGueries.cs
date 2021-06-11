@@ -1,7 +1,7 @@
 ﻿using System;
-using Database.Queries.Interfaces;
+using Datalayer.Database.Queries.Interfaces;
 
-namespace Database.Queries
+namespace Datalayer.Database.Queries
 {
     public class GeneralGueries : IGeneralQueries
     {
