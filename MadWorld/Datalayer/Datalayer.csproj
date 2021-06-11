@@ -18,6 +18,9 @@
     <Folder Include="Database\Models\" />
     <Folder Include="Database\Queries\" />
     <Folder Include="Database\Tables\" />
+    <Folder Include="FileStorage\" />
+    <Folder Include="FileStorage\Interfaces\" />
+    <Folder Include="FileStorage\Models\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
@@ -28,5 +31,8 @@
     <None Remove="Database\Models\" />
     <None Remove="Database\Queries\" />
     <None Remove="Database\Tables\" />
+    <None Remove="FileStorage\" />
+    <None Remove="FileStorage\Interfaces\" />
+    <None Remove="FileStorage\Models\" />
   </ItemGroup>
 </Project>
