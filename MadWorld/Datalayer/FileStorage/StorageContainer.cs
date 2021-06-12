@@ -8,6 +8,7 @@ namespace Datalayer.FileStorage
 {
     public class StorageContainer : IStorageContainer
     {
+        private readonly IDiskManager _diskManager;
         private readonly StorageSettings _settings;
         private readonly string ContainerName;
         private string ContainerPath
@@ -17,8 +18,9 @@ namespace Datalayer.FileStorage
             }
         }
 
-        public StorageContainer(StorageSettings settings, string containerName)
+        public StorageContainer(IDiskManager diskManager, StorageSettings settings, string containerName)
         {
+            _diskManager = diskManager;
             _settings = settings;
             ContainerName = containerName;
         }
@@ -27,7 +29,7 @@ namespace Datalayer.FileStorage
         {
             try
             {
-                Directory.CreateDirectory(ContainerPath);
+                _diskManager.CreateDirectory(ContainerPath);
             }
             catch (Exception ex)
             {
@@ -48,7 +50,7 @@ namespace Datalayer.FileStorage
 
         public StorageResult CreateIfNotExists()
         {
-            if(!Directory.Exists(ContainerPath))
+            if(!_diskManager.DirectoryExists(ContainerPath))
             {
                 return Create();
             }
@@ -61,7 +63,7 @@ namespace Datalayer.FileStorage
 
         public IStorageFile GetFile(string name, string path = "")
         {
-            return new StorageFile(_settings, ContainerPath, path, name);
+            return new StorageFile(_diskManager, _settings, ContainerPath, path, name);
         }
     }
 }

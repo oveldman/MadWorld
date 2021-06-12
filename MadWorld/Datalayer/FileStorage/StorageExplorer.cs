@@ -6,16 +6,18 @@ namespace Datalayer.FileStorage
 {
     public class StorageExplorer : IStorageExplorer
     {
-        private StorageSettings _settings { get; set; }
+        private IDiskManager _diskManager;
+        private StorageSettings _settings;
 
-        public StorageExplorer(StorageSettings settings)
+        public StorageExplorer(IDiskManager diskManager, StorageSettings settings)
         {
+            _diskManager = diskManager;
             _settings = settings;
         }
 
         public IStorageContainer GetContainer(string name)
         {
-            return new StorageContainer(_settings, name);
+            return new StorageContainer(_diskManager, _settings, name);
         }
     }
 }

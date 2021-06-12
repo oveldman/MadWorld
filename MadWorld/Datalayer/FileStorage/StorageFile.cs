@@ -7,6 +7,7 @@ namespace Datalayer.FileStorage
 {
     public class StorageFile : IStorageFile
     {
+        private readonly IDiskManager _diskManager;
         private readonly StorageSettings _settings;
         private readonly string ContainerPath;
         private readonly string Filename;
@@ -26,8 +27,9 @@ namespace Datalayer.FileStorage
             }
         }
 
-        public StorageFile(StorageSettings settings, string containerPath, string path, string filename)
+        public StorageFile(IDiskManager diskManager, StorageSettings settings, string containerPath, string path, string filename)
         {
+            _diskManager = diskManager;
             _settings = settings;
             ContainerPath = containerPath;
             Filename = filename;
@@ -36,8 +38,8 @@ namespace Datalayer.FileStorage
 
         public StorageResult DeleteIfExists()
         {
-            if(File.Exists(FullPath)) {
-                File.Delete(FullPath);
+            if(_diskManager.FileExists(FullPath)) {
+                _diskManager.FileDelete(FullPath);
             }
 
             return new StorageResult
@@ -48,24 +50,24 @@ namespace Datalayer.FileStorage
 
         public StorageDownload Download()
         {
-            FileStream fileStream = new(FullPath, FileMode.Open, FileAccess.Read, FileShare.None);
-
-            using (MemoryStream stream = new MemoryStream())
-            {
-                fileStream.CopyTo(stream);
-
-                return new StorageDownload
+            using (FileStream fileStream = _diskManager.FileRead(FullPath)) {
+                using (MemoryStream stream = new MemoryStream())
                 {
-                    Stream = stream
-                };
+                    fileStream.CopyTo(stream);
+
+                    return new StorageDownload
+                    {
+                        Stream = stream
+                    };
+                }
             }
         }
 
         public StorageResult Upload(MemoryStream fileStream)
         {
-            Directory.CreateDirectory(FullPathOnly);
+            _diskManager.CreateDirectory(FullPathOnly);
 
-            using (var stream = System.IO.File.Create(FullPath))
+            using (var stream = _diskManager.FileCreate(FullPath))
             {
                 fileStream.CopyTo(stream);
             }

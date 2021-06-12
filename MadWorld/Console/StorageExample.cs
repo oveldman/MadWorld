@@ -15,7 +15,8 @@ namespace Console
                 BasePath = "Test"
             };
 
-            IStorageExplorer explorer = new StorageExplorer(settings);
+            IDiskManager diskManager = new DiskManager();
+            IStorageExplorer explorer = new StorageExplorer(diskManager, settings);
             IStorageManager manager = new StorageManager(explorer, settings);
             manager.Upload("txt", "Test.txt", "Hello World!");
             string test = manager.DownloadString("", "Test.txt");
