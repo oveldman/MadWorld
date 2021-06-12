@@ -33,11 +33,13 @@
   <ItemGroup>
     <Folder Include="Business\" />
     <Folder Include="Setup\" />
-    <Folder Include="Database\" />
-    <Folder Include="Database\Queries\" />
     <Folder Include="Business\PlanningPoker\" />
+    <Folder Include="Datalayer\" />
+    <Folder Include="Datalayer\Database\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Business\PlanningPoker\" />
+    <None Remove="Datalayer\" />
+    <None Remove="Datalayer\Database\" />
   </ItemGroup>
 </Project>
