@@ -59,9 +59,9 @@ namespace Datalayer.FileStorage
             };
         }
 
-        public IStorageFile GetFile(string name)
+        public IStorageFile GetFile(string name, string path = "")
         {
-            return new StorageFile(_settings, ContainerPath, name);
+            return new StorageFile(_settings, ContainerPath, path, name);
         }
     }
 }

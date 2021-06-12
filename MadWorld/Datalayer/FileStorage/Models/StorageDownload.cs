@@ -5,6 +5,7 @@ namespace Datalayer.FileStorage.Models
 {
     public class StorageDownload
     {
-        public FileStream Stream { get; set; }
+        public bool Succeed { get; set; }
+        public MemoryStream Stream { get; set; }
     }
 }
