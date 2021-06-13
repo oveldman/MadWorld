@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Text.Json;
 using Datalayer.FileStorage.Interfaces;
 using Datalayer.FileStorage.Models;
 
@@ -20,6 +21,12 @@ namespace Datalayer.FileStorage
         {
             MemoryStream stream = DownloadStream(path, filename);
             return stream.ToArray();
+        }
+
+        public T DownloadJsonClass<T>(string path, string filename)
+        {
+            string objectToOpen = DownloadString(path, filename);
+            return JsonSerializer.Deserialize<T>(objectToOpen);
         }
 
         public MemoryStream DownloadStream(string path, string filename)
@@ -52,6 +59,12 @@ namespace Datalayer.FileStorage
         {
             byte[] body = Encoding.ASCII.GetBytes(file);
             return Upload(path, filename, body);
+        }
+
+        public StorageResult Upload<T>(string path, string filename, T objectToSave)
+        {
+            string jsonObjectToSave = JsonSerializer.Serialize(objectToSave);
+            return Upload(path, filename, jsonObjectToSave);
         }
     }
 }
