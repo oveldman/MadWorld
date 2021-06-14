@@ -2,3 +2,4 @@
 
 docker start mad-world-db
 docker start auth-mad-world-db
+docker start jaeger
