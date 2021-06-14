@@ -19,7 +19,7 @@ namespace Console
             IStorageExplorer explorer = new StorageExplorer(diskManager, settings);
             IStorageManager manager = new StorageManager(explorer, settings);
             manager.Upload("txt", "Test.txt", "Hello World!");
-            string test = manager.DownloadString("", "Test.txt");
+            string test = manager.DownloadString("txt", "Test.txt");
 
             manager.Upload("json", "Test.json", settings);
             StorageSettings test2 = manager.DownloadJsonClass<StorageSettings>("json", "Test.json");

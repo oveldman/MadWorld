@@ -1,5 +1,6 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Business.Interfaces;
@@ -25,6 +26,22 @@ namespace API.Controllers.BackendInfo
         {
             _logger = logger;
             _statusManager = statusManager;
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("GetInfo")]
+        public ApplicationStatusResponse GetInfo()
+        {
+            var version = typeof(Startup).Assembly.GetName().Version;
+
+            return new ApplicationStatusResponse
+            {
+                Name = "Mad-World",
+                Version = $"{version.Major}.{version.Minor}.{version.Build}",
+                StartTime = Process.GetCurrentProcess().StartTime,
+                Host = Environment.MachineName
+            };
         }
 
         [HttpGet]
