@@ -8,4 +8,5 @@
 [BlazorTable Examples](https://blazortable.netlify.app/)\
 [SignalR](https://docs.microsoft.com/en-us/aspnet/core/tutorials/signalr-blazor?view=aspnetcore-5.0&tabs=visual-studio&pivots=webassembly)\
 [OpenTelemetry](https://opentelemetry.io/)\
-[Jaeger](https://www.jaegertracing.io/)
+[Jaeger](https://www.jaegertracing.io/)\
+[MVC Versioning](https://www.infoworld.com/article/3562355/how-to-use-api-versioning-in-aspnet-core.html)
