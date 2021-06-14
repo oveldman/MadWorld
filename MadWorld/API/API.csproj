@@ -15,6 +15,11 @@
     </PackageReference>
     <PackageReference Include="TwoFactorAuth.Net" Version="1.4.0" />
     <PackageReference Include="QRCoderNetCore" Version="1.0.0" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.0.0-rc5" />
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.0.0-rc5" />
+    <PackageReference Include="OpenTelemetry.Exporter.Jaeger" Version="1.1.0-beta4" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.0.0-rc5" />
+    <PackageReference Include="OpenTelemetry.Exporter.Console" Version="1.1.0-beta4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,5 +40,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="SignalR\" />
+    <None Remove="OpenTelemetry.Instrumentation.AspNetCore" />
+    <None Remove="OpenTelemetry.Extensions.Hosting" />
+    <None Remove="OpenTelemetry.Exporter.Jaeger" />
+    <None Remove="OpenTelemetry" />
+    <None Remove="OpenTelemetry.Instrumentation.Http" />
+    <None Remove="OpenTelemetry.Exporter.Console" />
   </ItemGroup>
 </Project>

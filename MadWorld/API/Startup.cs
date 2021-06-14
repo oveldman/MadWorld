@@ -36,6 +36,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using OpenTelemetry.Exporter;
+using OpenTelemetry.Instrumentation.AspNetCore;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using TwoFactorAuthNet;
 
 namespace API
@@ -94,6 +98,44 @@ namespace API
                     }
                 });
             });
+
+            var exporter = this.Configuration.GetValue<string>("UseExporter").ToLowerInvariant();
+            switch (exporter)
+            {
+                case "jaeger":
+                    services.AddOpenTelemetryTracing(
+                            (builder) => builder
+                                .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(this.Configuration.GetValue<string>("Jaeger:ServiceName")))
+                                .AddAspNetCoreInstrumentation()
+                                .AddHttpClientInstrumentation()
+                                .AddJaegerExporter(opts =>
+                                {
+                                    opts.AgentHost = Configuration["Jaeger:AgentHost"];
+                                    opts.AgentPort = Convert.ToInt32(Configuration["Jaeger:AgentPort"]);
+                                }));
+
+                    services.Configure<JaegerExporterOptions>(this.Configuration.GetSection("Jaeger"));
+                    break;
+                default:
+                    services.AddOpenTelemetryTracing((builder) => builder
+                                .AddAspNetCoreInstrumentation()
+                                .AddHttpClientInstrumentation()
+                                .AddConsoleExporter());
+
+                    // For options which can be bound from IConfiguration.
+                    services.Configure<AspNetCoreInstrumentationOptions>(this.Configuration.GetSection("AspNetCoreInstrumentation"));
+
+                    // For options which can be configured from code only.
+                    services.Configure<AspNetCoreInstrumentationOptions>(options =>
+                    {
+                        options.Filter = (req) =>
+                        {
+                            return true;
+                        };
+                    });
+
+                    break;
+            }
 
             services.AddCors(options =>
             {
