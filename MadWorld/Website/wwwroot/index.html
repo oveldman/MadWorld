@@ -219,6 +219,12 @@
     <script src="_content/BlazorTable/BlazorTable.min.js"></script>
     <script>navigator.serviceWorker.register('service-worker.js');</script>
     <script src="_content/Microsoft.AspNetCore.Components.WebAssembly.Authentication/AuthenticationService.js"></script>
+    <script type='text/javascript'>window.smartlook || (function (d) {
+            var o = smartlook = function () { o.api.push(arguments) }, h = d.getElementsByTagName('head')[0];
+            var c = d.createElement('script'); o.api = new Array(); c.async = true; c.type = 'text/javascript';
+            c.charset = 'utf-8'; c.src = 'https://rec.smartlook.com/recorder.js'; h.appendChild(c);
+        })(document);
+        smartlook('init', 'f533ea7bf4b36e705beb1e784b939375e4655cd6');</script>
 
 </body>
 
