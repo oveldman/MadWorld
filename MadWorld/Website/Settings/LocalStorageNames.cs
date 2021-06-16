@@ -5,5 +5,6 @@ namespace Website.Settings
     {
         public static readonly string Login = "Login";
         public static readonly string PlanningPokerAccount = "PokerAccount";
+        public static readonly string PrivacyConsent = "CookieConsent";
     }
 }

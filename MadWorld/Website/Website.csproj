@@ -37,11 +37,13 @@
     <Folder Include="Pages\BackOfficeInfo\" />
     <Folder Include="Pages\PlanningPoker\" />
     <Folder Include="wwwroot\images\pokercards\" />
+    <Folder Include="Pages\Privacy\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="BlazorTable" />
     <None Remove="Pages\PlanningPoker\" />
     <None Remove="Microsoft.AspNetCore.SignalR.Client" />
+    <None Remove="Pages\Privacy\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\typescript\site.ts" />

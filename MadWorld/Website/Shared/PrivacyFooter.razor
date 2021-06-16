@@ -1,0 +1,48 @@
+﻿@using Blazored.LocalStorage;
+@using Website.Settings;
+@using Website.Shared.Models.Privacy;
+@inject ILocalStorageService _localStorage;
+
+@if (!CookieConsentChecked)
+{
+    <footer id="privacy" class="footer mt-auto py-3 bg-dark">
+        <div class="container">
+            <span class="text-light"><small>Cookies help us deliver the best experience on our website. By using our website, you agree to the use of cookies. <a href="/privacy">Find out how we use cookies.</a></small></span>
+            <button type="button" class="btn btn-success" @onclick="Accept">Accept</button>
+            <button type="button" class="btn btn-success" @onclick="Deny">Deny</button>
+        </div>
+    </footer>
+}
+
+@code {
+    private bool CookieConsentChecked = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var privacyConsent = await _localStorage.GetItemAsync<PrivacyConsentModel>(LocalStorageNames.PrivacyConsent);
+        CookieConsentChecked = privacyConsent != null;
+    }
+
+    public async Task Accept()
+    {
+        await SaveConsent(true);
+    }
+
+    public async Task Deny()
+    {
+        await SaveConsent(false);
+    }
+
+    private async Task SaveConsent(bool accepted)
+    {
+        CookieConsentChecked = true;
+
+        PrivacyConsentModel priacyModel = new()
+        {
+            Accepted = accepted
+        };
+
+        await _localStorage.SetItemAsync(LocalStorageNames.PrivacyConsent, priacyModel);
+    }
+
+}

@@ -12,8 +12,10 @@
     <Folder Include="Models\Admin\" />
     <Folder Include="Models\BackendInfo\" />
     <Folder Include="Models\PlanningPoker\" />
+    <Folder Include="Models\Privacy\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Models\PlanningPoker\" />
+    <None Remove="Models\Privacy\" />
   </ItemGroup>
 </Project>
