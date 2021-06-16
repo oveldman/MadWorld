@@ -17,6 +17,7 @@ using Blazored.LocalStorage;
 using Website.Services.BackofficeInfo;
 using BlazorTable;
 using Microsoft.AspNetCore.SignalR.Client;
+using Website.Services.ExternJS;
 
 namespace Website
 {
@@ -63,6 +64,7 @@ namespace Website
         {
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddScoped<ITest, Test>();
+            builder.Services.AddScoped<ISmartlookService, SmartlookService>();
             builder.Services.AddScoped<IAdminService, AdminService>();
             builder.Services.AddScoped<IAccountService, AccountService>();
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();

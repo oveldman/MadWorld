@@ -1,7 +1,10 @@
 ﻿@using Blazored.LocalStorage;
 @using Website.Settings;
 @using Website.Shared.Models.Privacy;
+@using Website.Services.Interfaces;
+
 @inject ILocalStorageService _localStorage;
+@inject ISmartlookService _smartlookService;
 
 @if (!CookieConsentChecked)
 {
@@ -21,11 +24,17 @@
     {
         var privacyConsent = await _localStorage.GetItemAsync<PrivacyConsentModel>(LocalStorageNames.PrivacyConsent);
         CookieConsentChecked = privacyConsent != null;
+
+        if (privacyConsent?.Accepted ?? false)
+        {
+            _smartlookService.Init();
+        }
     }
 
     public async Task Accept()
     {
         await SaveConsent(true);
+        _smartlookService.Init();
     }
 
     public async Task Deny()

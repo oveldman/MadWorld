@@ -38,15 +38,19 @@
     <Folder Include="Pages\PlanningPoker\" />
     <Folder Include="wwwroot\images\pokercards\" />
     <Folder Include="Pages\Privacy\" />
+    <Folder Include="Services\ExternJS\" />
+    <Folder Include="wwwroot\typescript\extern\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="BlazorTable" />
     <None Remove="Pages\PlanningPoker\" />
     <None Remove="Microsoft.AspNetCore.SignalR.Client" />
     <None Remove="Pages\Privacy\" />
+    <None Remove="Services\ExternJS\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\typescript\site.ts" />
+    <None Include="wwwroot\typescript\extern\smartlook.ts" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shared\Shared.csproj">
@@ -60,5 +64,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\images\pokercards\" />
+    <Content Remove="wwwroot\typescript\extern\" />
   </ItemGroup>
 </Project>
