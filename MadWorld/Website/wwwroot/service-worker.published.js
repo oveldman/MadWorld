@@ -35,9 +35,19 @@ async function onActivate(event) {
 async function onFetch(event) {
     let cachedResponse = null;
     if (event.request.method === 'GET') {
+
+        var urlsToIgnore = ['/api/', '/jaeger/'];
+        var blazorIgnoreRequest = false;
+
+        for (int i = 0; i < urlsToIgnore.length; i++) {
+            blazorIgnoreRequest = !event.request.url.includes(urlsToIgnore[0]);
+
+            if (blazorIgnoreRequest) break;
+        }
+
         // For all navigation requests, try to serve index.html from cache
         // If you need some URLs to be server-rendered, edit the following check to exclude those URLs
-        const shouldServeIndexHtml = event.request.mode === 'navigate';
+        const shouldServeIndexHtml = event.request.mode === 'navigate' && !blazorIgnoreRequest;
 
         const request = shouldServeIndexHtml ? 'index.html' : event.request;
         const cache = await caches.open(cacheName);
