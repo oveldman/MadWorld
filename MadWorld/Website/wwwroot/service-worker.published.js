@@ -40,7 +40,7 @@ async function onFetch(event) {
         var blazorIgnoreRequest = false;
 
         for (int i = 0; i < urlsToIgnore.length; i++) {
-            blazorIgnoreRequest = !event.request.url.includes(urlsToIgnore[0]);
+            blazorIgnoreRequest = !event.request.url.includes(urlsToIgnore[i]);
 
             if (blazorIgnoreRequest) break;
         }
