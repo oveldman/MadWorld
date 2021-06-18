@@ -40,6 +40,7 @@
     <Folder Include="Pages\Privacy\" />
     <Folder Include="Services\ExternJS\" />
     <Folder Include="wwwroot\typescript\extern\" />
+    <Folder Include="Services\Models\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="BlazorTable" />
@@ -47,6 +48,7 @@
     <None Remove="Microsoft.AspNetCore.SignalR.Client" />
     <None Remove="Pages\Privacy\" />
     <None Remove="Services\ExternJS\" />
+    <None Remove="Services\Models\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\typescript\site.ts" />

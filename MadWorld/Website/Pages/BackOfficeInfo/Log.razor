@@ -1,0 +1,33 @@
+﻿@page "/Log/{id}"
+@using Website.Shared.Models.BackendInfo;
+@using Microsoft.AspNetCore.Authorization;
+@using Website.Services.Interfaces;
+
+@attribute [Authorize]
+@inject ILoggingService _loggingService;
+@inject NavigationManager Navigation;
+
+<h1>Log @ID</h1>
+
+<p>@log.Text</p>
+
+@code {
+    [Parameter]
+    public string ID { get; set; }
+    private LogItem log { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Guid logID = new Guid(ID);
+        LogResponse response = await _loggingService.GetLog(logID);
+
+        if (response.Succeed)
+        {
+            log = response.Log;
+        }
+        else
+        {
+            Navigation.NavigateTo($"/logging");
+        }
+    }
+}

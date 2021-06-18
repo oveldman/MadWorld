@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Website.Services.Models;
 using Website.Settings;
 
 namespace Website.Services
@@ -25,9 +27,20 @@ namespace Website.Services
 
         protected async Task<T> SendGetRequest<T>(string url)
         {
+            return await SendGetRequest<T>(url, new List<UrlParameter>());
+        }
+
+        protected async Task<T> SendGetRequest<T>(string url, List<UrlParameter> urlParameters)
+        {
+            if (urlParameters != null && urlParameters.Any())
+            {
+                url = BuildUrl(url, urlParameters);
+            }
+
             bool isAuthenticated = await SetBearerTokenIfEmpty();
 
-            if (isAuthenticated) {
+            if (isAuthenticated)
+            {
                 return await _client.GetFromJsonAsync<T>(url);
             }
 
@@ -44,6 +57,31 @@ namespace Website.Services
             }
 
             return default;
+        }
+
+        private string BuildUrl(string url, List<UrlParameter> urlParameters)
+        {
+            if (urlParameters == null || !urlParameters.Any()) return url;
+
+            url = $"{url}?";
+
+            for(int i = 0; i < urlParameters.Count; i++)
+            {
+                url += $"{urlParameters[i].Name}={urlParameters[i].Value}";
+
+                if (i != (urlParameters.Count - 1))
+                {
+                    url += "&";
+                }
+            }
+
+            return url;
+        }
+
+        private bool ForceReload()
+        {
+            _navigation.NavigateTo(WebsiteUrls.Home, true);
+            return false;
         }
 
         private async Task<bool> SetBearerTokenIfEmpty()
@@ -63,12 +101,6 @@ namespace Website.Services
             }
 
             return ForceReload();
-        }
-
-        private bool ForceReload()
-        {
-            _navigation.NavigateTo(WebsiteUrls.Home, true);
-            return false;
         }
     }
 }

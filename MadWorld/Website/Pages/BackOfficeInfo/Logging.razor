@@ -9,13 +9,14 @@
 
 @attribute [Authorize]
 @inject ILoggingService _loggingService;
+@inject NavigationManager Navigation;
 
 <input type="date" @bind="startDate" />
 <input type="date" @bind="endDate" />
 <button type="button" class="btn btn-primary" @onclick="GetLogging">Search Log</button>
 
-<Table class="table table-striped table-dark table-bordered table-hover" TableHeadClass="thead-light" TableItem="LogItem" Items="logs" PageSize="15" ShowSearchBar="true">
-    <Column TableItem="LogItem"  Title="Text" Field="@(x => x.Text)" Sortable="true" Filterable="false" Width="80%" />
+<Table class="table table-striped table-dark table-bordered table-hover" RowClickAction="OpenLog" TableHeadClass="thead-light" TableItem="LogItem" Items="logs" PageSize="15" ShowSearchBar="true">
+    <Column TableItem="LogItem" Title="Text" Field="@(x => x.Text)" Sortable="true" Filterable="false" Width="80%" />
     <Column TableItem="LogItem" Title="Created" Field="@(x => x.Created)" Sortable="true" Filterable="false" Width="20%" />
     <Pager ShowPageNumber="true" ShowTotalCount="true" />
 </Table>
@@ -39,5 +40,10 @@
         {
             logs = response.Logs.ToArray();
         }
+    }
+
+    private void OpenLog(LogItem log)
+    {
+        Navigation.NavigateTo($"/log/{log.ID.ToString()}");
     }
 }

@@ -17,10 +17,12 @@ namespace Website.Shared.Models
 
             set
             {
-                ErrorMessages = new List<string>()
-                {
-                    value
-                };
+                if (!string.IsNullOrEmpty(value)) {
+                    ErrorMessages = new List<string>()
+                    {
+                        value
+                    };
+                }
             }
         }
         public List<string> ErrorMessages { get; set; }
