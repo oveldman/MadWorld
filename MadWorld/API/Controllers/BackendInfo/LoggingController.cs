@@ -43,10 +43,13 @@ namespace API.Controllers.BackendInfo
         {
 
             if (logID.HasValue) {
+                LogItem log =_loggingManager.GetLog(logID.Value);
+
                 return new LogResponse
                 {
-                    Succeed = true,
-                    Log = _loggingManager.GetLog(logID.Value)
+                    Succeed = log != null,
+                    Log = log,
+                    ErrorMessage = log == null ? "Log not found" : string.Empty
                 };
             }
 
