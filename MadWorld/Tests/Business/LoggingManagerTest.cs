@@ -15,6 +15,79 @@ namespace Tests.Business
     public class LoggingManagerTest
     {
         [Theory]
+        [AutoDomainInlineData(2, "Information")]
+        [AutoDomainInlineData(5, "Critical")]
+        public void GetLog_ValidID_LogFound(
+            int levelValue,
+            string expectedTranslation,
+            [Frozen] Mock<ILoggerQueries> queries,
+            Log dbMockLog,
+            LoggingManager manager
+        )
+        {
+            // Test data
+            Guid logID = new("238ac118-154f-4bb2-88b4-06f618d597af");
+            dbMockLog.ID = logID;
+            dbMockLog.Level = levelValue;
+
+            // Setup
+            queries.Setup(q => q.GetLog(It.IsAny<Guid>())).Returns(dbMockLog);
+
+            // Act
+            var logResult = manager.GetLog(logID);
+
+            // Assert
+            Assert.Equal(logID, logResult.ID);
+            Assert.Equal(expectedTranslation, logResult.Level);
+
+            // No Teardown
+        }
+
+        [Theory]
+        [AutoDomainData]
+        public void GetLog_ValidID_LogNotFound(
+            [Frozen] Mock<ILoggerQueries> queries,
+            LoggingManager manager
+        )
+        {
+            // Test data
+            Guid logID = new("238ac118-154f-4bb2-88b4-06f618d597af");
+
+            // Setup
+            queries.Setup(q => q.GetLog(It.IsAny<Guid>())).Returns<Log>(null);
+
+            // Act
+            var logResult = manager.GetLog(logID);
+
+            // Assert
+            Assert.Null(logResult);
+
+            // No Teardown
+        }
+
+        [Theory]
+        [AutoDomainData]
+        public void GetLog_EmptyID_LogNotFound(
+            [Frozen] Mock<ILoggerQueries> queries,
+            LoggingManager manager
+        )
+        {
+            // Test data
+            Guid logID = new Guid();
+
+            // Setup
+            queries.Setup(q => q.GetLog(It.IsAny<Guid>())).Returns<Log>(null);
+
+            // Act
+            var logResult = manager.GetLog(logID);
+
+            // Assert
+            Assert.Null(logResult);
+
+            // No Teardown
+        }
+
+        [Theory]
         [AutoDomainData]
         public void GetLogging_ValidDatimes_LogsNotFound(
             [Frozen] Mock<ILoggerQueries> queries,

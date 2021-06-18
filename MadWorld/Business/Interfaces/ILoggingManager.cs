@@ -7,5 +7,6 @@ namespace Business.Interfaces
     public interface ILoggingManager
     {
         List<LogItem> GetLogging(DateTime? startDate, DateTime? endDate);
+        LogItem GetLog(Guid logID);
     }
 }

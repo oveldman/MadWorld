@@ -1,4 +1,6 @@
-﻿namespace Console
+﻿using System.Net;
+
+namespace Console
 {
     class Program
     {

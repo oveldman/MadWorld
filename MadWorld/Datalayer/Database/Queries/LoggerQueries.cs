@@ -29,6 +29,11 @@ namespace Datalayer.Database.Queries
             }
         }
 
+        public Log GetLog(Guid logID)
+        {
+            return _context.Logs.FirstOrDefault(l => l.ID.Equals(logID));
+        }
+
         public List<Log> GetLogs(DateTime? startDate, DateTime? endDate)
         {
             //End date gets a day extra because that day needs to be included

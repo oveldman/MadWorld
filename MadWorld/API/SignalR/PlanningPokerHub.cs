@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Business.Models.PlanningPoker;
 using Business.PlanningPoker.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Website.Shared.Models.PlanningPoker;
 

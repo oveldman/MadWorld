@@ -36,5 +36,25 @@ namespace API.Controllers.BackendInfo
                 Logs = _loggingManager.GetLogging(request.StartTime, request.EndTime)
             };
         }
+
+        [HttpGet]
+        [Route("Get")]
+        public LogResponse Get(Guid? logID)
+        {
+
+            if (logID.HasValue) {
+                return new LogResponse
+                {
+                    Succeed = true,
+                    Log = _loggingManager.GetLog(logID.Value)
+                };
+            }
+
+            return new LogResponse
+            {
+                Succeed = false,
+                ErrorMessage = "logID is required"
+            };
+        }
     }
 }

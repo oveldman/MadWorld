@@ -18,6 +18,26 @@ namespace Business
             _loggerQueries = loggerQueries;
         }
 
+        public LogItem GetLog(Guid logID)
+        {
+           Log log = _loggerQueries.GetLog(logID);
+
+            if (log == null) return null;
+
+            return new LogItem
+            {
+                Application = log.Application,
+                StackTrace = log.StackTrace,
+                Created = log.Created,
+                ID = log.ID,
+                Exception = log.Exception,
+                Level = Enum.GetName(typeof(LogLevel), log.Level),
+                Logger = log.Logger,
+                Message = log.Message,
+                Text = log.Text
+            };
+        }
+
         public List<LogItem> GetLogging(DateTime? startDate, DateTime? endDate)
         {
             List<Log> dbLogs = _loggerQueries.GetLogs(startDate, endDate);
@@ -27,13 +47,9 @@ namespace Business
             return dbLogs.Select(l =>
                             new LogItem {
                                 Application = l.Application,
-                                StackTrace = l.StackTrace,
                                 Created = l.Created,
                                 ID = l.ID,
-                                Exception = l.Exception,
                                 Level = Enum.GetName(typeof(LogLevel), l.Level),
-                                Logger = l.Logger,
-                                Message = l.Message,
                                 Text = l.Text
                             }).ToList();
         }

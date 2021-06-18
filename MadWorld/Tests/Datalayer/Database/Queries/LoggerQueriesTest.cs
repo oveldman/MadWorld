@@ -19,6 +19,63 @@ namespace Tests.Datalayer.Database.Queries
         DbContextOptions<MadWorldContext> Options;
 
         [Fact]
+        public void GetLog_QueryWithID_LogFound()
+        {
+            // Test data
+            Guid logIDExpected = new("0b0079a4-8e3d-4b29-97c1-db0e7c3712ed");
+
+            // Setup
+            LoggerQueries queries = SetupLoggerQuery();
+
+            // Act
+            Log resultLog = queries.GetLog(logIDExpected);
+
+            // Assert
+            Assert.Equal(logIDExpected, resultLog.ID);
+
+            // Teardown
+            TearDown();
+        }
+
+        [Fact]
+        public void GetLog_QueryWithID_LogNotFound()
+        {
+            // Test data
+            Guid logIDExpected = new("cde8addd-5abd-4ab5-af2b-5849a8007e69");
+
+            // Setup
+            LoggerQueries queries = SetupLoggerQuery();
+
+            // Act
+            Log resultLog = queries.GetLog(logIDExpected);
+
+            // Assert
+            Assert.Null(resultLog);
+
+            // Teardown
+            TearDown();
+        }
+
+        [Fact]
+        public void GetLog_QueryWithEmptyID_LogNotFound()
+        {
+            // Test data
+            Guid logIDExpected = new();
+
+            // Setup
+            LoggerQueries queries = SetupLoggerQuery();
+
+            // Act
+            Log resultLog = queries.GetLog(logIDExpected);
+
+            // Assert
+            Assert.Null(resultLog);
+
+            // Teardown
+            TearDown();
+        }
+
+        [Fact]
         public void GetLogs_QueryWithoutDates_ThreeLogs()
         {
             // No Test data
@@ -145,17 +202,17 @@ namespace Tests.Datalayer.Database.Queries
             {
                 new Log
                 {
-                    ID = Guid.NewGuid(),
+                    ID = new Guid("53b620e8-1037-41ef-97af-905b2adfbb8b"),
                     Created = new DateTime(2021, 6, 4, 11, 0, 0)
                 },
                 new Log
                 {
-                    ID = Guid.NewGuid(),
+                    ID = new Guid("0b0079a4-8e3d-4b29-97c1-db0e7c3712ed"),
                     Created = new DateTime(2021, 6, 5, 15, 0, 0)
                 },
                 new Log
                 {
-                    ID = Guid.NewGuid(),
+                    ID = new Guid("715dcc97-fb4e-4944-b559-1f926c4875ec"),
                     Created = new DateTime(2021, 6, 6, 5, 0, 0)
                 }
             };
