@@ -22,7 +22,7 @@ namespace Business
         {
            Log log = _loggerQueries.GetLog(logID);
 
-            if (log == null) return null;
+            if (log is null) return null;
 
             return new LogItem
             {
@@ -42,7 +42,7 @@ namespace Business
         {
             List<Log> dbLogs = _loggerQueries.GetLogs(startDate, endDate);
 
-            if (dbLogs == null) return new List<LogItem>();
+            if (dbLogs is null) return new List<LogItem>();
 
             return dbLogs.Select(l =>
                             new LogItem {

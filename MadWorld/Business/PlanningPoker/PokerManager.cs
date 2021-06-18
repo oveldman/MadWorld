@@ -31,13 +31,13 @@ namespace Business.PlanningPoker
         public string GetRoomName(string connectionID)
         {
             PokerRoom room = FindRoomByUserID(connectionID);
-            return room != null ? room.Name : string.Empty;
+            return room is not null ? room.Name : string.Empty;
         }
 
         public PokerUser GetUser(string connectionID)
         {
             PokerRoom room = FindRoomByUserID(connectionID);
-            if (room == null) return new PokerUser();
+            if (room is null) return new PokerUser();
 
             PokerUser user = room.Users.FirstOrDefault(u => u.ConnectionId.Equals(connectionID));
             return user ?? new PokerUser();
@@ -60,7 +60,7 @@ namespace Business.PlanningPoker
 
             PokerRoom room = FindRoomByUserID(connectionID);
 
-            if (room != null)
+            if (room is not null)
             {
                 roomname = room.Name;
                 RemoveUser(room, connectionID);

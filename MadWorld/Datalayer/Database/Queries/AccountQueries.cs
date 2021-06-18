@@ -29,7 +29,7 @@ namespace Datalayer.Database.Queries
         {
             User user = _context.Users.FirstOrDefault(u => u.UserName.Equals(username));
 
-            if (user != null)
+            if (user is not null)
             {
                 user.TwoFactorSecret = twofactorSecret;
                 _context.SaveChanges();
@@ -44,7 +44,7 @@ namespace Datalayer.Database.Queries
         {
             User user = _context.Users.FirstOrDefault(u => u.UserName.Equals(username));
 
-            if (user != null)
+            if (user is not null)
             {
                 user.TwoFactorOn = enabled;
                 _context.SaveChanges();
@@ -59,7 +59,7 @@ namespace Datalayer.Database.Queries
         {
             User user = _context.Users.FirstOrDefault(u => u.UserName.Equals(username));
 
-            if (user != null)
+            if (user is not null)
             {
                 user.TwoFactorSession = twoFactorSession;
                 user.TwoFactorSessionExpire = DateTime.Now.AddMinutes(15);

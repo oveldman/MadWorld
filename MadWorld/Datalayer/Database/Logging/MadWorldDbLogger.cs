@@ -19,7 +19,7 @@ namespace Datalayer.Database.Logging
             _loggerQueries = loggerQueries;
             _config = config;
 
-            if (loggerType == null)
+            if (loggerType is null)
             {
                 loggerType = typeof(MadWorldSystem);
             }

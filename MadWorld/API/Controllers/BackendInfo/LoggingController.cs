@@ -47,9 +47,9 @@ namespace API.Controllers.BackendInfo
 
                 return new LogResponse
                 {
-                    Succeed = log != null,
+                    Succeed = log is not null,
                     Log = log,
-                    ErrorMessage = log == null ? "Log not found" : string.Empty
+                    ErrorMessage = log is null ? "Log not found" : string.Empty
                 };
             }
 
