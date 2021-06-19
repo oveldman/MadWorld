@@ -14,5 +14,6 @@ namespace Datalayer.FileStorage.Interfaces
         StorageResult Upload(string path, string filename, MemoryStream file);
         StorageResult Upload(string path, string filename, string file);
         StorageResult Upload<T>(string path, string filename, T objectToSave);
+        StorageResult Delete(string path, string filename);
     }
 }

@@ -17,6 +17,12 @@ namespace Datalayer.FileStorage
             _container.CreateIfNotExists();
         }
 
+        public StorageResult Delete(string path, string filename)
+        {
+            IStorageFile storageFile = _container.GetFile(filename, path);
+            return storageFile.DeleteIfExists();
+        }
+
         public byte[] DownloadBytes(string path, string filename)
         {
             MemoryStream stream = DownloadStream(path, filename);
