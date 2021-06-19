@@ -1,9 +1,29 @@
 ﻿@page "/"
+@using BlazorDownloadFile;
+@using Website.Services.Interfaces;
+@using Website.Shared.Models;
+@inject IStorageService _storageService;
+@inject IBlazorDownloadFileService _blazorDownloadFileService;
 
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
+<p>Welcome to your new app.</p>
+
+<button type="button" class="btn btn-success" @onclick="DownloadTest">Download Test file</button>
 
 <SurveyPrompt Title="How is Blazor working for you?" />
 
 <img src="images/icons/RieMasudaIcon.png" />
+
+@code {
+    private async Task DownloadTest()
+    {
+        Guid? fileId = Guid.Parse("bc3529cb-33f6-4c6c-8f30-aff68dc5ef3e");
+        FileResponse file = await _storageService.GetFile(fileId);
+
+        if (file.Succeed)
+        {
+             await _blazorDownloadFileService.DownloadFile(file.Name, file.BodyBase64, file.Type);
+        }
+    }
+}

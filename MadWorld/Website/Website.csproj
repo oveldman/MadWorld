@@ -18,6 +18,7 @@
     <PackageReference Include="Blazored.LocalStorage" Version="4.1.2" />
     <PackageReference Include="BlazorTable" Version="1.15.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.7" />
+    <PackageReference Include="BlazorDownloadFile" Version="2.1.6" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,6 +42,7 @@
     <Folder Include="Services\ExternJS\" />
     <Folder Include="wwwroot\typescript\extern\" />
     <Folder Include="Services\Models\" />
+    <Folder Include="Services\Helper\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="BlazorTable" />
@@ -49,6 +51,8 @@
     <None Remove="Pages\Privacy\" />
     <None Remove="Services\ExternJS\" />
     <None Remove="Services\Models\" />
+    <None Remove="BlazorDownloadFile" />
+    <None Remove="Services\Helper\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\typescript\site.ts" />

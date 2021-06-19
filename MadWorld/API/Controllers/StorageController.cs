@@ -31,7 +31,7 @@ namespace API.Controllers
             {
                 Succeed = true,
                 Name = "Test.txt",
-                Type = "txt",
+                Type = "text/plain",
                 BodyBase64 = "RGl0IGlzIGVlbiB0ZXN0IQ=="
             };
         }

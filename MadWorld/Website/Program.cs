@@ -18,6 +18,7 @@ using Website.Services.BackofficeInfo;
 using BlazorTable;
 using Microsoft.AspNetCore.SignalR.Client;
 using Website.Services.ExternJS;
+using BlazorDownloadFile;
 
 namespace Website
 {
@@ -72,7 +73,8 @@ namespace Website
             builder.Services.AddScoped<IStatusService, StatusService>();
             builder.Services.AddScoped<ILoggingService, LoggingService>();
             builder.Services.AddScoped<IStorageService, StorageService>();
-            builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationProvider>();
+            builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationProvider>();   
+            builder.Services.AddBlazorDownloadFile();
 
             //Extern packages
             builder.Services.AddBlazorTable();
