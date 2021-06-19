@@ -71,6 +71,7 @@ namespace Website
             builder.Services.AddScoped<IResumeService, ResumeService>();
             builder.Services.AddScoped<IStatusService, StatusService>();
             builder.Services.AddScoped<ILoggingService, LoggingService>();
+            builder.Services.AddScoped<IStorageService, StorageService>();
             builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationProvider>();
 
             //Extern packages
