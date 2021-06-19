@@ -10,5 +10,5 @@
 [OpenTelemetry](https://opentelemetry.io/)\
 [Jaeger](https://www.jaegertracing.io/)\
 [MVC Versioning](https://www.infoworld.com/article/3562355/how-to-use-api-versioning-in-aspnet-core.html)\
-[Smartlook](https://www.smartlook.com/)
+[Smartlook](https://www.smartlook.com/)\
 [BlazorDownloadFile](https://github.com/arivera12/BlazorDownloadFile)
