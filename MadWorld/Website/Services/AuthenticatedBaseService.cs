@@ -26,12 +26,12 @@ namespace Website.Services
             _navigation = navigation;
         }
 
-        protected async Task<T> SendGetRequest<T>(string url)
+        protected async Task<T> SendGetRequest<T>(string url) where T : new()
         {
             return await SendGetRequest<T>(url, new List<UrlParameter>());
         }
 
-        protected async Task<T> SendGetRequest<T>(string url, List<UrlParameter> urlParameters)
+        protected async Task<T> SendGetRequest<T>(string url, List<UrlParameter> urlParameters) where T : new()
         {
             if (urlParameters != null && urlParameters.Any())
             {
@@ -45,10 +45,10 @@ namespace Website.Services
                 return await _client.GetFromJsonAsync<T>(url);
             }
 
-            return default;
+            return new T();
         }
 
-        protected async Task<T> SendPostRequest<T, Y>(string url, Y request)
+        protected async Task<T> SendPostRequest<T, Y>(string url, Y request) where T : new()
         {
             bool isAuthenticated = await SetBearerTokenIfEmpty();
 
@@ -57,7 +57,7 @@ namespace Website.Services
                 return await response.Content.ReadFromJsonAsync<T>();
             }
 
-            return default;
+            return new T();
         }
 
         private bool ForceReload()
