@@ -5,6 +5,6 @@ namespace Website.Shared.Models
 {
     public class FilesResponse : BaseModel
     {
-        public List<FileItem> Files { get; set; }
+        public List<FileEditItem> Files { get; set; }
     }
 }

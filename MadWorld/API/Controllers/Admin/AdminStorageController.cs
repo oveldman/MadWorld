@@ -25,13 +25,25 @@ namespace API.Controllers.Admin
         }
 
         [HttpGet]
+        [Route("Create")]
+        public BaseModel CreateFile(AddFileRequest request)
+        {
+            return new BaseModel
+            {
+                Succeed = true
+            };
+        }
+
+        [HttpGet]
         [Route("GetAllFiles")]
         public FilesResponse GetAllFiles()
         {
+            List<FileEditItem> files = _fileManager.GetFiles();
+
             return new FilesResponse
             {
                 Succeed = true,
-                Files = new List<FileItem>()
+                Files = files
             };
         }
     }
