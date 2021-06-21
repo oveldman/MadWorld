@@ -19,11 +19,12 @@
     private async Task DownloadTest()
     {
         Guid? fileId = Guid.Parse("bc3529cb-33f6-4c6c-8f30-aff68dc5ef3e");
-        FileResponse file = await _storageService.GetFile(fileId);
+        FileResponse response = await _storageService.GetFile(fileId);
 
-        if (file.Succeed)
+        if (response.Succeed)
         {
-             await _blazorDownloadFileService.DownloadFile(file.Name, file.BodyBase64, file.Type);
+            FileItem file = response.File;
+            await _blazorDownloadFileService.DownloadFile(file.Name, file.BodyBase64, file.Type);
         }
     }
 }
