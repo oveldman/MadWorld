@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Business.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -21,10 +22,12 @@ namespace API.Controllers
     public class StorageController : ControllerBase
     {
         private readonly ILogger<StorageController> _logger;
+        private IFileManager _fileManager;
 
-        public StorageController(ILogger<StorageController> logger)
+        public StorageController(ILogger<StorageController> logger, IFileManager fileManager)
         {
             _logger = logger;
+            _fileManager = fileManager;
         }
 
         [HttpGet]

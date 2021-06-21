@@ -17,6 +17,9 @@ using Datalayer.Database.Logging;
 using Datalayer.Database.Queries;
 using Datalayer.Database.Queries.Interfaces;
 using Datalayer.Database.Tables.Identity;
+using Datalayer.FileStorage;
+using Datalayer.FileStorage.Interfaces;
+using Datalayer.FileStorage.Models;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -272,13 +275,21 @@ namespace API
             services.AddScoped<IUserExtremeManager, UserExtremeManager>();
             services.AddScoped<ILoggingManager, LoggingManager>();
             services.AddScoped<IPokerManager, PokerManager>();
+            services.AddScoped<IFileManager, FileManager>();
 
             //Database project
             services.AddScoped<IAccountQueries, AccountQueries>();
             services.AddScoped<IGeneralQueries, GeneralGueries>();
             services.AddScoped<IResumeQueries, ResumeQueries>();
             services.AddScoped<ILoggerQueries, LoggerQueries>();
+            services.AddScoped<IFileQueries, FileQueries>();
             services.AddSingleton<ILoggerQueriesSingleton, LoggerQueries>(_ => new LoggerQueries(new MadWorldContext(builderOptions.Options)));
+
+            //Storage
+            services.AddScoped<IDiskManager,DiskManager>();
+            services.AddScoped<IStorageExplorer, StorageExplorer>();
+            services.AddScoped<IStorageManager, StorageManager>();
+            services.AddSingleton(_ => Configuration.GetSection(nameof(StorageSettings)).Get<StorageSettings>());
         }
     }
 }
