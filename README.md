@@ -1,6 +1,6 @@
 # Mad-World
 
-![MadWorld dotnet Build](https://github.com/oveldman/MadWorld/blob/main/.github/workflows/dotnet.yml)\
+[![.NET](https://github.com/oveldman/MadWorld/actions/workflows/dotnet.yml/badge.svg)](https://github.com/oveldman/MadWorld/actions/workflows/dotnet.yml)[![CodeQL](https://github.com/oveldman/MadWorld/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/oveldman/MadWorld/actions/workflows/codeql-analysis.yml)\
 [Mad-World.nl](https://www.mad-world.nl/)\
 [Lets-Encrypt](https://certbot.eff.org/lets-encrypt/ubuntufocal-nginx)\
 [Deploy dotnet](https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-5.0)\
