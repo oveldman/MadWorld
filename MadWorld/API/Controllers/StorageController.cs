@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +25,17 @@ namespace API.Controllers
         public StorageController(ILogger<StorageController> logger)
         {
             _logger = logger;
+        }
+
+        [HttpGet]
+        [Route("DirectDownloadFile")]
+        public FileStreamResult DirectDownloadFile(Guid? id)
+        {
+            byte[] body = Convert.FromBase64String("RGl0IGlzIGVlbiB0ZXN0IQ==");
+            return new FileStreamResult(new MemoryStream(body), "text/plain")
+            {
+                FileDownloadName = "Test.txt"
+            };
         }
 
         [HttpGet]
