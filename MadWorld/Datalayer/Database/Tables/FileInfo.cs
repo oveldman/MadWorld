@@ -13,5 +13,6 @@ namespace Datalayer.Database.Tables
         public string Extension { get; set; }
         public string Type { get; set; }
         public FileType AccessType { get; set; }
+        public bool Show { get; set; }
     }
 }
