@@ -45,9 +45,12 @@ namespace API.Controllers
             return new FileResponse
             {
                 Succeed = true,
-                Name = "Test.txt",
-                Type = "text/plain",
-                BodyBase64 = "RGl0IGlzIGVlbiB0ZXN0IQ=="
+                File = new FileItem
+                {
+                    Name = "Test.txt",
+                    Type = "text/plain",
+                    BodyBase64 = "RGl0IGlzIGVlbiB0ZXN0IQ=="
+                }
             };
         }
     }
