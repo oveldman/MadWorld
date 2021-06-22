@@ -35,6 +35,16 @@ namespace API.Controllers.Admin
         }
 
         [HttpGet]
+        [Route("Delete")]
+        public BaseModel DeleteFile(Guid? id)
+        {
+            return new BaseModel
+            {
+                Succeed = true
+            };
+        }
+
+        [HttpGet]
         [Route("GetAllFiles")]
         public FilesResponse GetAllFiles()
         {
