@@ -1,0 +1,38 @@
+﻿@page "/admin/allfiles"
+@layout AdminLayout
+
+@using BlazorTable;
+@using Website.Shared.Models;
+@using Website.Services.Interfaces;
+@using Microsoft.AspNetCore.Authorization
+@inject IStorageAuthenticatedService _storageSerivce;
+@inject NavigationManager Navigation;
+@attribute [Authorize]
+
+<h3>All Files</h3>
+<button type="button" class="btn btn-primary" @onclick="UploadFile">Upload file</button>
+
+<Table class="table table-striped table-dark table-bordered table-hover" TableHeadClass="thead-light" TableItem="FileEditItem" Items="Files" PageSize="15" ShowSearchBar="true">
+    <Column TableItem="FileEditItem" Title="Name" Field="@(x => x.Name)" Sortable="true" Filterable="false" Width="60%" />
+    <Column TableItem="FileEditItem" Title="Type" Field="@(x => x.Type)" Sortable="true" Filterable="false" Width="40%" />
+    <Pager ShowPageNumber="true" ShowTotalCount="true" />
+</Table>
+
+@code {
+    private List<FileEditItem> Files = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        FilesResponse response = await _storageSerivce.GetAll();
+
+        if (response.Succeed)
+        {
+            Files = response.Files;
+        }
+    }
+
+    private void UploadFile()
+    {
+        Navigation.NavigateTo($"/admin/newfile");
+    }
+}

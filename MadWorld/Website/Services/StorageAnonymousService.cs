@@ -13,11 +13,11 @@ using Website.Shared.Models;
 
 namespace Website.Services
 {
-    public class StorageService : IStorageService
+    public class StorageAnonymousService : IStorageAnonymousService
     {
         private HttpClient _client;
 
-        public StorageService(IHttpClientFactory clientFactory)
+        public StorageAnonymousService(IHttpClientFactory clientFactory)
         {
             _client = clientFactory.CreateClient(ApiUrls.MadWorldApi);
         }

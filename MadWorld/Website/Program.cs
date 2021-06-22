@@ -72,7 +72,8 @@ namespace Website
             builder.Services.AddScoped<IResumeService, ResumeService>();
             builder.Services.AddScoped<IStatusService, StatusService>();
             builder.Services.AddScoped<ILoggingService, LoggingService>();
-            builder.Services.AddScoped<IStorageService, StorageService>();
+            builder.Services.AddScoped<IStorageAuthenticatedService, StorageAuthenticatedService>();
+            builder.Services.AddScoped<IStorageAnonymousService, StorageAnonymousService>();
             builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationProvider>();   
             builder.Services.AddBlazorDownloadFile();
 

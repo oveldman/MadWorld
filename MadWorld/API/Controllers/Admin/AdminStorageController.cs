@@ -24,7 +24,7 @@ namespace API.Controllers.Admin
             _fileManager = fileManager;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("Create")]
         public BaseModel CreateFile(AddFileRequest request)
         {

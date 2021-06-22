@@ -24,6 +24,8 @@ namespace Business
         {
             List<FileInfo> fileInfos = _fileQueries.GetAll();
 
+            if (fileInfos == null) return new List<FileEditItem>();
+
             return fileInfos.Select(fi => new FileEditItem {
                 ID = fi.ID,
                 Name = fi.Name,

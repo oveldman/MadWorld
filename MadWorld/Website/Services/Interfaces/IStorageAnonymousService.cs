@@ -4,7 +4,7 @@ using Website.Shared.Models;
 
 namespace Website.Services.Interfaces
 {
-    public interface IStorageService
+    public interface IStorageAnonymousService
     {
         Task<FileResponse> GetFile(Guid? id);
     }

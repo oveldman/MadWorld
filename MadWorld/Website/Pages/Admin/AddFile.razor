@@ -1,0 +1,74 @@
+﻿@page "/admin/newfile"
+@layout AdminLayout
+
+@using Website.Shared.Models;
+@using Website.Services.Interfaces;
+@using Microsoft.AspNetCore.Authorization;
+@inject NavigationManager Navigation;
+@inject IStorageAuthenticatedService _storageSerivce;
+@attribute [Authorize]
+
+@if (ShowValidation)
+{
+    <div class="alert alert-warning" role="alert">
+        Id must be a GUID
+    </div>
+}
+
+<h1>Upload File</h1>
+
+<EditForm EditContext="@newFileContext">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <p>
+        <label>
+            <InputText @bind-Value="NewFileID" />
+            <InputFile OnChange="LoadFileInMemory" class="form-control" />
+            <button type="button" class="btn btn-success" @onclick="UploadNewFile">Upload file</button>
+        </label>
+    </p>
+</EditForm>
+
+@code {
+    private bool NewFileModus = false;
+
+    private bool ShowValidation;
+    private string NewFileID;
+
+    private AddFileRequest NewFile = new();
+
+    private EditContext newFileContext;
+
+    protected override void OnInitialized()
+    {
+        newFileContext = new(NewFile);
+    }
+
+    private async Task LoadFileInMemory(InputFileChangeEventArgs e)
+    {
+        IBrowserFile browserFile = e.File;
+        StreamContent fileContent = new StreamContent(browserFile.OpenReadStream());
+        byte[] body = await fileContent.ReadAsByteArrayAsync();
+        NewFile.BodyBase64 = Convert.ToBase64String(body);
+        NewFile.Name = browserFile.Name;
+        NewFile.Type = browserFile.ContentType;
+    }
+
+    private async Task UploadNewFile()
+    {
+        if (!Guid.TryParse(NewFileID, out Guid newID))
+        {
+            ShowValidation = true;
+            return;
+        }
+
+        NewFile.ID = newID;
+
+        BaseModel response = await _storageSerivce.Create(NewFile);
+
+        if (response.Succeed)
+        {
+            Navigation.NavigateTo($"/admin/allfiles");
+        }
+    }
+}
