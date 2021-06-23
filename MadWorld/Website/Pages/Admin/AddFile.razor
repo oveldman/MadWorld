@@ -25,6 +25,7 @@
             <InputText @bind-Value="NewFileID" />
             <InputFile OnChange="LoadFileInMemory" class="form-control" />
             <button type="button" class="btn btn-success" @onclick="UploadNewFile">Upload file</button>
+            <button type="button" class="btn btn-success" @onclick="GenerateID">Generate ID</button>
         </label>
     </p>
 </EditForm>
@@ -52,6 +53,11 @@
         NewFile.BodyBase64 = Convert.ToBase64String(body);
         NewFile.Name = browserFile.Name;
         NewFile.Type = browserFile.ContentType;
+    }
+
+    private void GenerateID()
+    {
+        NewFileID = Guid.NewGuid().ToString();
     }
 
     private async Task UploadNewFile()

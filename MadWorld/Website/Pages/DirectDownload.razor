@@ -1,0 +1,38 @@
+﻿@page "/directdownload/{id}"
+
+@using BlazorDownloadFile;
+@using Website.Shared.Models;
+@using Website.Services.Interfaces;
+@inject IStorageAnonymousService _storageService;
+@inject IBlazorDownloadFileService _blazorDownloadFileService;
+
+<p>@DownloadMessage</p>
+
+@code {
+    [Parameter]
+    public string ID { get; set; }
+
+    private string DownloadMessage = "The download will start soon";
+
+    protected override async Task OnInitializedAsync()
+    {
+        bool succeed = false;
+
+        if (Guid.TryParse(ID, out Guid guid))
+        {
+            FileResponse response = await _storageService.GetFile(guid);
+
+            if (response.Succeed)
+            {
+                FileItem file = response.File;
+                await _blazorDownloadFileService.DownloadFile(file.Name, file.BodyBase64, file.Type);
+                succeed = true;
+            }
+        }
+
+        if (!succeed)
+        {
+            DownloadMessage = "Download failed. Try again";
+        }
+    }
+}

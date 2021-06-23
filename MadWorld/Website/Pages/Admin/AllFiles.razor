@@ -15,7 +15,12 @@
 <Table class="table table-striped table-dark table-bordered table-hover" TableHeadClass="thead-light" TableItem="FileEditItem" Items="Files" PageSize="15" ShowSearchBar="true">
     <Column TableItem="FileEditItem" Title="Name" Field="@(x => x.Name)" Sortable="true" Filterable="false" Width="60%" />
     <Column TableItem="FileEditItem" Title="Type" Field="@(x => x.Type)" Sortable="true" Filterable="false" Width="30%" />
-    <Column TableItem="FileEditItem" Title="Delete" Field="@(x => x.ID)" Width="10%">
+    <Column TableItem="FileEditItem" Title="Open" Field="@(x => x.ID)" Width="5%">
+        <Template>
+            <span @onclick="() => DownloadFile(context.ID)" class="oi oi-data-transfer-download"></span>
+        </Template>
+    </Column>
+    <Column TableItem="FileEditItem" Title="Delete" Field="@(x => x.ID)" Width="5%">
         <Template>
             <span @onclick="async () => await Delete(context.ID)" class="oi oi-trash"></span>
         </Template>
@@ -39,6 +44,11 @@
         {
             await LoadFiles();
         }
+    }
+
+    private void DownloadFile(Guid id)
+    {
+        Navigation.NavigateTo($"/DirectDownload/{id.ToString()}");
     }
 
     private async Task LoadFiles()
