@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace Console
+﻿namespace Console
 {
     class Program
     {

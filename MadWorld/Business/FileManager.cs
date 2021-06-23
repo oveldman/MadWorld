@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Business.Interfaces;
+using Common;
+using Datalayer.Database.Models;
 using Datalayer.Database.Queries.Interfaces;
 using Datalayer.Database.Tables;
 using Datalayer.FileStorage.Interfaces;
+using Datalayer.FileStorage.Models;
 using Website.Shared.Models;
 
 namespace Business
@@ -18,6 +21,66 @@ namespace Business
         {
             _fileQueries = fileQueries;
             _storageManager = storageManager;
+        }
+
+        public BaseModel CreateFile(Guid? id, string name, string type, string bodyBase64)
+        {
+            bool succeed = false;
+
+            if (!id.HasValue)
+            {
+                id = Guid.NewGuid();
+            }
+
+            FileInfo fileInfo = new()
+            {
+                ID = id.Value,
+                AccessType = FileType.Anonymous,
+                Created = SystemTime.Now(),
+                Name = name,
+                Type = type,
+                Extension = System.IO.Path.GetExtension(name),
+                Show = true
+            };
+
+            DbResult dbResult = _fileQueries.Add(fileInfo);
+
+            if (dbResult.Succeed)
+            {
+                StorageResult storageResult = _storageManager.Upload(StoragePaths.FreeFiles, fileInfo.FullStorageName, bodyBase64);
+
+                succeed = storageResult.Succeed;
+            }
+
+            return new BaseModel
+            {
+                Succeed = succeed,
+                ErrorMessage = succeed ? string.Empty : "Failed to save file"
+            };
+        }
+
+        public BaseModel DeleteFile(Guid id)
+        {
+            bool succeed = false;
+
+            FileInfo fileInfo = _fileQueries.Get(id);
+
+            if (fileInfo is not null)
+            {
+                StorageResult storageResult = _storageManager.Delete(StoragePaths.FreeFiles, fileInfo.FullStorageName);
+
+                if (storageResult.Succeed)
+                {
+                    DbResult dbResult = _fileQueries.Delete(id);
+                    succeed = dbResult.Succeed;
+                }
+            }
+
+            return new BaseModel
+            {
+                Succeed = succeed,
+                Message = succeed ? string.Empty : "Delete file failed"
+            };
         }
 
         public List<FileEditItem> GetFiles()

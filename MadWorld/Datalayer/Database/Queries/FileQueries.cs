@@ -35,6 +35,24 @@ namespace Datalayer.Database.Queries
             }
         }
 
+        public DbResult Delete(Guid id)
+        {
+            FileInfo file = _context.Files.FirstOrDefault(f => f.ID == id);
+
+            if (file is not null)
+            {
+                _context.Files.Remove(file);
+                _context.SaveChanges();
+
+                return new DbResult { Succeed = true };
+            }
+
+            return new DbResult
+            {
+                ErrorMessage = "File not found"
+            };
+        }
+
         public FileInfo Get(Guid id, FileType accessType)
         {
             return _context.Files.FirstOrDefault(f => f.ID == id && f.AccessType == accessType);

@@ -28,19 +28,20 @@ namespace API.Controllers.Admin
         [Route("Create")]
         public BaseModel CreateFile(AddFileRequest request)
         {
-            return new BaseModel
-            {
-                Succeed = true
-            };
+            return _fileManager.CreateFile(request.ID, request.Name, request.Type, request.BodyBase64);
         }
 
         [HttpGet]
         [Route("Delete")]
         public BaseModel DeleteFile(Guid? id)
         {
+            if (id.HasValue) {
+                return _fileManager.DeleteFile(id.Value);
+            }
+
             return new BaseModel
             {
-                Succeed = true
+                ErrorMessage = "Id required"
             };
         }
 

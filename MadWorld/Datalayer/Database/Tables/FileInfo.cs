@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Datalayer.Database.Models;
 
 namespace Datalayer.Database.Tables
@@ -14,5 +15,14 @@ namespace Datalayer.Database.Tables
         public string Type { get; set; }
         public FileType AccessType { get; set; }
         public bool Show { get; set; }
+
+        [NotMapped]
+        public string FullStorageName
+        {
+            get
+            {
+                return ID.ToString() + Extension;
+            }
+        }
     }
 }
