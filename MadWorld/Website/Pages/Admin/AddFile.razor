@@ -48,7 +48,7 @@
     private async Task LoadFileInMemory(InputFileChangeEventArgs e)
     {
         IBrowserFile browserFile = e.File;
-        StreamContent fileContent = new StreamContent(browserFile.OpenReadStream());
+        StreamContent fileContent = new StreamContent(browserFile.OpenReadStream(10240000));
         byte[] body = await fileContent.ReadAsByteArrayAsync();
         NewFile.BodyBase64 = Convert.ToBase64String(body);
         NewFile.Name = browserFile.Name;
