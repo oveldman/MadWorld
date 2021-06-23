@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Datalayer.Database.Models;
 using Website.Shared.Models;
 
 namespace Business.Interfaces
@@ -9,5 +10,6 @@ namespace Business.Interfaces
         BaseModel CreateFile(Guid? id, string name, string type, string bodyBase64);
         BaseModel DeleteFile(Guid id);
         List<FileEditItem> GetFiles();
+        FileItem GetFile(Guid id, FileType fileType);
     }
 }

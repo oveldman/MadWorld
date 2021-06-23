@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Business.Interfaces;
+using Datalayer.Database.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -32,28 +33,41 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("DirectDownloadFile")]
-        public FileStreamResult DirectDownloadFile(Guid? id)
+        public IActionResult DirectDownloadFile(Guid? id)
         {
-            byte[] body = Convert.FromBase64String("RGl0IGlzIGVlbiB0ZXN0IQ==");
-            return new FileStreamResult(new MemoryStream(body), "text/plain")
+            if (id.HasValue)
             {
-                FileDownloadName = "Test.txt"
-            };
+                FileItem item = _fileManager.GetFile(id.Value, FileType.Anonymous);
+
+                if (item is not null) {
+                    byte[] body = Convert.FromBase64String(item.BodyBase64);
+                    return new FileStreamResult(new MemoryStream(body), item.Type)
+                    {
+                        FileDownloadName = item.Name
+                    };
+                }
+            }
+
+            return NotFound();
         }
 
         [HttpGet]
         [Route("DownloadFile")]
         public FileResponse DownloadFile(Guid? id)
         {
+            if (id.HasValue) {
+                FileItem item = _fileManager.GetFile(id.Value, FileType.Anonymous);
+
+                return new FileResponse
+                {
+                    Succeed = item is not null,
+                    File = item
+                };
+            }
+
             return new FileResponse
             {
-                Succeed = true,
-                File = new FileItem
-                {
-                    Name = "Test.txt",
-                    Type = "text/plain",
-                    BodyBase64 = "RGl0IGlzIGVlbiB0ZXN0IQ=="
-                }
+                ErrorMessage = "ID is required"
             };
         }
     }

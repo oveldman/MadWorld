@@ -14,7 +14,12 @@
 
 <Table class="table table-striped table-dark table-bordered table-hover" TableHeadClass="thead-light" TableItem="FileEditItem" Items="Files" PageSize="15" ShowSearchBar="true">
     <Column TableItem="FileEditItem" Title="Name" Field="@(x => x.Name)" Sortable="true" Filterable="false" Width="60%" />
-    <Column TableItem="FileEditItem" Title="Type" Field="@(x => x.Type)" Sortable="true" Filterable="false" Width="40%" />
+    <Column TableItem="FileEditItem" Title="Type" Field="@(x => x.Type)" Sortable="true" Filterable="false" Width="30%" />
+    <Column TableItem="FileEditItem" Title="Delete" Field="@(x => x.ID)" Width="10%">
+        <Template>
+            <span @onclick="async () => await Delete(context.ID)" class="oi oi-trash"></span>
+        </Template>
+    </Column>
     <Pager ShowPageNumber="true" ShowTotalCount="true" />
 </Table>
 
@@ -22,6 +27,21 @@
     private List<FileEditItem> Files = new();
 
     protected override async Task OnInitializedAsync()
+    {
+        await LoadFiles();
+    }
+
+    private async Task Delete(Guid id)
+    {
+        BaseModel response = await _storageSerivce.Delete(id);
+
+        if (response.Succeed)
+        {
+            await LoadFiles();
+        }
+    }
+
+    private async Task LoadFiles()
     {
         FilesResponse response = await _storageSerivce.GetAll();
 

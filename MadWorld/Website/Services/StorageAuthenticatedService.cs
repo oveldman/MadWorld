@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Website.Services.Interfaces;
+using Website.Services.Models;
 using Website.Shared.Models;
 
 namespace Website.Services
@@ -15,6 +17,20 @@ namespace Website.Services
         public async Task<BaseModel> Create(AddFileRequest request)
         {
             return await SendPostRequest<BaseModel, AddFileRequest>("adminstorage/Create", request);
+        }
+
+        public async Task<BaseModel> Delete(Guid id)
+        {
+            List<UrlParameter> parameters = new()
+            {
+                new UrlParameter
+                {
+                    Name = "id",
+                    Value = id.ToString()
+                }
+            };
+
+            return await SendGetRequest<BaseModel>("adminstorage/delete", parameters);
         }
 
         public async Task<FilesResponse> GetAll()

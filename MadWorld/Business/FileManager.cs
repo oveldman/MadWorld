@@ -83,6 +83,25 @@ namespace Business
             };
         }
 
+        public FileItem GetFile(Guid id, FileType fileType)
+        {
+            FileInfo fileInfo = _fileQueries.Get(id, fileType);
+
+            if (fileInfo is not null)
+            {
+                string body = _storageManager.DownloadString(StoragePaths.FreeFiles, fileInfo.FullStorageName);
+
+                return new FileItem
+                {
+                    BodyBase64 = body,
+                    Name = fileInfo.Name,
+                    Type = fileInfo.Type
+                };
+            }
+
+            return null;
+        }
+
         public List<FileEditItem> GetFiles()
         {
             List<FileInfo> fileInfos = _fileQueries.GetAll();
