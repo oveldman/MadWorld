@@ -43,6 +43,7 @@
     <Folder Include="wwwroot\typescript\extern\" />
     <Folder Include="Services\Models\" />
     <Folder Include="Services\Helper\" />
+    <Folder Include="Pages\Pages\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="BlazorTable" />
@@ -53,6 +54,7 @@
     <None Remove="Services\Models\" />
     <None Remove="BlazorDownloadFile" />
     <None Remove="Services\Helper\" />
+    <None Remove="Pages\Pages\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\typescript\site.ts" />

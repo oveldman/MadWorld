@@ -1,0 +1,107 @@
+﻿@page "/converter/base64"
+
+@using BlazorDownloadFile;
+@using System.Text;
+@inject IBlazorDownloadFileService _blazorDownloadFileService;
+
+@if (ShowValidationBase64)
+{
+    <div class="alert alert-warning" role="alert">
+        Base64 value isn't valid. Try another one.
+    </div>
+}
+
+@if (ShowValidationFileSize)
+{
+    <div class="alert alert-warning" role="alert">
+        File size is too big. The maxium size is 10 MB.
+    </div>
+}
+
+<h3>Plain Text</h3>
+<textarea class="form-control" @bind="PlainText" />
+
+<h3>Base64</h3>
+<textarea class="form-control" @bind="Base64Text" />
+
+<button type="button" class="btn btn-success" @onclick="ConvertText">Convert to base64</button>
+<button type="button" class="btn btn-success" @onclick="ConvertBase64">Convert to plaintext</button>
+
+<h3>File to base64</h3>
+<InputFile OnChange="ConvertFile" class="form-control" />
+<h3>Base64 to File</h3>
+<input class="form-control" @bind="FileName" />
+<input class="form-control" @bind="FileType" />
+<button type="button" class="btn btn-success" @onclick="DownloadFile">Convert to file</button>
+
+@code {
+    private bool ShowValidationFileSize;
+    private bool ShowValidationBase64;
+    private int MaxSize = 10240000;
+    private string Base64Text = string.Empty;
+    private string PlainText = string.Empty;
+    private string FileName = string.Empty;
+    private string FileType = string.Empty;
+
+    private async Task ConvertFile(InputFileChangeEventArgs e)
+    {
+        Reset();
+        PlainText = string.Empty;
+
+        IBrowserFile browserFile = e.File;
+        if (Validate(browserFile))
+        {
+            StreamContent fileContent = new StreamContent(browserFile.OpenReadStream(MaxSize));
+            byte[] body = await fileContent.ReadAsByteArrayAsync();
+            Base64Text = Convert.ToBase64String(body);
+            FileName = browserFile.Name;
+            FileType = browserFile.ContentType;
+        }
+    }
+
+    private void ConvertText()
+    {
+        Reset();
+        if (string.IsNullOrEmpty(PlainText)) return;
+
+        byte[] body = Encoding.ASCII.GetBytes(PlainText);
+        Base64Text = Convert.ToBase64String(body);
+    }
+
+    private void ConvertBase64()
+    {
+        Reset();
+        if (string.IsNullOrEmpty(Base64Text)) return;
+
+        try
+        {
+            byte[] body = Convert.FromBase64String(Base64Text);
+            PlainText = Encoding.ASCII.GetString(body);
+        }
+        catch (Exception)
+        {
+            ShowValidationBase64 = true;
+        }
+    }
+
+    private void DownloadFile()
+    {
+        Reset();
+        if (string.IsNullOrEmpty(Base64Text)) return;
+
+        _blazorDownloadFileService.DownloadFile(FileName, Base64Text, FileType);
+    }
+
+    private bool Validate(IBrowserFile browserFile)
+    {
+        bool valid = browserFile.Size < (MaxSize - 1);
+        ShowValidationFileSize = !valid;
+        return valid;
+    }
+
+    private void Reset()
+    {
+        ShowValidationBase64 = false;
+        ShowValidationFileSize = false;
+    }
+} 

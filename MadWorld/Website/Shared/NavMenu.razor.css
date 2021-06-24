@@ -25,5 +25,9 @@
     .navbar .nav-item .dropdown-menu {
         margin-top: 0;
     }
+
+    .dropdown-menu-fun {
+        width: 200px;
+    }
 }	
 
