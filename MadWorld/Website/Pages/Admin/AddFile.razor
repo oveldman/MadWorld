@@ -8,10 +8,24 @@
 @inject IStorageAuthenticatedService _storageSerivce;
 @attribute [Authorize]
 
-@if (ShowValidation)
+@if (ShowValidationGuid)
 {
     <div class="alert alert-warning" role="alert">
         Id must be a GUID
+    </div>
+}
+
+@if (ShowValidationFileType)
+{
+    <div class="alert alert-warning" role="alert">
+        File is not correct. Try again.
+    </div>
+}
+
+@if (ShowValidationFileSize)
+{
+    <div class="alert alert-warning" role="alert">
+        File size is too big. The maxium size is 10 MB.
     </div>
 }
 
@@ -31,8 +45,11 @@
 </EditForm>
 
 @code {
-    private bool ShowValidation;
+    private bool ShowValidationGuid;
+    private bool ShowValidationFileType;
+    private bool ShowValidationFileSize;
     private string NewFileID;
+    private int MaxSize = 10240000;
 
     private AddFileRequest NewFile = new();
 
@@ -45,12 +62,16 @@
 
     private async Task LoadFileInMemory(InputFileChangeEventArgs e)
     {
+        ResetValidation();
         IBrowserFile browserFile = e.File;
-        StreamContent fileContent = new StreamContent(browserFile.OpenReadStream(10240000));
-        byte[] body = await fileContent.ReadAsByteArrayAsync();
-        NewFile.BodyBase64 = Convert.ToBase64String(body);
-        NewFile.Name = browserFile.Name;
-        NewFile.Type = browserFile.ContentType;
+        if (Validate(browserFile))
+        {
+            StreamContent fileContent = new StreamContent(browserFile.OpenReadStream(MaxSize));
+            byte[] body = await fileContent.ReadAsByteArrayAsync();
+            NewFile.BodyBase64 = Convert.ToBase64String(body);
+            NewFile.Name = browserFile.Name;
+            NewFile.Type = browserFile.ContentType;
+        }
     }
 
     private void GenerateID()
@@ -60,19 +81,44 @@
 
     private async Task UploadNewFile()
     {
+        ResetValidation();
         if (!Guid.TryParse(NewFileID, out Guid newID))
         {
-            ShowValidation = true;
+            ShowValidationGuid = true;
             return;
         }
 
-        NewFile.ID = newID;
-
-        BaseModel response = await _storageSerivce.Create(NewFile);
-
-        if (response.Succeed)
+        if (Validate(NewFile))
         {
-            Navigation.NavigateTo($"/admin/allfiles");
+            NewFile.ID = newID;
+
+            BaseModel response = await _storageSerivce.Create(NewFile);
+
+            if (response.Succeed)
+            {
+                Navigation.NavigateTo($"/admin/allfiles");
+            }
         }
+    }
+
+    private void ResetValidation()
+    {
+        ShowValidationGuid = false;
+        ShowValidationFileType = false;
+        ShowValidationFileSize = false;
+    }
+
+    private bool Validate(AddFileRequest request)
+    {
+        bool valid = !string.IsNullOrEmpty(request.BodyBase64) && !string.IsNullOrEmpty(request.Name) && !string.IsNullOrEmpty(request.Type);
+        ShowValidationFileType = !valid;
+        return valid;
+    }
+
+    private bool Validate(IBrowserFile browserFile)
+    {
+        bool valid = browserFile.Size < (MaxSize - 1);
+        ShowValidationFileSize = !valid;
+        return valid;
     }
 }
