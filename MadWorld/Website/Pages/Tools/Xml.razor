@@ -11,18 +11,18 @@
 <p>@Result</p>
 
 @code {
-    private string XmlText = string.Empty;
     private string Result = string.Empty;
     private int TotalValidations = 0;
 
-    private void ValidateXML()
+    private async Task ValidateXML()
     {
         Result = string.Empty;
         TotalValidations++;
 
         try
         {
-            new XmlDocument().LoadXml(XmlText);
+            string xmlText = await _editor.GetValue();
+            new XmlDocument().LoadXml(xmlText);
             Result = $"Xml is Valid ({TotalValidations})";
         }
         catch (Exception ex)
@@ -43,17 +43,9 @@
     {
         return new StandaloneEditorConstructionOptions
         {
-            Language = "javascript",
+            Language = "xml",
             GlyphMargin = true,
-            Value = "\"use strict\";\n" +
-                    "function Person(age) {\n" +
-                    "	if (age) {\n" +
-                    "		this.age = age;\n" +
-                    "	}\n" +
-                    "}\n" +
-                    "Person.prototype.getAge = function () {\n" +
-                    "	return this.age;\n" +
-                    "};\n"
+            Value = ""
         };
     }
 
