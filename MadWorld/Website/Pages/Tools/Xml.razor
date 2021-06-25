@@ -1,0 +1,32 @@
+﻿@page "/validator/XML"
+
+@using System.Xml;
+
+<h3>XML</h3>
+<textarea class="form-control" @bind="XmlText" />
+<button type="button" class="btn btn-success" @onclick="ValidateXML">Validate XML</button>
+
+<h3>Result</h3>
+<p>@Result</p>
+
+@code {
+    private string XmlText = string.Empty;
+    private string Result = string.Empty;
+    private int TotalValidations = 0;
+
+    private void ValidateXML()
+    {
+        Result = string.Empty;
+        TotalValidations++;
+
+        try
+        {
+            new XmlDocument().LoadXml(XmlText);
+            Result = $"Xml is Valid ({TotalValidations})";
+        }
+        catch (Exception ex)
+        {
+            Result = ex.Message;
+        }
+    }
+}
