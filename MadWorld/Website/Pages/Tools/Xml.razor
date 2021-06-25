@@ -26,7 +26,12 @@
         }
         catch (Exception ex)
         {
-            Result = ex.Message;
+            ShowError(ex);
         }
+    }
+
+    private void ShowError(Exception ex)
+    {
+        Result = ex.Message;
     }
 }
