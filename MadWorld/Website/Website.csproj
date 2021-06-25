@@ -20,6 +20,7 @@
     <PackageReference Include="BlazorTable" Version="1.15.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.7" />
     <PackageReference Include="BlazorDownloadFile" Version="2.1.6" />
+    <PackageReference Include="BlazorMonaco" Version="2.1.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,6 +57,7 @@
     <None Remove="BlazorDownloadFile" />
     <None Remove="Services\Helper\" />
     <None Remove="Pages\Pages\" />
+    <None Remove="BlazorMonaco" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\typescript\site.ts" />

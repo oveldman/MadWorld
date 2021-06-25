@@ -425,3 +425,7 @@ a, .btn-link {
     }
 }
 
+.monaco-editor-container {
+    height: 200px;
+    border: 1px solid gray;
+}
