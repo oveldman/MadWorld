@@ -13,5 +13,5 @@
 [MVC Versioning](https://www.infoworld.com/article/3562355/how-to-use-api-versioning-in-aspnet-core.html)\
 [Smartlook](https://www.smartlook.com/)\
 [BlazorDownloadFile](https://github.com/arivera12/BlazorDownloadFile)\
-[Machine Learning](https://dotnet.microsoft.com/apps/machinelearning-ai/ml-dotnet)
-
+[Machine Learning](https://dotnet.microsoft.com/apps/machinelearning-ai/ml-dotnet) \
+[BlazorMonaco](https://github.com/serdarciplak/BlazorMonaco)
