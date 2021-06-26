@@ -11,7 +11,7 @@
     <label for="method-torun" class="form-label">Method</label>
     <input type="text" class="form-control" id="method-torun" @bind="MethodTest">
 </div>
-<MonacoEditor @ref="_editor" Id="cshap-editor" CssClass="Editor-XML" ConstructionOptions="EditorConstructionOptions" OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu" />
+<MonacoEditor @ref="_editor" Id="cshap-editor" CssClass="Editor-XML" ConstructionOptions="EditorConstructionOptions" OnContextMenu="OnContextMenu" />
 <button type="button" class="btn btn-success" @onclick="Run">Run</button>
 
 <div class="card">
@@ -85,7 +85,7 @@
         {
             Language = "csharp",
             GlyphMargin = true,
-            Theme = "Visual Studio Dark",
+            Theme = "vs-dark",
             Value = @"
 using Website.Manager;
 namespace MadWorldEmulator
