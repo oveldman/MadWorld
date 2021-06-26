@@ -21,6 +21,7 @@
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.7" />
     <PackageReference Include="BlazorDownloadFile" Version="2.1.6" />
     <PackageReference Include="BlazorMonaco" Version="2.1.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.10.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -58,6 +59,7 @@
     <None Remove="Services\Helper\" />
     <None Remove="Pages\Pages\" />
     <None Remove="BlazorMonaco" />
+    <None Remove="Microsoft.CodeAnalysis.CSharp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\typescript\site.ts" />

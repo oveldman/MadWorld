@@ -1,0 +1,155 @@
+﻿@page "/compiler/csharp"
+
+@using Microsoft.CodeAnalysis;
+@using Microsoft.CodeAnalysis.CSharp;
+@using Microsoft.CodeAnalysis.Emit;
+@using System.IO;
+@using System.Reflection;
+@inject HttpClient _client;
+
+
+<MonacoEditor @ref="_editor" Id="cshap-editor" CssClass="Editor-XML" ConstructionOptions="EditorConstructionOptions" OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu" />
+<button type="button" class="btn btn-success" @onclick="Run">Run</button>
+
+<div class="card">
+    <div class="card-body">
+        <pre>@ResultText</pre>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        @foreach (string log in CompileLog)
+        {
+            <p>@log</p>
+        }
+    </div>
+</div>
+
+@code {
+
+    private string[] decorationIds;
+    private string ResultText { get; set; }
+    private MonacoEditor _editor { get; set; }
+
+    private List<string> CompileLog { get; set; } = new();
+    private List<MetadataReference> references { get; set; }
+
+    public async Task<Assembly> Compile()
+    {
+        string code = await _editor.GetValue();
+        SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(code, new CSharpParseOptions(LanguageVersion.Preview));
+        foreach (var diagnostic in syntaxTree.GetDiagnostics())
+        {
+            CompileLog.Add(diagnostic.ToString());
+        }
+
+        if (syntaxTree.GetDiagnostics().Any(i => i.Severity == DiagnosticSeverity.Error))
+        {
+            CompileLog.Add("Parse SyntaxTree Error!");
+            return null;
+        }
+
+        CompileLog.Add("Parse SyntaxTree Success");
+
+        CSharpCompilation compilation = CSharpCompilation.Create("Website", new[] { syntaxTree },
+            references, new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+
+        using (MemoryStream stream = new MemoryStream())
+        {
+            EmitResult result = compilation.Emit(stream);
+
+            foreach (var diagnostic in result.Diagnostics)
+            {
+                CompileLog.Add(diagnostic.ToString());
+            }
+
+            if (!result.Success)
+            {
+                CompileLog.Add("Compilation error");
+                return null;
+            }
+
+            CompileLog.Add("Compilation success!");
+
+            stream.Seek(0, SeekOrigin.Begin);
+
+            Assembly assemby = AppDomain.CurrentDomain.Load(stream.ToArray());
+            return assemby;
+        }
+    }
+
+    public async Task Run()
+    {
+        await Init();
+        var assemby = await this.Compile();
+        if (assemby != null)
+        {
+            var type = assemby.GetExportedTypes().FirstOrDefault();
+            var methodInfo = type.GetMethod("Run");
+            var instance = Activator.CreateInstance(type);
+            ResultText = (string)methodInfo.Invoke(instance, new object[] { "my UserName", 12 });
+        }
+    }
+
+    public async Task Init()
+    {
+        CompileLog = new();
+
+        if (references == null)
+        {
+            references = new List<MetadataReference>();
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                if (assembly.IsDynamic)
+                {
+                    continue;
+                }
+
+                references.Add(
+                    MetadataReference.CreateFromStream(
+                        await _client.GetStreamAsync("/_framework/" + assembly.GetName().Name + ".dll")));
+            }
+        }
+    }
+
+    private StandaloneEditorConstructionOptions EditorConstructionOptions(MonacoEditor editor)
+    {
+        return new StandaloneEditorConstructionOptions
+        {
+            Language = "csharp",
+            GlyphMargin = true,
+            Theme = "Visual Studio Dark",
+            Value = ""
+        };
+    }
+
+    private async Task EditorOnDidInit(MonacoEditorBase editor)
+    {
+        await _editor.AddCommand((int)KeyMode.CtrlCmd | (int)KeyCode.KEY_H, (editor, keyCode) =>
+        {
+            Console.WriteLine("Ctrl+H : Initial editor command is triggered.");
+        });
+
+        var newDecorations = new ModelDeltaDecoration[]
+        {
+            new ModelDeltaDecoration
+            {
+                Range = new BlazorMonaco.Range(3,1,3,1),
+                Options = new ModelDecorationOptions
+                {
+                    IsWholeLine = true,
+                    ClassName = "decorationContentClass",
+                    GlyphMarginClassName = "decorationGlyphMarginClass"
+                }
+            }
+                            };
+
+        decorationIds = await _editor.DeltaDecorations(null, newDecorations);
+        // You can now use 'decorationIds' to change or remove the decorations
+    }
+
+    private void OnContextMenu(EditorMouseEvent eventArg)
+    {
+        Console.WriteLine("OnContextMenu : " + System.Text.Json.JsonSerializer.Serialize(eventArg));
+    }
+}
