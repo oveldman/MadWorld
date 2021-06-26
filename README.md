@@ -14,4 +14,5 @@
 [Smartlook](https://www.smartlook.com/)\
 [BlazorDownloadFile](https://github.com/arivera12/BlazorDownloadFile)\
 [Machine Learning](https://dotnet.microsoft.com/apps/machinelearning-ai/ml-dotnet) \
-[BlazorMonaco](https://github.com/serdarciplak/BlazorMonaco)
+[BlazorMonaco](https://github.com/serdarciplak/BlazorMonaco)\
+[TinyMCE](https://github.com/tinymce/tinymce-blazor)
