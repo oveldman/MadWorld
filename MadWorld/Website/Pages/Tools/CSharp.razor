@@ -5,9 +5,13 @@
 @using Microsoft.CodeAnalysis.Emit;
 @using System.IO;
 @using System.Reflection;
+@using Website.Manager;
 @inject HttpClient _client;
 
-
+<div class="mb-3">
+    <label for="method-torun" class="form-label">Method</label>
+    <input type="text" class="form-control" id="method-torun" @bind="MethodTest">
+</div>
 <MonacoEditor @ref="_editor" Id="cshap-editor" CssClass="Editor-XML" ConstructionOptions="EditorConstructionOptions" OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu" />
 <button type="button" class="btn btn-success" @onclick="Run">Run</button>
 
@@ -29,6 +33,7 @@
 
     private string[] decorationIds;
     private string ResultText { get; set; }
+    private string MethodTest { get; set; } = "Main";
     private MonacoEditor _editor { get; set; }
 
     private List<string> CompileLog { get; set; } = new();
@@ -51,7 +56,7 @@
 
         CompileLog.Add("Parse SyntaxTree Success");
 
-        CSharpCompilation compilation = CSharpCompilation.Create("Website", new[] { syntaxTree },
+        CSharpCompilation compilation = CSharpCompilation.Create("MadWorldEmulator", new[] { syntaxTree },
             references, new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
         using (MemoryStream stream = new MemoryStream())
@@ -85,15 +90,18 @@
         if (assemby != null)
         {
             var type = assemby.GetExportedTypes().FirstOrDefault();
-            var methodInfo = type.GetMethod("Run");
+            var methodInfo = type.GetMethod(MethodTest);
             var instance = Activator.CreateInstance(type);
-            ResultText = (string)methodInfo.Invoke(instance, new object[] { "my UserName", 12 });
+            methodInfo.Invoke(instance, null);
+            ShowResult();
         }
     }
 
     public async Task Init()
     {
         CompileLog = new();
+        ResultText = string.Empty;
+        EditorManager.Reset();
 
         if (references == null)
         {
@@ -105,11 +113,18 @@
                     continue;
                 }
 
+                Console.WriteLine(assembly.GetName().Name);
+
                 references.Add(
                     MetadataReference.CreateFromStream(
                         await _client.GetStreamAsync("/_framework/" + assembly.GetName().Name + ".dll")));
             }
         }
+    }
+
+    private void ShowResult()
+    {
+        ResultText = EditorManager.ResultToPrint;
     }
 
     private StandaloneEditorConstructionOptions EditorConstructionOptions(MonacoEditor editor)
@@ -119,7 +134,19 @@
             Language = "csharp",
             GlyphMargin = true,
             Theme = "Visual Studio Dark",
-            Value = ""
+            Value = @"
+using Website.Manager;
+namespace MadWorldEmulator
+{
+    public class Program
+    {
+        public void Main()
+        {
+            EditorManager.WriteLine(" + "\"Hello World!\"" + @");
+        }
+    }
+}
+"
         };
     }
 

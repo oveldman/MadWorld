@@ -11,43 +11,43 @@
 <p>@Result</p>
 
 @code {
-    private string Result = string.Empty;
-    private int TotalValidations = 0;
+        private string Result = string.Empty;
+        private int TotalValidations = 0;
 
-    private async Task ValidateXML()
-    {
-        Result = string.Empty;
-        TotalValidations++;
-
-        try
+        private async Task ValidateXML()
         {
-            string xmlText = await _editor.GetValue();
-            new XmlDocument().LoadXml(xmlText);
-            Result = $"Xml is Valid ({TotalValidations})";
+            Result = string.Empty;
+            TotalValidations++;
+
+            try
+            {
+                string xmlText = await _editor.GetValue();
+                new XmlDocument().LoadXml(xmlText);
+                Result = $"Xml is Valid ({TotalValidations})";
+            }
+            catch (Exception ex)
+            {
+                ShowError(ex);
+            }
         }
-        catch (Exception ex)
+
+        private void ShowError(Exception ex)
         {
-            ShowError(ex);
+            Result = ex.Message;
         }
-    }
 
-    private void ShowError(Exception ex)
-    {
-        Result = ex.Message;
-    }
+        private MonacoEditor _editor { get; set; }
+        private string ValueToSet { get; set; }
 
-    private MonacoEditor _editor { get; set; }
-    private string ValueToSet { get; set; }
-
-    private StandaloneEditorConstructionOptions EditorConstructionOptions(MonacoEditor editor)
-    {
-        return new StandaloneEditorConstructionOptions
+        private StandaloneEditorConstructionOptions EditorConstructionOptions(MonacoEditor editor)
         {
-            Language = "xml",
-            GlyphMargin = true,
-            Value = ""
-        };
-    }
+            return new StandaloneEditorConstructionOptions
+            {
+                Language = "xml",
+                GlyphMargin = true,
+                Value = string.Empty
+            };
+        }
 
     private async Task EditorOnDidInit(MonacoEditorBase editor)
     {
