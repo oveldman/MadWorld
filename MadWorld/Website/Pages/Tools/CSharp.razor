@@ -122,8 +122,6 @@
                     continue;
                 }
 
-                Console.WriteLine(assembly.GetName().Name);
-
                 references.Add(
                     MetadataReference.CreateFromStream(
                         await _client.GetStreamAsync("/_framework/" + assembly.GetName().Name + ".dll")));
