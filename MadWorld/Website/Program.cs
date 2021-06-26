@@ -19,6 +19,8 @@ using BlazorTable;
 using Microsoft.AspNetCore.SignalR.Client;
 using Website.Services.ExternJS;
 using BlazorDownloadFile;
+using Website.Manager.Interfaces;
+using Website.Manager;
 
 namespace Website
 {
@@ -63,7 +65,11 @@ namespace Website
 
         private static void AddToScope(WebAssemblyHostBuilder builder)
         {
+            //Others
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationProvider>();   
+
+            //Services
             builder.Services.AddScoped<ITest, Test>();
             builder.Services.AddScoped<ISmartlookService, SmartlookService>();
             builder.Services.AddScoped<IAdminService, AdminService>();
@@ -74,11 +80,13 @@ namespace Website
             builder.Services.AddScoped<ILoggingService, LoggingService>();
             builder.Services.AddScoped<IStorageAuthenticatedService, StorageAuthenticatedService>();
             builder.Services.AddScoped<IStorageAnonymousService, StorageAnonymousService>();
-            builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationProvider>();   
-            builder.Services.AddBlazorDownloadFile();
+
+            //Managers
+            builder.Services.AddScoped<ICodeEditorManager, EditorManager>();
 
             //Extern packages
             builder.Services.AddBlazorTable();
+            builder.Services.AddBlazorDownloadFile();
         }
     }
 }

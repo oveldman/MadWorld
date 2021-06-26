@@ -1,12 +1,11 @@
 ﻿@page "/compiler/csharp"
 
 @using Microsoft.CodeAnalysis;
-@using Microsoft.CodeAnalysis.CSharp;
-@using Microsoft.CodeAnalysis.Emit;
-@using System.IO;
 @using System.Reflection;
 @using Website.Manager;
-@inject HttpClient _client;
+@using Website.Manager.Models;
+@using Website.Manager.Interfaces;
+@inject ICodeEditorManager _editorManager;
 
 <div class="mb-3">
     <label for="method-torun" class="form-label">Method</label>
@@ -22,7 +21,7 @@
 </div>
 <div class="card">
     <div class="card-body">
-        @foreach (string log in CompileLog)
+        @foreach (string log in CompileLogs)
         {
             <p>@log</p>
         }
@@ -36,96 +35,42 @@
     private string MethodTest { get; set; } = "Main";
     private MonacoEditor _editor { get; set; }
 
-    private List<string> CompileLog { get; set; } = new();
+    private List<string> CompileLogs { get; set; } = new();
     private List<MetadataReference> references { get; set; }
 
     public async Task<Assembly> Compile()
     {
         string code = await _editor.GetValue();
-        SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(code, new CSharpParseOptions(LanguageVersion.Preview));
-        foreach (var diagnostic in syntaxTree.GetDiagnostics())
+        CompiledCodeResult result = _editorManager.CompileCode(code, references);
+
+        if (result?.CompileLogs?.Any() ?? false)
         {
-            CompileLog.Add(diagnostic.ToString());
+            CompileLogs.AddRange(result.CompileLogs);
         }
 
-        if (syntaxTree.GetDiagnostics().Any(i => i.Severity == DiagnosticSeverity.Error))
-        {
-            CompileLog.Add("Parse SyntaxTree Error!");
-            return null;
-        }
-
-        CompileLog.Add("Parse SyntaxTree Success");
-
-        CSharpCompilation compilation = CSharpCompilation.Create("MadWorldEmulator", new[] { syntaxTree },
-            references, new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
-
-        using (MemoryStream stream = new MemoryStream())
-        {
-            EmitResult result = compilation.Emit(stream);
-
-            foreach (var diagnostic in result.Diagnostics)
-            {
-                CompileLog.Add(diagnostic.ToString());
-            }
-
-            if (!result.Success)
-            {
-                CompileLog.Add("Compilation error");
-                return null;
-            }
-
-            CompileLog.Add("Compilation success!");
-
-            stream.Seek(0, SeekOrigin.Begin);
-
-            Assembly assemby = AppDomain.CurrentDomain.Load(stream.ToArray());
-            return assemby;
-        }
+        return result.Assembly;
     }
 
     public async Task Run()
     {
         await Init();
-        var assemby = await this.Compile();
-        if (assemby != null)
+        var assembly = await this.Compile();
+        if (assembly != null)
         {
-            var type = assemby.GetExportedTypes().FirstOrDefault();
-
-            try
-            {
-                var methodInfo = type.GetMethod(MethodTest);
-                var instance = Activator.CreateInstance(type);
-                methodInfo.Invoke(instance, null);
-            }
-            catch (Exception ex)
-            {
-                CompileLog.Add("Invoke Crash: " + ex.Message + " (Hint: Methode not found!)");
-            }
-
+            CompileLogs = _editorManager.RunCode(assembly, MethodTest, CompileLogs);
             ShowResult();
         }
     }
 
     public async Task Init()
     {
-        CompileLog = new();
+        CompileLogs = new();
         ResultText = string.Empty;
         EditorManager.Reset();
 
         if (references == null)
         {
-            references = new List<MetadataReference>();
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                if (assembly.IsDynamic)
-                {
-                    continue;
-                }
-
-                references.Add(
-                    MetadataReference.CreateFromStream(
-                        await _client.GetStreamAsync("/_framework/" + assembly.GetName().Name + ".dll")));
-            }
+            references = await _editorManager.GetAllReferenceStreams();
         }
     }
 
@@ -176,7 +121,7 @@ namespace MadWorldEmulator
                     GlyphMarginClassName = "decorationGlyphMarginClass"
                 }
             }
-                            };
+                                    };
 
         decorationIds = await _editor.DeltaDecorations(null, newDecorations);
         // You can now use 'decorationIds' to change or remove the decorations

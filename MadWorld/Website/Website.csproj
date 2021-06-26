@@ -48,6 +48,8 @@
     <Folder Include="Services\Helper\" />
     <Folder Include="Pages\Tools\" />
     <Folder Include="Manager\" />
+    <Folder Include="Manager\Interfaces\" />
+    <Folder Include="Manager\Models\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="BlazorTable" />
@@ -62,6 +64,8 @@
     <None Remove="BlazorMonaco" />
     <None Remove="Microsoft.CodeAnalysis.CSharp" />
     <None Remove="Manager\" />
+    <None Remove="Manager\Interfaces\" />
+    <None Remove="Manager\Models\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\typescript\site.ts" />
