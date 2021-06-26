@@ -90,9 +90,18 @@
         if (assemby != null)
         {
             var type = assemby.GetExportedTypes().FirstOrDefault();
-            var methodInfo = type.GetMethod(MethodTest);
-            var instance = Activator.CreateInstance(type);
-            methodInfo.Invoke(instance, null);
+
+            try
+            {
+                var methodInfo = type.GetMethod(MethodTest);
+                var instance = Activator.CreateInstance(type);
+                methodInfo.Invoke(instance, null);
+            }
+            catch (Exception ex)
+            {
+                CompileLog.Add("Invoke Crash: " + ex.Message + " (Hint: Methode not found!)");
+            }
+
             ShowResult();
         }
     }
