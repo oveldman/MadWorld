@@ -1,0 +1,31 @@
+﻿@page "/generator/guid"
+
+<h3>Guid Generator</h3>
+<form class="form-floating">
+    <input type="number" max="@MaxGeneate" class="form-control" id="GuidTotal" @bind="TotalGenerate">
+    <label for="GuidTotal">How many GUID to generate?</label>
+</form>
+<button type="button" class="btn btn-success" @onclick="GenerateGuid">Generate Guid</button>
+<div class="card">
+    <div class="card-body">
+        <textarea class="form-control guid-text" @bind="GuidBody"></textarea>
+    </div>
+</div>
+
+@code {
+    public int MaxGeneate { get; set; } = 4000;
+    public int TotalGenerate { get; set; }
+    public string GuidBody { get; set; }
+
+    private void GenerateGuid()
+    {
+        GuidBody = string.Empty;
+
+        TotalGenerate = TotalGenerate < MaxGeneate ? TotalGenerate : MaxGeneate;
+
+        for (int i = 0; i < TotalGenerate; i++)
+        {
+            GuidBody += Guid.NewGuid().ToString() + Environment.NewLine;
+        }
+    }
+}
