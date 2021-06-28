@@ -4,7 +4,7 @@
 
 <h3>XML</h3>
 
-<MonacoEditor @ref="_editor" Id="xml-editor" CssClass="Editor-XML" ConstructionOptions="EditorConstructionOptions" OnContextMenu="OnContextMenu" />
+<MonacoEditor @ref="_editor" Id="xml-editor" CssClass="editorXML" ConstructionOptions="EditorConstructionOptions" OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu" />
 
 <button type="button" class="btn btn-success" @onclick="ValidateXML">Validate XML</button>
 <h3>Result</h3>
@@ -14,9 +14,13 @@
     private string Result = string.Empty;
     private int TotalValidations = 0;
 
+    private MonacoEditor _editor { get; set; }
+    private string[] decorationIds;
+
     private async Task ValidateXML()
     {
         Result = string.Empty;
+        await SetLine(false, 0);
         TotalValidations++;
 
         try
@@ -25,19 +29,48 @@
             new XmlDocument().LoadXml(xmlText);
             Result = $"Xml is Valid ({TotalValidations})";
         }
-        catch (Exception ex)
+        catch (XmlException xmlException)
         {
-            ShowError(ex);
+            await SetLine(true, xmlException.LineNumber);
+            ShowError(xmlException);
         }
     }
 
-    private void ShowError(Exception ex)
+    private void ShowError(XmlException ex)
     {
         Result = ex.Message;
     }
 
-    private MonacoEditor _editor { get; set; }
-    private string ValueToSet { get; set; }
+    private async Task SetLine(bool showLine, int linenumber)
+    {
+        ModelDeltaDecoration[] newDecorations = new ModelDeltaDecoration[0];
+
+        if (showLine) {
+            newDecorations = new ModelDeltaDecoration[]
+            {
+                new ModelDeltaDecoration
+                {
+                    Range = new BlazorMonaco.Range(linenumber,1,linenumber,1),
+                    Options = new ModelDecorationOptions
+                    {
+                        IsWholeLine = true,
+                        ClassName = "decorationContentClass",
+                        GlyphMarginClassName = "decorationGlyphMarginClass"
+                    }
+                }
+            };
+
+            await _editor.RevealLineInCenter(linenumber, ScrollType.Smooth);
+        }
+
+        decorationIds = await _editor.DeltaDecorations(decorationIds, newDecorations);
+        // You can now use 'decorationIds' to change or remove the decorations
+    }
+
+    private async Task EditorOnDidInit(MonacoEditorBase editor)
+    {
+        await SetLine(false, 0);
+    }
 
     private StandaloneEditorConstructionOptions EditorConstructionOptions(MonacoEditor editor)
     {
