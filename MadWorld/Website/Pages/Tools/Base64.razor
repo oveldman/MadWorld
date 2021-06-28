@@ -30,8 +30,14 @@
 <h3>File to base64</h3>
 <InputFile OnChange="ConvertFile" class="form-control" />
 <h3>Base64 to File</h3>
-<input class="form-control" @bind="FileName" />
-<input class="form-control" @bind="FileType" />
+<form class="form-floating">
+    <input type="text" class="form-control" id="filename" @bind="FileName">
+    <label for="filename">File name</label>
+</form>
+<form class="form-floating">
+    <input type="text" class="form-control" id="filetype" @bind="FileType">
+    <label for="filetype">File type</label>
+</form>
 <button type="button" class="btn btn-success" @onclick="DownloadFile">Convert to file</button>
 
 @code {
