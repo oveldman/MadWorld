@@ -11,43 +11,44 @@
 <p>@Result</p>
 
 @code {
-        private string Result = string.Empty;
-        private int TotalValidations = 0;
+    private string Result = string.Empty;
+    private int TotalValidations = 0;
 
-        private async Task ValidateXML()
+    private async Task ValidateXML()
+    {
+        Result = string.Empty;
+        TotalValidations++;
+
+        try
         {
-            Result = string.Empty;
-            TotalValidations++;
-
-            try
-            {
-                string xmlText = await _editor.GetValue();
-                new XmlDocument().LoadXml(xmlText);
-                Result = $"Xml is Valid ({TotalValidations})";
-            }
-            catch (Exception ex)
-            {
-                ShowError(ex);
-            }
+            string xmlText = await _editor.GetValue();
+            new XmlDocument().LoadXml(xmlText);
+            Result = $"Xml is Valid ({TotalValidations})";
         }
-
-        private void ShowError(Exception ex)
+        catch (Exception ex)
         {
-            Result = ex.Message;
+            ShowError(ex);
         }
+    }
 
-        private MonacoEditor _editor { get; set; }
-        private string ValueToSet { get; set; }
+    private void ShowError(Exception ex)
+    {
+        Result = ex.Message;
+    }
 
-        private StandaloneEditorConstructionOptions EditorConstructionOptions(MonacoEditor editor)
+    private MonacoEditor _editor { get; set; }
+    private string ValueToSet { get; set; }
+
+    private StandaloneEditorConstructionOptions EditorConstructionOptions(MonacoEditor editor)
+    {
+        return new StandaloneEditorConstructionOptions
         {
-            return new StandaloneEditorConstructionOptions
-            {
-                Language = "xml",
-                GlyphMargin = true,
-                Value = string.Empty
-            };
-        }
+            Language = "xml",
+            GlyphMargin = true,
+            Theme = "vs-dark",
+            Value = string.Empty
+        };
+    }
 
     private void OnContextMenu(EditorMouseEvent eventArg)
     {
