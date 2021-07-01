@@ -49,5 +49,17 @@ namespace API.Controllers.Admin
                 TwoFactorEnabled = u.TwoFactorOn
             });
         }
+
+        [HttpGet]
+        [Route("GetAccount")]
+        public UserModel GetAccount(Guid? id)
+        {
+            if (id.HasValue)
+            {
+                return _userExtremeManager.GetUser(id.Value);
+            }
+
+            return new UserModel();
+        }
     }
 }

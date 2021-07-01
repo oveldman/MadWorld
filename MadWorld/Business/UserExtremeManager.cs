@@ -4,6 +4,7 @@ using Business.Interfaces;
 using Common;
 using Datalayer.Database.Queries.Interfaces;
 using Datalayer.Database.Tables.Identity;
+using Website.Shared.Models.Admin;
 
 namespace Business
 {
@@ -31,6 +32,24 @@ namespace Business
         public List<User> GetAllUsers()
         {
             return _accountQueries.GetUsers();
+        }
+
+        public UserModel GetUser(Guid id)
+        {
+            User user = _accountQueries.GetUserByID(id);
+
+            if (user is not null)
+            {
+                return new UserModel
+                {
+                    Id = user.Id,
+                    TwoFactorEnabled = user.TwoFactorOn,
+                    Username = user.UserName,
+                    Email = user.Email
+                };
+            }
+
+            return new UserModel();
         }
 
         public bool SetTwoFactorEnabled(User user, bool enabled)

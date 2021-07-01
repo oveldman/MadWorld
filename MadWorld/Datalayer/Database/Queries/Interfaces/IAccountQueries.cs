@@ -7,6 +7,7 @@ namespace Datalayer.Database.Queries.Interfaces
     public interface IAccountQueries
     {
         User FindUserBySession(Guid? session);
+        User GetUserByID(Guid id);
         List<User> GetUsers();
         bool SetTwoFactorSession(string username, Guid? twoFactorSession);
         bool SetSecretToken(string username, string twofactorSecret);

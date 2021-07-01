@@ -2,11 +2,70 @@
 @layout AdminLayout
 
 @using Microsoft.AspNetCore.Authorization
+@using Website.Services.Interfaces;
+@using Website.Shared.Models.Admin;
 @attribute [Authorize]
+@inject IAdminService _adminService;
 
-<p>Edit account of id: @Id</p>
+@if (Id.Equals("0"))
+{
+    <p>Create a new account</p>
+}
+else
+{
+    <p>Edit account of id: @Id</p>
+}
+
+<EditForm EditContext="UserContext" OnSubmit="@ProcessUser">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="label-email">Email</span>
+        <input @bind="User.Email" type="email" class="form-control" aria-label="Email" aria-describedby="label-email" autocomplete="new-password">
+    </div>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="label-username">Username</span>
+        <input @bind="User.Username" type="text" class="form-control" aria-label="Username" aria-describedby="label-username" >
+    </div>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="label-password">Password</span>
+        <input @bind="User.Password" type="password" class="form-control" aria-label="Password" aria-describedby="label-password" autocomplete="new-password">
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" @bind="User.TwoFactorEnabled" id="TwoFactorEnabled">
+        <label class="form-check-label" for="TwoFactorEnabled">
+            Two factor enabled
+        </label>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save account</button>
+</EditForm>
+
+
 
 @code {
     [Parameter]
     public string Id { get; set; }
+
+    private UserModel User { get; set; } = new();
+    private EditContext UserContext;
+
+    protected override async Task OnInitializedAsync()
+    {
+        UserContext = new(User);
+
+        if (Guid.TryParse(Id, out Guid accountID))
+        {
+            User = await _adminService.GetUser(accountID);
+        }
+    }
+
+    private void ProcessUser()
+    {
+        if (UserContext.Validate())
+        {
+
+        }
+    }
 }

@@ -20,6 +20,11 @@ namespace Datalayer.Database.Queries
             return _context.Users.FirstOrDefault(u => u.TwoFactorSession == session);
         }
 
+        public User GetUserByID(Guid id)
+        {
+            return _context.Users.FirstOrDefault(u => u.Id == id.ToString());
+        }
+
         public List<User> GetUsers()
         {
             return _context.Users.ToList();
