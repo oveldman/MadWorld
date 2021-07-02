@@ -65,6 +65,7 @@ namespace API
             string twoFactorKey = Configuration.GetSection("Secrets:TwoFactorKey")?.Value;
             string issuerUrl = Configuration.GetSection("Settings:Authentication:IssuerUrl")?.Value;
             string issuer = Configuration.GetSection("Settings:Authentication:Issuer")?.Value;
+            string apiUrl = Configuration.GetSection("ApiSettings:Url")?.Value;
 
             services.AddSignalR();
             services.AddResponseCompression(opts =>
@@ -77,6 +78,7 @@ namespace API
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+                c.AddServer(new OpenApiServer { Url = apiUrl, Description = "Mad-World",  } );
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description =
@@ -219,23 +221,18 @@ namespace API
                 .AddConsole();
             });
 
-            ApiSettings.SetSettings(issuer);
+            ApiSettings.SetSettings(apiUrl, issuer);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            string urlSwaggerJson = "/swagger/v1/swagger.json";
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            if (env.IsProduction())
-            {
-                urlSwaggerJson = $"/api{urlSwaggerJson}";
-            }
+            string urlSwaggerJson = $"{ApiSettings.Url}swagger/v1/swagger.json";
 
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint(urlSwaggerJson, "API v1"));
