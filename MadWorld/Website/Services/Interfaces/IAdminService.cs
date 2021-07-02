@@ -11,5 +11,6 @@ namespace Website.Services.Interfaces
         Task<AdminModel> GetIndex();
         Task<List<UserModel>> GetUsers();
         Task<UserModel> GetUser(Guid id);
+        Task<BaseModel> SaveUser(UserModel user);
     }
 }

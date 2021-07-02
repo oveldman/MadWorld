@@ -61,5 +61,23 @@ namespace API.Controllers.Admin
 
             return new UserModel();
         }
+
+        [HttpPost]
+        [Route("SaveAccount")]
+        public BaseModel SaveAccount(UserModel userModel)
+        {
+            if (userModel is not null)
+            {
+                return new BaseModel
+                {
+                    Succeed = true
+                };
+            }
+
+            return new BaseModel
+            {
+                Succeed = false
+            };
+        }
     }
 }

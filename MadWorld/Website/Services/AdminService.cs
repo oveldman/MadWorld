@@ -38,5 +38,10 @@ namespace Website.Services
 
             return await SendGetRequest<UserModel>("admin/getaccount", parameters);
         }
+
+        public async Task<BaseModel> SaveUser(UserModel user)
+        {
+            return await SendPostRequest<BaseModel, UserModel>("admin/saveaccount", user);
+        }
     }
 }

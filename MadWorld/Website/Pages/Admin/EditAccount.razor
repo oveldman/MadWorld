@@ -4,7 +4,9 @@
 @using Microsoft.AspNetCore.Authorization
 @using Website.Services.Interfaces;
 @using Website.Shared.Models.Admin;
+@using Website.Shared.Models;
 @attribute [Authorize]
+@inject NavigationManager Navigation;
 @inject IAdminService _adminService;
 
 @if (Id.Equals("0"))
@@ -26,7 +28,7 @@ else
     </div>
     <div class="input-group mb-3">
         <span class="input-group-text" id="label-username">Username</span>
-        <input @bind="User.Username" type="text" class="form-control" aria-label="Username" aria-describedby="label-username" >
+        <input @bind="User.Username" type="text" class="form-control" aria-label="Username" aria-describedby="label-username">
     </div>
     <div class="input-group mb-3">
         <span class="input-group-text" id="label-password">Password</span>
@@ -48,7 +50,7 @@ else
     [Parameter]
     public string Id { get; set; }
 
-    private UserModel User { get; set; } = new();
+    private UserModel User { get; set; } = new() { IsNew = true };
     private EditContext UserContext;
 
     protected override async Task OnInitializedAsync()
@@ -59,13 +61,20 @@ else
         {
             User = await _adminService.GetUser(accountID);
         }
+
+        UserContext = new(User);
     }
 
-    private void ProcessUser()
+    private async Task ProcessUser()
     {
         if (UserContext.Validate())
         {
+            BaseModel response = await _adminService.SaveUser(User);
 
+            if (response.Succeed)
+            {
+                Navigation.NavigateTo($"/admin/accounts");
+            }
         }
     }
 }
