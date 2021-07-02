@@ -1,8 +1,10 @@
 # Mad-World
 
-[![.NET](https://github.com/oveldman/MadWorld/actions/workflows/dotnet.yml/badge.svg)](https://github.com/oveldman/MadWorld/actions/workflows/dotnet.yml)[![CodeQL](https://github.com/oveldman/MadWorld/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/oveldman/MadWorld/actions/workflows/codeql-analysis.yml)\
+[![.NET](https://github.com/oveldman/MadWorld/actions/workflows/dotnet.yml/badge.svg)](https://github.com/oveldman/MadWorld/actions/workflows/dotnet.yml)[![CodeQL](https://github.com/oveldman/MadWorld/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/oveldman/MadWorld/actions/workflows/codeql-analysis.yml)
+### My sources
 My website: [Mad-World.nl](https://www.mad-world.nl/)\
-My endpoints: [Mad-World API](https://www.mad-world.nl/api/)\
+My endpoints: [Mad-World API](https://www.mad-world.nl/api/)
+### Extern sources
 [Lets-Encrypt](https://certbot.eff.org/lets-encrypt/ubuntufocal-nginx)\
 [Deploy dotnet](https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-5.0)\
 [Custom ILogger](https://docs.microsoft.com/en-us/dotnet/core/extensions/custom-logging-provider)\
