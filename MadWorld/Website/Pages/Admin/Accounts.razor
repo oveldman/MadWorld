@@ -3,6 +3,7 @@
 
 @using Microsoft.AspNetCore.Authorization
 @using Website.Services.Interfaces;
+@using Website.Shared.Models;
 @using Website.Shared.Models.Admin;
 @attribute [Authorize]
 @inject NavigationManager Navigation;
@@ -14,15 +15,17 @@
         <tr>
             <th>Username</th>
             <th>Two factor enabled</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var user in users)
         {
-            <tr @onclick="() => EditAccount(user)">
-                <td>@user.Username</td>
-                <td><input type="checkbox" class="form-check-input" @bind="@user.TwoFactorEnabled" disabled /></td>
-            </tr>
+        <tr>
+            <td @onclick="() => EditAccount(user)">@user.Username</td>
+            <td @onclick="() => EditAccount(user)"><input type="checkbox" class="form-check-input" @bind="@user.TwoFactorEnabled" disabled /></td>
+            <td><span @onclick="() => DeleteAcount(user)" class="oi oi-trash"></span></td>
+        </tr>
         }
     </tbody>
 </table>
@@ -35,6 +38,16 @@
     protected override async Task OnInitializedAsync()
     {
         users = await _adminService.GetUsers();
+    }
+
+    private async Task DeleteAcount(UserModel user)
+    {
+        BaseModel response = await _adminService.DeleteUser(user.Id);
+
+        if (response.Succeed)
+        {
+            users.Remove(user);
+        }
     }
 
     private void EditAccount(UserModel user)

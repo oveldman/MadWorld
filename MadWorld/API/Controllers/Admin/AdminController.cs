@@ -40,6 +40,24 @@ namespace API.Controllers.Admin
             };
         }
 
+        [HttpDelete]
+        [Route("DeleteAccount")]
+        public async Task<BaseModel> DeleteAccount(Guid? id)
+        {
+            if (id.HasValue)
+            {
+                return new BaseModel
+                {
+                    Succeed = true,
+                };
+            }
+
+            return new BaseModel
+            {
+                ErrorMessage = "ID is required"
+            };
+        }
+
         [HttpGet]
         [Route("GetAllAccounts")]
         public IEnumerable<UserModel> GetAllAccounts()

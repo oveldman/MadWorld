@@ -15,6 +15,20 @@ namespace Website.Services
     {
         public AdminService(IHttpClientFactory clientFactory, AuthenticationStateProvider state, NavigationManager navigation) : base(clientFactory, state, navigation) { }
 
+        public async Task<BaseModel> DeleteUser(string id)
+        {
+            List<UrlParameter> parameters = new()
+            {
+                new UrlParameter
+                {
+                    Name = "id",
+                    Value = id
+                }
+            };
+
+            return await SendDeleteRequest<BaseModel>("admin/deleteaccount", parameters);
+        }
+
         public async Task<AdminModel> GetIndex()
         {
             return await SendGetRequest<AdminModel>("admin");

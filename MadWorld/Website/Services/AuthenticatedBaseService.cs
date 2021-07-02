@@ -26,6 +26,29 @@ namespace Website.Services
             _navigation = navigation;
         }
 
+        protected async Task<T> SendDeleteRequest<T>(string url) where T : new()
+        {
+            return await SendDeleteRequest<T>(url, new List<UrlParameter>());
+        }
+
+        protected async Task<T> SendDeleteRequest<T>(string url, List<UrlParameter> urlParameters) where T : new()
+        {
+            if (urlParameters != null && urlParameters.Any())
+            {
+                url = ServiceHelper.BuildUrl(url, urlParameters);
+            }
+
+            bool isAuthenticated = await SetBearerTokenIfEmpty();
+
+            if (isAuthenticated)
+            {
+                HttpResponseMessage response = await _client.DeleteAsync(url);
+                return await response.Content.ReadFromJsonAsync<T>();
+            }
+
+            return new T();
+        }
+
         protected async Task<T> SendGetRequest<T>(string url) where T : new()
         {
             return await SendGetRequest<T>(url, new List<UrlParameter>());
@@ -54,6 +77,19 @@ namespace Website.Services
 
             if (isAuthenticated) {
                 HttpResponseMessage response = await _client.PostAsJsonAsync(url, request);
+                return await response.Content.ReadFromJsonAsync<T>();
+            }
+
+            return new T();
+        }
+
+        protected async Task<T> SendPutRequest<T, Y>(string url, Y request) where T : new()
+        {
+            bool isAuthenticated = await SetBearerTokenIfEmpty();
+
+            if (isAuthenticated)
+            {
+                HttpResponseMessage response = await _client.PutAsJsonAsync(url, request);
                 return await response.Content.ReadFromJsonAsync<T>();
             }
 

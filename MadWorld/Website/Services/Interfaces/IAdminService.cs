@@ -8,6 +8,7 @@ namespace Website.Services.Interfaces
 {
     public interface IAdminService
     {
+        Task<BaseModel> DeleteUser(string id);
         Task<AdminModel> GetIndex();
         Task<List<UserModel>> GetUsers();
         Task<UserModel> GetUser(Guid id);
