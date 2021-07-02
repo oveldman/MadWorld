@@ -242,5 +242,19 @@ namespace API.Managers
                 ErrorMessage = "Password isn't valid"
             };
         }
+
+        public async Task<BaseModel> DeleteAccount(string id)
+        {
+            User user = await _userManager.FindByIdAsync(id);
+
+            if (user is not null) {
+                await _userManager.DeleteAsync(user);
+            }
+
+            return new BaseModel
+            {
+                Succeed = true
+            };
+        }
     }
 }

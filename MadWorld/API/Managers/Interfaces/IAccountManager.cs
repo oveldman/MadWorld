@@ -8,6 +8,7 @@ namespace API.Managers.Interfaces
 {
     public interface IAccountManager
     {
+        Task<BaseModel> DeleteAccount(string id);
         Task<BaseModel> ChangePassword(string username, string oldPassword, string newPassword);
         Task<BaseModel> SaveAccount(UserModel user);
         Task<NewTwoFactorResponse> GetNewTwoFactorAuthentication(string username, bool refreshToken);

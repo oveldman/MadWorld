@@ -42,14 +42,11 @@ namespace API.Controllers.Admin
 
         [HttpDelete]
         [Route("DeleteAccount")]
-        public async Task<BaseModel> DeleteAccount(Guid? id)
+        public async Task<BaseModel> DeleteAccount(string id)
         {
-            if (id.HasValue)
+            if (!string.IsNullOrEmpty(id))
             {
-                return new BaseModel
-                {
-                    Succeed = true,
-                };
+                return await _accountManager.DeleteAccount(id);
             }
 
             return new BaseModel
