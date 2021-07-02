@@ -14,7 +14,7 @@ namespace Website.Services
         public AccountService(IHttpClientFactory clientFactory, AuthenticationStateProvider state, NavigationManager navigation) : base(clientFactory, state, navigation) { }
         public async Task<BaseModel> ChangePassword(PasswordRequest passwordRequest)
         {
-            return await SendPostRequest<BaseModel, PasswordRequest>("account/changepassword", passwordRequest);
+            return await SendPutRequest<BaseModel, PasswordRequest>("account/changepassword", passwordRequest);
         }
 
         public async Task<NewTwoFactorResponse> GetTwoFactorInfo()

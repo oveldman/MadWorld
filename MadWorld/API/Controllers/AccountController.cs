@@ -28,7 +28,7 @@ namespace API.Controllers
             _accountManager = accountManager;
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("ChangePassword")]
         public async Task<BaseModel> ChangePassword(PasswordRequest loginRequest)
         {
