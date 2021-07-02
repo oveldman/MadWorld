@@ -9,6 +9,7 @@ namespace Datalayer.Database.Queries.Interfaces
         User FindUserBySession(Guid? session);
         User GetUserByID(Guid id);
         List<User> GetUsers();
+        bool SaveUser(User user);
         bool SetTwoFactorSession(string username, Guid? twoFactorSession);
         bool SetSecretToken(string username, string twofactorSecret);
         bool SetTwoFactorEnabled(string username, bool enabled);

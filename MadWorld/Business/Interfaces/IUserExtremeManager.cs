@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Datalayer.Database.Tables.Identity;
+using Website.Shared.Models;
 using Website.Shared.Models.Admin;
 
 namespace Business.Interfaces

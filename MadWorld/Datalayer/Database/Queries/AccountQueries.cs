@@ -30,6 +30,14 @@ namespace Datalayer.Database.Queries
             return _context.Users.ToList();
         }
 
+        public bool SaveUser(User user)
+        {
+            _context.Add(user);
+            _context.SaveChangesAsync();
+
+            return true;
+        }
+
         public bool SetSecretToken(string username, string twofactorSecret)
         {
             User user = _context.Users.FirstOrDefault(u => u.UserName.Equals(username));

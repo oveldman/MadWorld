@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Managers.Interfaces;
 using Business.Interfaces;
 using Datalayer.Database.Tables.Identity;
 using Microsoft.AspNetCore.Authorization;
@@ -19,11 +20,13 @@ namespace API.Controllers.Admin
     {
         private readonly ILogger<AdminController> _logger;
 
+        private readonly IAccountManager _accountManager;
         private readonly IUserExtremeManager _userExtremeManager;
 
-        public AdminController(ILogger<AdminController> logger, IUserExtremeManager userExtremeManager)
+        public AdminController(ILogger<AdminController> logger, IUserExtremeManager userExtremeManager, IAccountManager accountManager)
         {
             _logger = logger;
+            _accountManager = accountManager;
             _userExtremeManager = userExtremeManager;
         }
 
@@ -64,14 +67,11 @@ namespace API.Controllers.Admin
 
         [HttpPost]
         [Route("SaveAccount")]
-        public BaseModel SaveAccount(UserModel userModel)
+        public async Task<BaseModel> SaveAccount(UserModel userModel)
         {
             if (userModel is not null)
             {
-                return new BaseModel
-                {
-                    Succeed = true
-                };
+                return await _accountManager.SaveAccount(userModel);
             }
 
             return new BaseModel

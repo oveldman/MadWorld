@@ -9,6 +9,13 @@
 @inject NavigationManager Navigation;
 @inject IAdminService _adminService;
 
+@if (ShowValidation)
+{
+    <div class="alert alert-warning" role="alert">
+        @ErrorMessage
+    </div>
+}
+
 @if (Id.Equals("0"))
 {
     <p>Create a new account</p>
@@ -50,6 +57,9 @@ else
     [Parameter]
     public string Id { get; set; }
 
+    private bool ShowValidation { get; set; }
+    private string ErrorMessage { get; set; }
+
     private UserModel User { get; set; } = new() { IsNew = true };
     private EditContext UserContext;
 
@@ -75,6 +85,9 @@ else
             {
                 Navigation.NavigateTo($"/admin/accounts");
             }
+
+            ShowValidation = !response.Succeed;
+            ErrorMessage = response.ErrorMessage;
         }
     }
 }

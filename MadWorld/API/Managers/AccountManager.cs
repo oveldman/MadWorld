@@ -13,6 +13,7 @@ using QRCoder;
 using TwoFactorAuthNet;
 using Website.Shared.Models;
 using Website.Shared.Models.Account;
+using Website.Shared.Models.Admin;
 
 namespace API.Managers
 {
@@ -117,6 +118,49 @@ namespace API.Managers
             return response;
         }
 
+        public async Task<BaseModel> SaveAccount(UserModel userModel)
+        {
+            User user;
+
+            if (userModel.IsNew)
+            {
+                BaseModel result = await CreateNewAccount(userModel);
+
+                if (!result.Succeed) return result;
+
+                user = await _userManager.FindByEmailAsync(userModel.Email);
+            }
+            else
+            {
+                user = await _userManager.FindByIdAsync(userModel.Id);
+            }
+
+            if (user is null)
+            {
+                return new BaseModel
+                {
+                    ErrorMessage = "User not found"
+                };
+            }
+
+            if (!string.IsNullOrEmpty(userModel.Password))
+            {
+                BaseModel result = await SetPassword(user, userModel.Password);
+
+                if (!result.Succeed) return result;
+            }
+
+            if (!userModel.IsNew)
+            {
+                return await EditAccount(userModel, user);
+            }
+
+            return new BaseModel
+            {
+                Succeed = true
+            };
+        }
+
         private string GenerateQrCode(string applicationName, string secret)
         {
             if (string.IsNullOrEmpty(secret)) return string.Empty;
@@ -135,6 +179,68 @@ namespace API.Managers
                     return Convert.ToBase64String(stream.ToArray());
                 }
             }
+        }
+
+        private async Task<BaseModel> CreateNewAccount(UserModel userModel)
+        {
+            User user = new()
+            {
+                Email = userModel.Email,
+                UserName = userModel.Username,
+                EmailConfirmed = true
+            };
+
+            IdentityResult result = await _userManager.CreateAsync(user);
+
+            return new BaseModel
+            {
+                Succeed = result.Succeeded,
+                ErrorMessage = result?.Errors?.FirstOrDefault()?.Description
+            };
+        }
+
+        private async Task<BaseModel> EditAccount(UserModel userModel, User user)
+        {
+            user.Email = userModel.Email;
+            user.UserName = userModel.Username;
+            user.TwoFactorOn = !userModel.TwoFactorEnabled ? false : user.TwoFactorOn;
+
+            IdentityResult result = await _userManager.UpdateAsync(user);
+
+            return new BaseModel
+            {
+                Succeed = result.Succeeded,
+                ErrorMessage = result?.Errors?.FirstOrDefault()?.Description
+            };
+        }
+
+        private async Task<BaseModel> SetPassword(User user, string password)
+        {
+            bool passwordValid = true;
+
+            foreach (IPasswordValidator<User> validator in _userManager.PasswordValidators)
+            {
+                IdentityResult validResult = await validator.ValidateAsync(_userManager, user, password);
+                passwordValid = validResult.Succeeded;
+
+                if (!passwordValid) break;
+            }
+
+            if (passwordValid)
+            {
+                await _userManager.RemovePasswordAsync(user);
+                await _userManager.AddPasswordAsync(user, password);
+
+                return new BaseModel
+                {
+                    Succeed = true
+                };
+            }
+
+            return new BaseModel
+            {
+                ErrorMessage = "Password isn't valid"
+            };
         }
     }
 }

@@ -4,6 +4,7 @@ using Business.Interfaces;
 using Common;
 using Datalayer.Database.Queries.Interfaces;
 using Datalayer.Database.Tables.Identity;
+using Website.Shared.Models;
 using Website.Shared.Models.Admin;
 
 namespace Business
