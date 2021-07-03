@@ -1,0 +1,50 @@
+﻿@page "/editor/html"
+
+@using BlazorDownloadFile;
+@using TinyMCE.Blazor;
+@using Website.Settings;
+@inject IBlazorDownloadFileService _blazorDownloadFileService;
+@inject WebsiteSettings settings;
+
+<Editor ApiKey="@settings.TinyMceKey" Conf="EditorConfig" @bind-Value="HtmlContent" />
+
+@if (ShowValidation)
+{
+    <div class="alert alert-warning" role="alert">
+        Filename and html body is required.
+    </div>
+}
+
+<form class="form-floating">
+    <input type="text" class="form-control" id="filename" @bind="FileName">
+    <label for="filename">File name</label>
+</form>
+
+<button type="button" class="btn btn-success" @onclick="DownloadHtml">Save to html file</button>
+
+@code {
+    private string FileName = string.Empty;
+    private string FileType = "text/HTML";
+    private string HtmlContent = string.Empty;
+
+    private bool ShowValidation = false;
+
+    private Dictionary<string, object> EditorConfig = new Dictionary<string, object>{
+        {"height", 500}
+    };
+
+    public async Task DownloadHtml()
+    {
+        ShowValidation = false;
+
+        if (string.IsNullOrEmpty(FileName) || string.IsNullOrEmpty(HtmlContent))
+        {
+            ShowValidation = true;
+            return;
+        }
+
+        string combinedFilename = $"{FileName}.html";
+
+        await _blazorDownloadFileService.DownloadFileFromText(combinedFilename, HtmlContent, FileType);
+    }
+}
