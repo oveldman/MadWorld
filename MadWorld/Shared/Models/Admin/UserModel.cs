@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Website.Shared.Models.Admin
@@ -13,5 +14,6 @@ namespace Website.Shared.Models.Admin
         public string Password { get; set; }
         public bool TwoFactorEnabled { get; set; }
         public bool IsNew { get; set; }
+        public List<RoleModel> Roles { get; set; }
     }
 }

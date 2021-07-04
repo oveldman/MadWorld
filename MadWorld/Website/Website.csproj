@@ -68,6 +68,8 @@
     <None Remove="Manager\Interfaces\" />
     <None Remove="Manager\Models\" />
     <None Remove="TinyMCE.Blazor" />
+    <None Remove="iTextSharp.LGPLv2.Core" />
+    <None Remove="Syncfusion.HtmlToPdfConverter.QtWebKit.Net.Core" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\typescript\site.ts" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -21,12 +22,14 @@ namespace API.Managers
     {
         TwoFactorAuth _twoFactorAuth;
         IUserExtremeManager _userExtremeManager;
+        RoleManager<IdentityRole> _roleManager;
         UserManager<User> _userManager;
 
-        public AccountManager(UserManager<User> userManager, IUserExtremeManager userExtremeManager, TwoFactorAuth twoFactorAuth)
+        public AccountManager(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IUserExtremeManager userExtremeManager, TwoFactorAuth twoFactorAuth)
         {
             _twoFactorAuth = twoFactorAuth;
             _userExtremeManager = userExtremeManager;
+            _roleManager = roleManager;
             _userManager = userManager;
         }
 
@@ -255,6 +258,26 @@ namespace API.Managers
             {
                 Succeed = true
             };
+        }
+
+        public async Task<UserModel> GetRoles(UserModel user)
+        {
+            User currentUser = await _userManager.FindByIdAsync(user.Id);
+
+            List<IdentityRole> allRolesInManager = _roleManager.Roles.ToList();
+
+            if (allRolesInManager is null)
+            {
+                user.Roles = new();
+                return user;
+            }
+
+            user.Roles = allRolesInManager.Select(r => new RoleModel { Name = r.Name }).ToList();
+
+            IList<string> allUserRoles = await _userManager.GetRolesAsync(currentUser);
+            user.Roles.ForEach(r => r.HasAccess = allUserRoles.Contains(r.Name));
+
+            return user;
         }
     }
 }

@@ -35,16 +35,23 @@
 
     public async Task DownloadHtml()
     {
+        if (!Validate()) return;
+
+        string combinedFilename = $"{FileName}.html";
+
+        await _blazorDownloadFileService.DownloadFileFromText(combinedFilename, HtmlContent, FileType);
+    }
+
+    private bool Validate()
+    {
         ShowValidation = false;
 
         if (string.IsNullOrEmpty(FileName) || string.IsNullOrEmpty(HtmlContent))
         {
             ShowValidation = true;
-            return;
+            return false;
         }
 
-        string combinedFilename = $"{FileName}.html";
-
-        await _blazorDownloadFileService.DownloadFileFromText(combinedFilename, HtmlContent, FileType);
+        return true;
     }
 }

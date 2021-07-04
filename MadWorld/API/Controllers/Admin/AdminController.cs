@@ -70,11 +70,12 @@ namespace API.Controllers.Admin
 
         [HttpGet]
         [Route("GetAccount")]
-        public UserModel GetAccount(Guid? id)
+        public async Task<UserModel> GetAccount(Guid? id)
         {
             if (id.HasValue)
             {
-                return _userExtremeManager.GetUser(id.Value);
+                UserModel user = _userExtremeManager.GetUser(id.Value);
+                return await _accountManager.GetRoles(user);
             }
 
             return new UserModel();

@@ -10,6 +10,7 @@ namespace API.Managers.Interfaces
     {
         Task<BaseModel> DeleteAccount(string id);
         Task<BaseModel> ChangePassword(string username, string oldPassword, string newPassword);
+        Task<UserModel> GetRoles(UserModel user);
         Task<BaseModel> SaveAccount(UserModel user);
         Task<NewTwoFactorResponse> GetNewTwoFactorAuthentication(string username, bool refreshToken);
         Task<NewTwoFactorResponse> GetNewTwoFactorTurnOn(string username, string token);
