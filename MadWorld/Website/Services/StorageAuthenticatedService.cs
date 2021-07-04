@@ -30,7 +30,7 @@ namespace Website.Services
                 }
             };
 
-            return await SendGetRequest<BaseModel>("adminstorage/delete", parameters);
+            return await SendDeleteRequest<BaseModel>("adminstorage/delete", parameters);
         }
 
         public async Task<FilesResponse> GetAll()

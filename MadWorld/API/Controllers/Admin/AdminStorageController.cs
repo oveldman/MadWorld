@@ -31,7 +31,7 @@ namespace API.Controllers.Admin
             return _fileManager.CreateFile(request.ID, request.Name, request.Type, request.BodyBase64);
         }
 
-        [HttpGet]
+        [HttpDelete]
         [Route("Delete")]
         public BaseModel DeleteFile(Guid? id)
         {
