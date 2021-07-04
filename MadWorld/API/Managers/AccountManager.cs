@@ -164,6 +164,40 @@ namespace API.Managers
             };
         }
 
+        public async Task<BaseModel> DeleteAccount(string id)
+        {
+            User user = await _userManager.FindByIdAsync(id);
+
+            if (user is not null) {
+                await _userManager.DeleteAsync(user);
+            }
+
+            return new BaseModel
+            {
+                Succeed = true
+            };
+        }
+
+        public async Task<UserModel> GetRoles(UserModel user)
+        {
+            User currentUser = await _userManager.FindByIdAsync(user.Id);
+
+            List<IdentityRole> allRolesInManager = _roleManager.Roles.ToList();
+
+            if (allRolesInManager is null)
+            {
+                user.Roles = new();
+                return user;
+            }
+
+            user.Roles = allRolesInManager.Select(r => new RoleModel { Name = r.Name }).ToList();
+
+            IList<string> allUserRoles = await _userManager.GetRolesAsync(currentUser);
+            user.Roles.ForEach(r => r.HasAccess = allUserRoles.Contains(r.Name));
+
+            return user;
+        }
+
         private string GenerateQrCode(string applicationName, string secret)
         {
             if (string.IsNullOrEmpty(secret)) return string.Empty;
@@ -244,40 +278,6 @@ namespace API.Managers
             {
                 ErrorMessage = "Password isn't valid"
             };
-        }
-
-        public async Task<BaseModel> DeleteAccount(string id)
-        {
-            User user = await _userManager.FindByIdAsync(id);
-
-            if (user is not null) {
-                await _userManager.DeleteAsync(user);
-            }
-
-            return new BaseModel
-            {
-                Succeed = true
-            };
-        }
-
-        public async Task<UserModel> GetRoles(UserModel user)
-        {
-            User currentUser = await _userManager.FindByIdAsync(user.Id);
-
-            List<IdentityRole> allRolesInManager = _roleManager.Roles.ToList();
-
-            if (allRolesInManager is null)
-            {
-                user.Roles = new();
-                return user;
-            }
-
-            user.Roles = allRolesInManager.Select(r => new RoleModel { Name = r.Name }).ToList();
-
-            IList<string> allUserRoles = await _userManager.GetRolesAsync(currentUser);
-            user.Roles.ForEach(r => r.HasAccess = allUserRoles.Contains(r.Name));
-
-            return user;
         }
     }
 }
