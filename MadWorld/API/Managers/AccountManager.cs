@@ -258,7 +258,7 @@ namespace API.Managers
             IList<string> oldUserRoles = await _userManager.GetRolesAsync(user);
             if (oldUserRoles is null) oldUserRoles = new List<string>();
 
-            List<string> userHasRoles = userModel.Roles
+            List<string> userHasRoles = userModel?.Roles?
                                                     .Where(r => r.HasAccess && allRolesInManager.Contains(r.Name))
                                                     .Select(r => r.Name)
                                                     .ToList();

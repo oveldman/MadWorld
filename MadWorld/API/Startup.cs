@@ -164,6 +164,7 @@ namespace API
                 options.UseNpgsql(Configuration.GetConnectionString("AuthenticationContext"), b => b.MigrationsAssembly("API")));
 
             services.AddDefaultIdentity<User>()
+                        .AddRoles<IdentityRole>()
                         .AddEntityFrameworkStores<AuthenticationContext>();
 
             services.AddIdentityServer()
