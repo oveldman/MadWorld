@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -36,12 +34,10 @@ namespace API.Controllers.Admin
         {
             if (!_roleManager.Roles.Any())
             {
-                PropertyInfo[] propertiesRoles = typeof(UserRoles).GetProperties();
-
-                foreach (PropertyInfo property in propertiesRoles)
+                foreach (string roleName in UserRoles.GetAllPropertyNames())
                 {
                     IdentityRole identityRole = new() {
-                        Name = property.Name
+                        Name = roleName
                     };
 
                     await _roleManager.CreateAsync(identityRole);
