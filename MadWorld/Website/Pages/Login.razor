@@ -19,21 +19,21 @@
 {
     <div class="mb-3">
         <label for="email" class="form-label">Email address</label>
-        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" @bind="Username">
+        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" @bind="Username" @onkeyup="LoginInApiOnPressEnter">
         <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
     </div>
     <div class="mb-3">
         <label for="password" class="form-label">Password</label>
-        <input type="password" class="form-control" id="password" @bind="Password">
+        <input type="password" class="form-control" id="password" @bind="Password" @onkeydown="LoginInApiOnPressEnter">
     </div>
 
-    <button class="btn btn-primary" @onclick="LoginInApi">Login</button>
+    <button class="btn btn-primary" @onclick="LoginInApi" >Login</button>
 }
 else
 {
     <div class="mb-3">
         <label for="token" class="form-label">Two Factor Token</label>
-        <input type="text" class="form-control" id="token" aria-describedby="emailHelp" @bind="Token">
+        <input type="text" class="form-control" id="token" aria-describedby="emailHelp" @bind="Token" @onkeyup="VerifiedTwoFactorOnPressEnter">
     </div>
 
     <button class="btn btn-primary" @onclick="VerifiedTwoFactor">Verify </button>
@@ -69,7 +69,14 @@ else
                 RedirectToHome();
             }
         }
+    }
 
+    private async Task LoginInApiOnPressEnter(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        {
+            await LoginInApi();
+        }
     }
 
     private async Task VerifiedTwoFactor()
@@ -81,6 +88,14 @@ else
         if (loginResponse.Succeed)
         {
             RedirectToHome();
+        }
+    }
+
+    private async Task VerifiedTwoFactorOnPressEnter(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        {
+            await VerifiedTwoFactor();
         }
     }
 
