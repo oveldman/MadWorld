@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
-using API.Managers.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Website.Shared.Enum;
 using Website.Shared.Models;
 using Website.Shared.Models.Admin;
+using Website.Shared.Opions;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -36,10 +36,12 @@ namespace API.Controllers.Admin
         {
             if (!_roleManager.Roles.Any())
             {
-                foreach (UserRoles role in (UserRoles[])Enum.GetValues(typeof(UserRoles)))
+                PropertyInfo[] propertiesRoles = typeof(UserRoles).GetProperties();
+
+                foreach (PropertyInfo property in propertiesRoles)
                 {
                     IdentityRole identityRole = new() {
-                        Name = nameof(role)
+                        Name = property.Name
                     };
 
                     await _roleManager.CreateAsync(identityRole);
@@ -64,6 +66,11 @@ namespace API.Controllers.Admin
                 };
 
                 await _roleManager.CreateAsync(role);
+
+                return new BaseModel
+                {
+                    Succeed = true
+                };
             }
 
             return new BaseModel

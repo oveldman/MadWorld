@@ -23,12 +23,14 @@ namespace API.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly ILogger<AuthenticationController> _logger;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<User> _userManager;
         private readonly IAuthenticationManager _authenticationManager;
 
-        public AuthenticationController(ILogger<AuthenticationController> logger, UserManager<User> userManager, IAuthenticationManager authenticationManager)
+        public AuthenticationController(ILogger<AuthenticationController> logger, RoleManager<IdentityRole> roleManager, UserManager<User> userManager, IAuthenticationManager authenticationManager)
         {
             _logger = logger;
+            _roleManager = roleManager;
             _userManager = userManager;
             _authenticationManager = authenticationManager;
         }
@@ -53,15 +55,29 @@ namespace API.Controllers
         [Route("FirstTime")]
         public async Task<BaseModel> FirstTime()
         {
-            var user = new User()
+            User user = new()
             {
                 Email = "test@test.nl",
                 UserName = "test@test.nl",
                 EmailConfirmed = true,
             };
 
+            IdentityRole role = new()
+            {
+                Name = "Admin"
+            };
+
+            await _roleManager.CreateAsync(role);
+
             string password = "{-1NotMyRealPassword1-}";
             var result = await _userManager.CreateAsync(user, password);
+
+            if (result.Succeeded)
+            {
+                user = await _userManager.FindByEmailAsync(user.Email);
+                await _userManager.AddToRoleAsync(user, role.Name);
+            }
+
             return new BaseModel()
             {
                 Succeed = true,

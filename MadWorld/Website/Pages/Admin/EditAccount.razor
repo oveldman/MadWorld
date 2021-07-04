@@ -25,51 +25,53 @@ else
     <p>Edit account of id: @Id</p>
 }
 
-<EditForm EditContext="UserContext" OnSubmit="@ProcessUser">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+@if (Init) {
+    <EditForm EditContext="UserContext" OnSubmit="@ProcessUser">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
-    <div class="input-group mb-3">
-        <span class="input-group-text" id="label-email">Email</span>
-        <input @bind="User.Email" type="email" class="form-control" aria-label="Email" aria-describedby="label-email" autocomplete="new-password">
-    </div>
-    <div class="input-group mb-3">
-        <span class="input-group-text" id="label-username">Username</span>
-        <input @bind="User.Username" type="text" class="form-control" aria-label="Username" aria-describedby="label-username">
-    </div>
-    <div class="input-group mb-3">
-        <span class="input-group-text" id="label-password">Password</span>
-        <input @bind="User.Password" type="password" class="form-control" aria-label="Password" aria-describedby="label-password" autocomplete="new-password">
-    </div>
-    <div class="form-check">
-        <input class="form-check-input" type="checkbox" @bind="User.TwoFactorEnabled" id="TwoFactorEnabled">
-        <label class="form-check-label" for="TwoFactorEnabled">
-            Two factor enabled
-        </label>
-    </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="label-email">Email</span>
+            <input @bind="User.Email" type="email" class="form-control" aria-label="Email" aria-describedby="label-email" autocomplete="new-password">
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="label-username">Username</span>
+            <input @bind="User.Username" type="text" class="form-control" aria-label="Username" aria-describedby="label-username">
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="label-password">Password</span>
+            <input @bind="User.Password" type="password" class="form-control" aria-label="Password" aria-describedby="label-password" autocomplete="new-password">
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" @bind="User.TwoFactorEnabled" id="TwoFactorEnabled">
+            <label class="form-check-label" for="TwoFactorEnabled">
+                Two factor enabled
+            </label>
+        </div>
 
-    <h3>Roles</h3>
-    <p>This person has access to the following roles: </p>
-    @if (User?.Roles?.Any() ?? false)
-    {
-        for (int i = 0; i < User.Roles.Count(); i++)
+        <h3>Roles</h3>
+        <p>This person has access to the following roles: </p>
+        @if (User?.Roles?.Any() ?? false)
         {
-            string roleID = $"Role{i}"; 
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" @bind="User.Roles[i].HasAccess" id="@roleID">
-                <label class="form-check-label" for="@roleID">
-                    @User.Roles[i].Name
-                </label>
-            </div>
+            foreach (RoleModel role in User.Roles)
+            {
+                string roleID = $"Role{role.Name}";
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" @bind="role.HasAccess" id="@roleID">
+                    <label class="form-check-label" for="@roleID">
+                        @role.Name
+                    </label>
+                </div>
+            }
         }
-    }
-    else
-    {
-        <p><i>There are no roles at the moment.</i></p>
-    }
+        else
+        {
+            <p><i>There are no roles at the moment.</i></p>
+        }
 
-    <button type="submit" class="btn btn-success">Save account</button>
-</EditForm>
+        <button type="submit" class="btn btn-success">Save account</button>
+    </EditForm>
+}
 
 
 
@@ -77,6 +79,7 @@ else
     [Parameter]
     public string Id { get; set; }
 
+    private bool Init { get; set; }
     private bool ShowValidation { get; set; }
     private string ErrorMessage { get; set; }
 
@@ -93,6 +96,7 @@ else
         }
 
         UserContext = new(User);
+        Init = true;
     }
 
     private async Task ProcessUser()

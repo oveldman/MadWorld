@@ -1,7 +1,82 @@
 ﻿@page "/admin/roles"
 
+@using BlazorTable;
+@using Website.Shared.Models;
+@using Website.Shared.Models.Admin;
+@using Website.Services.Interfaces;
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize]
+@inject IRoleService _roleService;
 
+<Table class="table table-striped table-dark table-bordered table-hover" TableHeadClass="thead-light" TableItem="AdminRoleModel" Items="AllRoles" PageSize="15" ShowSearchBar="true">
+    <Column TableItem="AdminRoleModel" Title="Name" Field="@(x => x.Name)" Sortable="true" Filterable="false" Width="90%" />
+    <Column TableItem="AdminRoleModel" Title="Delete" Field="@(x => x.ID)" Sortable="true" Filterable="false" Width="10%">
+        <Template>
+            <span @onclick="async () => await DeleteRole(context.ID)" class="oi oi-trash"></span>
+        </Template>
+    </Column>
+    <Pager ShowPageNumber="true" ShowTotalCount="true" />
+</Table>
+<p>Add new role</p>
+<form class="form-floating">
+    <input type="text" class="form-control" id="new-role-name" @bind="NewRoleName">
+    <label for="new-role-name">Role name</label>
+</form>
+<button type="button" class="btn btn-success" @onclick="AddRole">Add new role</button>
+
+@if (Init && (!AllRoles?.Any() ?? false)) {
+    <button type="button" class="btn btn-success" @onclick="AddStandardroles">Add standard roles</button>
+}
 
 @code {
+    private bool Init { get; set; } = false;
+    private List<AdminRoleModel> AllRoles = new();
+    private string NewRoleName = string.Empty;
 
+    protected override async Task OnInitializedAsync()
+    {
+        AllRoles = await _roleService.GetAll();
+        Init = true;
+    }
+
+    public async Task AddRole()
+    {
+        AdminRoleModel model = new()
+        {
+            ID = "0",
+            Name = NewRoleName
+        };
+
+        BaseModel response = await _roleService.Add(model);
+
+        if (response.Succeed)
+        {
+            AllRoles = await _roleService.GetAll();
+        }
+    }
+
+    public async Task AddStandardroles()
+    {
+        BaseModel response = await _roleService.AddStandard();
+
+        if (response.Succeed)
+        {
+            AllRoles = await _roleService.GetAll();
+        }
+    }
+
+    public async Task DeleteRole(string id)
+    {
+        AdminRoleModel roleToDelete = AllRoles.FirstOrDefault(r => r.ID.Equals(id));
+
+        if (roleToDelete is not null)
+        {
+            BaseModel response = await _roleService.Delete(roleToDelete);
+
+            if (response.Succeed)
+            {
+                AllRoles.Remove(roleToDelete);
+            }
+        }
+    }
 }
