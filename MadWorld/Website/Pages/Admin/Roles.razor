@@ -4,6 +4,7 @@
 @using Website.Shared.Models;
 @using Website.Shared.Models.Admin;
 @using Website.Services.Interfaces;
+@using Website.Shared.Opions;
 @using Microsoft.AspNetCore.Authorization;
 @attribute [Authorize]
 @inject IRoleService _roleService;
@@ -17,7 +18,7 @@
     </Column>
     <Pager ShowPageNumber="true" ShowTotalCount="true" />
 </Table>
-<p>Add new role</p>
+<p>Add new role <a data-mdb-toggle="tooltip" title="@TooltipTitle"><span class="oi oi-info"></span></a></p>
 <form class="form-floating">
     <input type="text" class="form-control" id="new-role-name" @bind="NewRoleName">
     <label for="new-role-name">Role name</label>
@@ -32,9 +33,13 @@
     private bool Init { get; set; } = false;
     private List<AdminRoleModel> AllRoles = new();
     private string NewRoleName = string.Empty;
+    private List<string> AllAvailableRoleNames = new();
+    private string TooltipTitle = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
+        AllAvailableRoleNames = UserRoles.GetAllPropertyNames();
+        TooltipTitle = $"The standard roles are '{string.Join(",", AllAvailableRoleNames)}'. Only available when there are no roles.";
         AllRoles = await _roleService.GetAll();
         Init = true;
     }
