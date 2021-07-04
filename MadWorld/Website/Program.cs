@@ -74,6 +74,7 @@ namespace Website
             builder.Services.AddScoped<ITest, Test>();
             builder.Services.AddScoped<ISmartlookService, SmartlookService>();
             builder.Services.AddScoped<IAdminService, AdminService>();
+            builder.Services.AddScoped<IRoleService, RoleService>();
             builder.Services.AddScoped<IAccountService, AccountService>();
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<IResumeService, ResumeService>();

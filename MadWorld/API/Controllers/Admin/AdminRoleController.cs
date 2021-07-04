@@ -51,15 +51,13 @@ namespace API.Controllers.Admin
 
         [HttpDelete]
         [Route("Delete")]
-        public async Task<BaseModel> DeleteRole(AdminRoleModel model)
+        public async Task<BaseModel> DeleteRole(string id)
         {
-            if (await _roleManager.RoleExistsAsync(model.Name))
-            {
-                IdentityRole role = await _roleManager.FindByIdAsync(model.ID);
+            IdentityRole role = await _roleManager.FindByIdAsync(id);
 
-                if (role is not null) {
-                    await _roleManager.DeleteAsync(role);
-                }
+            if (role is not null)
+            {
+                await _roleManager.DeleteAsync(role);
             }
 
             return new BaseModel
