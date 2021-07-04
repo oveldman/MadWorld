@@ -20,6 +20,12 @@ namespace Website.Services
             return await SendPostRequest<BaseModel, AdminRoleModel>("adminrole/add", role);
         }
 
+        public async Task<BaseModel> AddStandard()
+        {
+            string start = "Start";
+            return await SendPostRequest<BaseModel, string>("adminrole/addstandard", start);
+        }
+
         public async Task<BaseModel> Delete(AdminRoleModel role)
         {
             List<UrlParameter> parameters = new()

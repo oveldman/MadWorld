@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Website.Shared.Enum;
 using Website.Shared.Models;
 using Website.Shared.Models.Admin;
 
@@ -27,6 +28,28 @@ namespace API.Controllers.Admin
         {
             _roleManager = roleManager;
             _logger = logger;
+        }
+
+        [HttpPost]
+        [Route("AddStandard")]
+        public async Task<BaseModel> AddStandardRoles()
+        {
+            if (!_roleManager.Roles.Any())
+            {
+                foreach (UserRoles role in (UserRoles[])Enum.GetValues(typeof(UserRoles)))
+                {
+                    IdentityRole identityRole = new() {
+                        Name = nameof(role)
+                    };
+
+                    await _roleManager.CreateAsync(identityRole);
+                }
+            };
+
+            return new BaseModel
+            {
+                Succeed = true
+            };
         }
 
         [HttpPost]

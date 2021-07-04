@@ -9,6 +9,7 @@ namespace Website.Services.Interfaces
     public interface IRoleService
     {
         Task<BaseModel> Add(AdminRoleModel role);
+        Task<BaseModel> AddStandard();
         Task<BaseModel> Delete(AdminRoleModel role);
         Task<List<AdminRoleModel>> GetAll();
     }

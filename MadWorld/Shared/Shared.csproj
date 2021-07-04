@@ -13,9 +13,11 @@
     <Folder Include="Models\BackendInfo\" />
     <Folder Include="Models\PlanningPoker\" />
     <Folder Include="Models\Privacy\" />
+    <Folder Include="Enum\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Models\PlanningPoker\" />
     <None Remove="Models\Privacy\" />
+    <None Remove="Enum\" />
   </ItemGroup>
 </Project>
