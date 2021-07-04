@@ -155,13 +155,12 @@ namespace API.Managers
 
             if (!userModel.IsNew)
             {
-                return await EditAccount(userModel, user);
+                BaseModel result = await EditAccount(userModel, user);
+
+                if (!result.Succeed) return result;
             }
 
-            return new BaseModel
-            {
-                Succeed = true
-            };
+            return await SaveRoles(userModel, user);
         }
 
         public async Task<BaseModel> DeleteAccount(string id)
@@ -243,6 +242,30 @@ namespace API.Managers
             user.TwoFactorOn = !userModel.TwoFactorEnabled ? false : user.TwoFactorOn;
 
             IdentityResult result = await _userManager.UpdateAsync(user);
+
+            return new BaseModel
+            {
+                Succeed = result.Succeeded,
+                ErrorMessage = result?.Errors?.FirstOrDefault()?.Description
+            };
+        }
+
+        private async Task<BaseModel> SaveRoles(UserModel userModel, User user)
+        {
+            List<string> allRolesInManager = _roleManager.Roles.Select(r => r.Name).ToList();
+            if (allRolesInManager is null) allRolesInManager = new();
+
+            IList<string> oldUserRoles = await _userManager.GetRolesAsync(user);
+            if (oldUserRoles is null) oldUserRoles = new List<string>();
+
+            List<string> userHasRoles = userModel.Roles
+                                                    .Where(r => r.HasAccess && allRolesInManager.Contains(r.Name))
+                                                    .Select(r => r.Name)
+                                                    .ToList();
+            if (userHasRoles is null) userHasRoles = new();
+
+            await _userManager.RemoveFromRolesAsync(user, oldUserRoles);
+            IdentityResult result = await _userManager.AddToRolesAsync(user, userHasRoles);
 
             return new BaseModel
             {
