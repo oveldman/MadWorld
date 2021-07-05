@@ -107,12 +107,8 @@ namespace API
                     }
                 });
 
-                string apiDocumentationPath = "Api.xml";
-
-                if (Environment.IsDevelopment()) {
-                    apiDocumentationPath = Path.Combine(Environment.WebRootPath, apiDocumentationPath);
-                    c.IncludeXmlComments(apiDocumentationPath);
-                }
+                string apiDocumentationPath = Path.Combine(AppContext.BaseDirectory, "Api.xml");
+                c.IncludeXmlComments(apiDocumentationPath);
             });
 
             var exporter = this.Configuration.GetValue<string>("UseExporter").ToLowerInvariant();
