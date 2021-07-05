@@ -109,8 +109,12 @@ namespace API
 
                 string apiDocumentationPath = "Api.xml";
 
-                if (Environment.IsDevelopment()) {
+                if (Environment.IsProduction()) {
                     apiDocumentationPath = Path.Combine(System.AppContext.BaseDirectory, apiDocumentationPath);
+                }
+
+                if (Environment.IsDevelopment()) {
+                    apiDocumentationPath = Path.Combine(Environment.WebRootPath, apiDocumentationPath);
                 }
 
                 c.IncludeXmlComments(apiDocumentationPath);
