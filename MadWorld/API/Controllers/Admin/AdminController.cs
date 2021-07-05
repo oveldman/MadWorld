@@ -30,7 +30,17 @@ namespace API.Controllers.Admin
             _userExtremeManager = userExtremeManager;
         }
 
+        /// <summary>
+        /// Retrieves an awesome welcome message for the admin page.
+        /// </summary>
+        /// <remarks>It is freaking awesome!</remarks>
+        /// <response code="200">Return a fun message</response>
+        /// <response code="400">You don't need to send data. Just don't do it then.</response>
+        /// <response code="500">This is weird. There is no logic behind this endpoint.</response>
         [HttpGet]
+        [ProducesResponseType(typeof(AdminModel), 200)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
+        [ProducesResponseType(500)]
         public AdminModel Index()
         {
             return new AdminModel()

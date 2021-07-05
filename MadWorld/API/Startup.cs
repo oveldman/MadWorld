@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -88,6 +89,7 @@ namespace API
                     Type = SecuritySchemeType.ApiKey,
                     Scheme = "Bearer"
                 });
+
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
@@ -102,6 +104,9 @@ namespace API
                     Array.Empty<string>()
                     }
                 });
+
+                string apiDocumentationPath = Path.Combine(System.AppContext.BaseDirectory, "Api.xml");
+                c.IncludeXmlComments(apiDocumentationPath);
             });
 
             var exporter = this.Configuration.GetValue<string>("UseExporter").ToLowerInvariant();
