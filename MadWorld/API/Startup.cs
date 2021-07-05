@@ -52,12 +52,14 @@ namespace API
     {
         private readonly string AllowedOriginsAPI = "AllowedCalls";
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            Environment = environment;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -105,7 +107,12 @@ namespace API
                     }
                 });
 
-                string apiDocumentationPath = Path.Combine(System.AppContext.BaseDirectory, "Api.xml");
+                string apiDocumentationPath = "Api.xml";
+
+                if (Environment.IsDevelopment()) {
+                    apiDocumentationPath = Path.Combine(System.AppContext.BaseDirectory, apiDocumentationPath);
+                }
+
                 c.IncludeXmlComments(apiDocumentationPath);
             });
 
