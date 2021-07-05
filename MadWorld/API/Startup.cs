@@ -107,7 +107,7 @@ namespace API
                     }
                 });
 
-                string apiDocumentationPath = Path.Combine(AppContext.BaseDirectory, "Api.xml");
+                string apiDocumentationPath = Path.Combine(AppContext.BaseDirectory, "API.xml");
                 c.IncludeXmlComments(apiDocumentationPath);
             });
 
