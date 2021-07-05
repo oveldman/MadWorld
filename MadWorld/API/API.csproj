@@ -8,6 +8,10 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\net5.0\API.xml</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\net5.0\API.xml</DocumentationFile>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.7">
