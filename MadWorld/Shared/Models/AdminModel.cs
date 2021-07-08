@@ -1,6 +1,9 @@
 ﻿using System;
 namespace Website.Shared.Models
 {
+    /// <summary>
+    /// Standard model for the admin module
+    /// </summary>
     public class AdminModel : BaseModel
     {
         /// <summary>

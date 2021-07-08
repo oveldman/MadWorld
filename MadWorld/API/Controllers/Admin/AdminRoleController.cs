@@ -13,6 +13,9 @@ using Website.Shared.Opions;
 
 namespace API.Controllers.Admin
 {
+    /// <summary>
+    /// Admin module to manage all roles in the backend
+    /// </summary>
     [Authorize]
     [ApiController]
     [Route("[controller]")]
@@ -28,6 +31,14 @@ namespace API.Controllers.Admin
             _logger = logger;
         }
 
+        /// <summary>
+        /// Add the standard roles from the code.
+        /// </summary>
+        /// <remarks>This adds the minimum roles to the backend that needs to function normal.
+        /// At the moment the roles are: "Admin"</remarks>
+        /// <response code="200">Return a message if everything went okay.</response>
+        /// <response code="400">You don't need to send data. Just don't do it then.</response>
+        /// <response code="500">There went something wrong on the backendside. </response>
         [HttpPost]
         [Route("AddStandard")]
         public async Task<BaseModel> AddStandardRoles()
@@ -50,6 +61,13 @@ namespace API.Controllers.Admin
             };
         }
 
+        /// <summary>
+        /// Add a new role to the system. 
+        /// </summary>
+        /// <remarks>Add a new role. A role grants access of a part of the system. </remarks>
+        /// <response code="200">Return a message if everything went okay.</response>
+        /// <response code="400">The name is required with a minimum of one character. Send a random ID.</response>
+        /// <response code="500">There went something wrong on the backendside. </response>
         [HttpPost]
         [Route("Add")]
         public async Task<BaseModel> AddRole(AdminRoleModel model)
@@ -75,6 +93,13 @@ namespace API.Controllers.Admin
             };
         }
 
+        /// <summary>
+        /// Remove a role from the system
+        /// </summary>
+        /// <remarks>Remove the role from the system. If the role doesn't exist, then you get still a succeed. </remarks>
+        /// <response code="200">Return a message if everything went okay.</response>
+        /// <response code="400">The id is required. </response>
+        /// <response code="500">There went something wrong on the backendside. </response>
         [HttpDelete]
         [Route("Delete")]
         public async Task<BaseModel> DeleteRole(string id)
@@ -92,6 +117,14 @@ namespace API.Controllers.Admin
             };
         }
 
+
+        /// <summary>
+        /// Get a list of all a available roles 
+        /// </summary>
+        /// <remarks>Get a list of all a available roles from the backend</remarks>
+        /// <response code="200">List of roles with names and ID's</response>
+        /// <response code="400">The id is required. </response>
+        /// <response code="500">There went something wrong on the backendside. </response>
         [HttpGet]
         [Route("GetAll")]
         public List<AdminRoleModel> GetAllRoles()

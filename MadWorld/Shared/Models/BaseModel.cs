@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace Website.Shared.Models
 {
+    /// <summary>
+    /// This is the minimum response from the API 
+    /// </summary>
     public class BaseModel
     {
         /// <summary>

@@ -4,6 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Website.Shared.Models.Admin
 {
+    /// <summary>
+    /// Account information from the backend
+    /// </summary>
     public class UserModel
     {
         /// <summary>

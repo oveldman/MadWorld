@@ -13,6 +13,9 @@ using Website.Shared.Models.Admin;
 
 namespace API.Controllers.Admin
 {
+    /// <summary>
+    /// Admin module with account manager
+    /// </summary>
     [Authorize]
     [ApiController]
     [Route("[controller]")]
