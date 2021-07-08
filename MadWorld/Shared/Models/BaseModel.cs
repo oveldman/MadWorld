@@ -6,8 +6,22 @@ namespace Website.Shared.Models
 {
     public class BaseModel
     {
+        /// <summary>
+        /// The current process went well and don't have any errors. 
+        /// </summary>
+        /// <example>true</example>
         public bool Succeed { get; set; }
+
+        /// <summary>
+        /// This gives the client a message when the process succeed.
+        /// </summary>
+        /// <example>The operations succeed. </example>
         public string Message { get; set; }
+
+        /// <summary>
+        /// When the client only expect one error message at max. The backend will set the most importent message at the first of the list.
+        /// </summary>
+        /// <example>There are not results found. </example>
         public string ErrorMessage
         {
             get
@@ -25,6 +39,11 @@ namespace Website.Shared.Models
                 }
             }
         }
+
+        /// <summary>
+        /// When something went wrong and the process gives multiple error messages. 
+        /// </summary>
+        /// <example>There are not results found. </example>
         public List<string> ErrorMessages { get; set; }
     }
 }

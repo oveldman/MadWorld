@@ -37,10 +37,10 @@ namespace API.Controllers.Admin
         /// <response code="200">Return a fun message</response>
         /// <response code="400">You don't need to send data. Just don't do it then.</response>
         /// <response code="500">This is weird. There is no logic behind this endpoint.</response>
-        [HttpGet]
         [ProducesResponseType(typeof(AdminModel), 200)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
         [ProducesResponseType(500)]
+        [HttpGet]
         public AdminModel Index()
         {
             return new AdminModel()
@@ -50,6 +50,16 @@ namespace API.Controllers.Admin
             };
         }
 
+        /// <summary>
+        /// Delete an user account from server
+        /// </summary>
+        /// <remarks>Delete an user account with userid</remarks>
+        /// <response code="200">Return a message if everything went okay.</response>
+        /// <response code="400">The id needs to be a string GUID</response>
+        /// <response code="500">There went something wrong on the backendside. </response>
+        [ProducesResponseType(typeof(BaseModel), 200)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
+        [ProducesResponseType(500)]
         [HttpDelete]
         [Route("DeleteAccount")]
         public async Task<BaseModel> DeleteAccount(string id)
@@ -65,6 +75,16 @@ namespace API.Controllers.Admin
             };
         }
 
+        /// <summary>
+        /// Gets every account with basic information
+        /// </summary>
+        /// <remarks>Returns accounts with the ID, Username and TwoFactorEnabled. The rest is empty. </remarks>
+        /// <response code="200">Return a list with accounts</response>
+        /// <response code="400">You don't need to send data. Just don't do it then.</response>
+        /// <response code="500">There went something wrong on the backendside. </response>
+        [ProducesResponseType(typeof(IEnumerable<UserModel>), 200)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
+        [ProducesResponseType(500)]
         [HttpGet]
         [Route("GetAllAccounts")]
         public IEnumerable<UserModel> GetAllAccounts()
@@ -78,6 +98,16 @@ namespace API.Controllers.Admin
             });
         }
 
+        /// <summary>
+        /// Gets a specific account with all account information
+        /// </summary>
+        /// <remarks>Returns a account by Id with all information in the object </remarks>
+        /// <response code="200">Returns one account</response>
+        /// <response code="400">The id needs to be a string GUID</response>
+        /// <response code="500">There went something wrong on the backendside. </response>
+        [ProducesResponseType(typeof(UserModel), 200)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
+        [ProducesResponseType(500)]
         [HttpGet]
         [Route("GetAccount")]
         public async Task<UserModel> GetAccount(Guid? id)
@@ -91,6 +121,14 @@ namespace API.Controllers.Admin
             return new UserModel();
         }
 
+        /// <summary>
+        /// Create or update account
+        /// </summary>
+        /// <remarks>Create or update all the properties of the account except for the ID. Set IsNew is true when you need to create an account. You cannot set an ID.
+        /// This property will be ignored. </remarks>
+        /// <response code="200">Return a message if everything went okay.</response>
+        /// <response code="400">All the properties can be filled. </response>
+        /// <response code="500">There went something wrong on the backendside. </response>
         [HttpPost]
         [Route("SaveAccount")]
         public async Task<BaseModel> SaveAccount(UserModel userModel)
