@@ -19,13 +19,43 @@
     </div>
 }
 
+<nav aria-label="Page navigation blog-paging">
+    <ul class="pagination">
+        @if (ShowBeforePage)
+        {
+            <li class="page-item"><a class="page-link" @onclick="() => GetPosts(BeforeCurrentPage)">Previous</a></li>
+            <li class="page-item"><a class="page-link" @onclick="() => GetPosts(BeforeCurrentPage)">@BeforeCurrentPage</a></li>
+        }
+        <li class="page-item"><a class="page-link" @onclick="() => GetPosts(CurrentPage)">@CurrentPage</a></li>
+        @if (ShowAfterPage)
+        {
+            <li class="page-item"><a class="page-link" @onclick="() => GetPosts(AfterCurrentPage)">@AfterCurrentPage</a></li>
+            <li class="page-item"><a class="page-link" @onclick="() => GetPosts(AfterCurrentPage)">Next</a></li>
+        }
+    </ul>
+</nav>
+
 @code {
-    private int CurrentPage = 0;
+    private int MinimumPage = 1;
+
+    private int CurrentPage = 1;
     private int TotalPages = 10;
     private BlogsModel Blogs = new();
 
+    private int BeforeCurrentPage => CurrentPage - 1;
+    private int AfterCurrentPage => CurrentPage + 1;
+
+    private bool ShowBeforePage => CurrentPage > MinimumPage;
+    private bool ShowAfterPage => CurrentPage < Blogs.TotalPages;
+
     protected override async Task OnInitializedAsync()
     {
+        await GetPosts(CurrentPage);
+    }
+
+    private async Task GetPosts(int setPage)
+    {
+        CurrentPage = setPage;
         Blogs = await _blogService.GetAll(CurrentPage, TotalPages);
     }
 
