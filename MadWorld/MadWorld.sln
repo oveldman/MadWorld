@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{2E2C3CD5-F7DE-420D-9678-4EEB2C5842A4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MadMachineLearning", "MadMachineLearning\MadMachineLearning.csproj", "{3E6CA352-4795-4608-8787-E5FD32CCD537}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{2E2C3CD5-F7DE-420D-9678-4EEB2C5842A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E2C3CD5-F7DE-420D-9678-4EEB2C5842A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E2C3CD5-F7DE-420D-9678-4EEB2C5842A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E6CA352-4795-4608-8787-E5FD32CCD537}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E6CA352-4795-4608-8787-E5FD32CCD537}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E6CA352-4795-4608-8787-E5FD32CCD537}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E6CA352-4795-4608-8787-E5FD32CCD537}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
