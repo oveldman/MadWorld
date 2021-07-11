@@ -12,13 +12,19 @@ namespace MadMachineLearning.NS
 
             foreach (DisruptionsRaw disruption in disruptionsRaws)
             {
-                disruptionsML.Add(new DisruptionsML
-                {
-                    ID = disruption.ID,
-                    StatisticalCauseNL = disruption.StatisticalCauseNL,
-                    CauseGroup = disruption.CauseGroup,
-                    DurationMinutes = float.TryParse(disruption.DurationMinutes, out float duration) ? duration : 0
-                });
+                string[] lineNames = disruption?.RdtLines?.Split(',');
+
+                foreach (string lineName in lineNames) {
+
+                    disruptionsML.Add(new DisruptionsML
+                    {
+                        ID = disruption.ID,
+                        StatisticalCauseNL = disruption.StatisticalCauseNL,
+                        LineName = lineName.Trim(),
+                        CauseGroup = disruption.CauseGroup,
+                        DurationMinutes = float.TryParse(disruption.DurationMinutes, out float duration) ? duration : 0
+                    });
+                }
             }
 
             return disruptionsML;

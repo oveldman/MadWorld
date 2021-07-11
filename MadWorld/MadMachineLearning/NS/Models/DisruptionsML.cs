@@ -10,8 +10,10 @@ namespace MadMachineLearning.NS.Models
         [LoadColumn(1)]
         public string StatisticalCauseNL { get; set; }
         [LoadColumn(2)]
-        public string CauseGroup { get; set; }
+        public string LineName { get; set; }
         [LoadColumn(3)]
+        public string CauseGroup { get; set; }
+        [LoadColumn(4)]
         public float DurationMinutes { get; set; }
     }
 }

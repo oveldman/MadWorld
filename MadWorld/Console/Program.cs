@@ -22,7 +22,7 @@ namespace Console
             if (startMachineLearning)
             {
                 Learner learner = new();
-                learner.Start();
+                learner.Start(false);
             }
 
             if (startStorage)
