@@ -16,6 +16,8 @@ My endpoints: [Mad-World API](https://www.mad-world.nl/api/swagger/)
 [MVC Versioning](https://www.infoworld.com/article/3562355/how-to-use-api-versioning-in-aspnet-core.html)\
 [Smartlook](https://www.smartlook.com/)\
 [BlazorDownloadFile](https://github.com/arivera12/BlazorDownloadFile)\
-[Machine Learning](https://dotnet.microsoft.com/apps/machinelearning-ai/ml-dotnet) \
+[Machine Learning](https://dotnet.microsoft.com/apps/machinelearning-ai/ml-dotnet)\
+[Machine Learning Example](https://github.com/dotnet/machinelearning-samples/tree/main/samples/csharp/getting-started/Regression_TaxiFarePrediction)\
+[NS data for Machine Learning](https://www.rijdendetreinen.nl/over/open-data)\
 [BlazorMonaco](https://github.com/serdarciplak/BlazorMonaco)\
 [TinyMCE](https://github.com/tinymce/tinymce-blazor)

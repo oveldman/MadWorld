@@ -19,6 +19,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Datalayer\Datalayer.csproj" />
+    <ProjectReference Include="..\MadMachineLearning\MadMachineLearning.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Azure.Storage.Blobs" />
