@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using Business.Interfaces;
 using Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Website.Shared.Models;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -16,6 +19,17 @@ namespace API.Controllers
     [Route("[controller]")]
     public class BlogController : ControllerBase
     {
+        private readonly ILogger<BlogController> _logger;
+
+        private readonly IBlogManager _blogManager;
+
+        public BlogController(ILogger<BlogController> logger, IBlogManager blogManager)
+        {
+            _logger = logger;
+
+            _blogManager = blogManager;
+        }
+
         /// <summary>
         /// Retrieves Blog posts from the backend.
         /// </summary>
@@ -33,6 +47,13 @@ namespace API.Controllers
         {
             int maxTotalPosts = 50;
             totalPosts = totalPosts > maxTotalPosts ? maxTotalPosts : totalPosts;
+
+            BlogsModel model = _blogManager.GetBlog(page, totalPosts);
+
+            if (model?.Posts?.Any() ?? false)
+            {
+                return model;
+            }
 
             return new BlogsModel
             {

@@ -290,6 +290,7 @@ namespace API
             services.AddScoped<ILoggingManager, LoggingManager>();
             services.AddScoped<IPokerManager, PokerManager>();
             services.AddScoped<IFileManager, FileManager>();
+            services.AddScoped<IBlogManager, BlogManager>();
 
             //Database project
             services.AddScoped<IAccountQueries, AccountQueries>();
@@ -297,6 +298,7 @@ namespace API
             services.AddScoped<IResumeQueries, ResumeQueries>();
             services.AddScoped<ILoggerQueries, LoggerQueries>();
             services.AddScoped<IFileQueries, FileQueries>();
+            services.AddScoped<IBlogQueries, BlogQueries>();
             services.AddSingleton<ILoggerQueriesSingleton, LoggerQueries>(_ => new LoggerQueries(new MadWorldContext(builderOptions.Options)));
 
             //Storage
