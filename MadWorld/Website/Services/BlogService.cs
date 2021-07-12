@@ -19,7 +19,9 @@ namespace Website.Services
 
         public async Task<BlogsModel> GetAll(int page, int totalPosts)
         {
-            return await _client.GetFromJsonAsync<BlogsModel>($"blog/getall?page={page}&totalPosts={totalPosts}");
+            int backendCountPage = page - 1;
+
+            return await _client.GetFromJsonAsync<BlogsModel>($"blog/getall?page={backendCountPage}&totalPosts={totalPosts}");
         }
     }
 }

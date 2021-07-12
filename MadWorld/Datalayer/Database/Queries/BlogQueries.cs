@@ -22,6 +22,11 @@ namespace Datalayer.Database.Queries
 
         public List<Post> GetPosts(int page, int totalPosts)
         {
+            if (page < 0 || totalPosts < 1)
+            {
+                return new List<Post>();
+            }
+
             int skipPosts = page * totalPosts;
 
             return _context.Posts
