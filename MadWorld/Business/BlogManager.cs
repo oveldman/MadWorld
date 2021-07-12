@@ -36,7 +36,7 @@ namespace Business
 
             foreach (Post dbPost in posts)
             {
-                string body = _storageManager.DownloadString(StoragePaths.BlogFiles, $"{dbPost.ID}.html");
+                string body = _storageManager.DownloadString(StoragePaths.BlogFiles, $"{dbPost.FileID}.html");
 
                 model.Posts.Add(new PostModel {
                     Body = body,
