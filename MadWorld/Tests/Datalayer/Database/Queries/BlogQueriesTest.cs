@@ -6,6 +6,7 @@ using Datalayer.Database.Queries;
 using Datalayer.Database.Tables;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Tests.Setup;
 using Xunit;
 
 namespace Tests.Datalayer.Database.Queries
@@ -137,12 +138,13 @@ namespace Tests.Datalayer.Database.Queries
             TearDown();
         }
 
-        [Fact]
-        public void GetPosts_NegativeValues_ReturnZeroPosts()
+        [Theory]
+        [AutoDomainInlineData(-1, -2)]
+        [AutoDomainInlineData(5, -3)]
+        [AutoDomainInlineData(-2, 10)]
+        public void GetPosts_NegativeValues_ReturnZeroPosts(int page, int totalPosts)
         {
-            // Test data
-            int page = -1;
-            int totalPosts = -2;
+            // No extra Test data
 
             // Setup
             BlogQueries blogQueries = SetupBlogQuery();
