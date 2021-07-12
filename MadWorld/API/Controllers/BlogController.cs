@@ -56,6 +56,13 @@ namespace API.Controllers
                         WriterName = "Oscar Veldman",
                         Body = "PHA+VGhpcyBpcyBzbyB3YXJtLi4uLi48L3A+"
                     },
+                    new PostModel
+                    {
+                        Title = "Script test",
+                        Created = SystemTime.Now(),
+                        WriterName = "Oscar Veldman",
+                        Body = "PHA+SGFsbG8gQWxsZW1hYWwuIERlIGlzIGVlbiA8Yj5zY3JpcHQ8L2I+IHRlc3QuIDwvcD4KCjxzY3JpcHQ+ZnVuY3Rpb24gdGVzdCgpIHsgQ29uc29sZS5Xcml0ZSgnMScpIH08L3NjcmlwdD4="
+                    },
                 }
             };
         }
