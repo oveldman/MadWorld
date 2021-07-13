@@ -1,4 +1,5 @@
-﻿using MadMachineLearning;
+﻿using Console.CoPilotTest;
+using MadMachineLearning;
 
 namespace Console
 {
@@ -6,9 +7,15 @@ namespace Console
     {
         static void Main(string[] args)
         {
+            bool startCoPilot = true;
             bool startInsert = false;
-            bool startMachineLearning = true;
+            bool startMachineLearning = false;
             bool startStorage = false;
+
+            if (startCoPilot)
+            {
+                CoPilotTester.Start();
+            }
 
             if (startInsert) {
                 Startup startup = Startup.Create();
