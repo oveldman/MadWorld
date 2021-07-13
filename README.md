@@ -20,4 +20,5 @@ My endpoints: [Mad-World API](https://www.mad-world.nl/api/swagger/)
 [Machine Learning Example](https://github.com/dotnet/machinelearning-samples/tree/main/samples/csharp/getting-started/Regression_TaxiFarePrediction)\
 [NS data for Machine Learning](https://www.rijdendetreinen.nl/over/open-data)\
 [BlazorMonaco](https://github.com/serdarciplak/BlazorMonaco)\
-[TinyMCE](https://github.com/tinymce/tinymce-blazor)
+[TinyMCE](https://github.com/tinymce/tinymce-blazor)\
+[Github Copilot (Invite only)](https://github.com/github/copilot-preview)
