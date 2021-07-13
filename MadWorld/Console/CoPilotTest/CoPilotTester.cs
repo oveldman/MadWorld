@@ -2,7 +2,7 @@ using System;
 
 namespace Console.CoPilotTest
 {
-    //This is my Githib Co-Pilot test class 
+    //This is my Github Co-Pilot test class 
     public class CoPilotTester 
     {
         public static CoPilotTester Tester = new();
