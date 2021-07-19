@@ -57,7 +57,16 @@ namespace Business
 
         public AdminBlogModel GetBlog()
         {
-            throw new NotImplementedException();
+            List<Post> posts = _blogQueries.GetAllPosts();
+
+            return new AdminBlogModel
+            {
+                Posts = posts.Select(p => new AdminPostModel {
+                    ID = p.ID.ToString(),
+                    Created = p.Created,
+                    Title = p.Title
+                }).ToList()
+            };
         }
 
         public AdminPostModel GetPost(Guid id)
