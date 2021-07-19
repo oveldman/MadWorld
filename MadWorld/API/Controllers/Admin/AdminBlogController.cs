@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Business.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Website.Shared.Models;
 using Website.Shared.Models.Admin;
 
@@ -19,6 +21,16 @@ namespace API.Controllers.Admin
     [Route("[controller]")]
     public class AdminBlogController : Controller
     {
+        private readonly ILogger<AdminBlogController> _logger;
+
+        private IBlogManager _blogManager;
+
+        public AdminBlogController(ILogger<AdminBlogController> logger, IBlogManager blogManager)
+        {
+            _logger = logger;
+            _blogManager = blogManager;
+        }
+
         /// <summary>
         /// Retrieves all blog posts from the backend.
         /// </summary>
@@ -34,7 +46,7 @@ namespace API.Controllers.Admin
         [Route("GetAll")]
         public AdminBlogModel GetAll()
         {
-            return new AdminBlogModel();
+            return _blogManager.GetBlog();
         }
 
         /// <summary>
@@ -48,7 +60,14 @@ namespace API.Controllers.Admin
         [Route("Get")]
         public AdminPostModel Get(string id)
         {
-            return new AdminPostModel();
+            if (Guid.TryParse(id, out Guid guidID)) {
+                return _blogManager.GetPost(guidID);
+            }
+
+            return new AdminPostModel
+            {
+                ErrorMessage = "ID needs to be a GUID and it required. "
+            };
         }
 
         /// <summary>
@@ -65,7 +84,15 @@ namespace API.Controllers.Admin
         [Route("Delete")]
         public BaseModel Delete(string id)
         {
-            return new BaseModel();
+            if (Guid.TryParse(id, out Guid guidID))
+            {
+                return _blogManager.DeletePost(guidID);
+            }
+
+            return new BaseModel
+            {
+                ErrorMessage = "ID needs to be a GUID and it required. "
+            };
         }
 
         /// <summary>
@@ -82,7 +109,7 @@ namespace API.Controllers.Admin
         [Route("Save")]
         public BaseModel Save(AdminPostModel model)
         {
-            return new BaseModel();
+            return _blogManager.SavePost(model);
         }
     }
 }
