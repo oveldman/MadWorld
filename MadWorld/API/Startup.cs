@@ -40,6 +40,7 @@ using OpenTelemetry.Instrumentation.AspNetCore;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Swashbuckle.AspNetCore.Filters;
+using Swashbuckle.AspNetCore.SwaggerUI;
 using TwoFactorAuthNet;
 
 namespace API
@@ -80,7 +81,7 @@ namespace API
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
-                c.AddServer(new OpenApiServer { Url = apiUrl, Description = "Mad-World",  } );
+                c.AddServer(new OpenApiServer { Url = apiUrl, Description = "Mad-World" });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description =
@@ -201,7 +202,8 @@ namespace API
             });
 
             //Extern packages
-            services.AddScoped<TwoFactorAuth, TwoFactorAuth>(serviceProvider => {
+            services.AddScoped<TwoFactorAuth, TwoFactorAuth>(serviceProvider =>
+            {
                 return new TwoFactorAuth(twoFactorKey);
             });
 
@@ -210,7 +212,8 @@ namespace API
 
             AddApplicationClassesToScope(services, optionsBuilder);
 
-            services.AddLogging(logginerBuilder => {
+            services.AddLogging(logginerBuilder =>
+            {
                 logginerBuilder.AddMadWorldLogger(optionsBuilder.Options, MadWorldLoggerConfiguration.GetConfig())
                 .AddConsole();
             });
@@ -232,7 +235,11 @@ namespace API
             string urlSwaggerJson = $"{ApiSettings.Url}swagger/v1/swagger.json";
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint(urlSwaggerJson, "API v1"));
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint(urlSwaggerJson, "API v1");
+                c.DocExpansion(DocExpansion.None);
+            });
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
@@ -290,7 +297,7 @@ namespace API
             services.AddSingleton<ILoggerQueriesSingleton, LoggerQueries>(_ => new LoggerQueries(new MadWorldContext(builderOptions.Options)));
 
             //Storage
-            services.AddScoped<IDiskManager,DiskManager>();
+            services.AddScoped<IDiskManager, DiskManager>();
             services.AddScoped<IStorageExplorer, StorageExplorer>();
             services.AddScoped<IStorageManager, StorageManager>();
             services.AddSingleton(_ => Configuration.GetSection(nameof(StorageSettings)).Get<StorageSettings>());
