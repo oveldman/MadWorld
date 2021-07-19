@@ -18,7 +18,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="3.0.3">
+    <PackageReference Include="coverlet.collector" Version="3.1.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -41,10 +41,14 @@
     <Folder Include="Business\PlanningPoker\" />
     <Folder Include="Datalayer\" />
     <Folder Include="Datalayer\Database\" />
+    <Folder Include="Common\" />
+    <Folder Include="Common\Helper\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Business\PlanningPoker\" />
     <None Remove="Datalayer\" />
     <None Remove="Datalayer\Database\" />
+    <None Remove="Common\" />
+    <None Remove="Common\Helper\" />
   </ItemGroup>
 </Project>
