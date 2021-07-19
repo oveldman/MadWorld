@@ -7,6 +7,7 @@ using Datalayer.Database.Tables;
 using Datalayer.FileStorage.Interfaces;
 using Datalayer.FileStorage.Models;
 using Website.Shared.Models;
+using Website.Shared.Models.Admin;
 
 namespace Business
 {
@@ -19,6 +20,11 @@ namespace Business
         {
             _blogQueries = blogQueries;
             _storageManager = storageManager;
+        }
+
+        public BaseModel DeletePost(Guid id)
+        {
+            throw new NotImplementedException();
         }
 
         public BlogsModel GetBlog(int page, int totalPosts)
@@ -47,6 +53,21 @@ namespace Business
             }
 
             return model;
+        }
+
+        public AdminBlogModel GetBlog()
+        {
+            throw new NotImplementedException();
+        }
+
+        public AdminPostModel GetPost(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public BaseModel SavePost(AdminPostModel model)
+        {
+            throw new NotImplementedException();
         }
     }
 }
