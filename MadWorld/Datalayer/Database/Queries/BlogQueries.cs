@@ -20,6 +20,11 @@ namespace Datalayer.Database.Queries
             return _context.Posts.Count();
         }
 
+        public List<Post> GetAllPosts()
+        {
+            return _context.Posts.ToList();
+        }
+
         public List<Post> GetPosts(int page, int totalPosts)
         {
             if (page < 0 || totalPosts < 1)

@@ -5,6 +5,6 @@ namespace Website.Shared.Models.Admin
 {
     public class AdminBlogModel : BaseModel
     {
-        List<AdminPostModel> Posts { get; set; } = new();
+       public List<AdminPostModel> Posts { get; set; } = new();
     }
 }

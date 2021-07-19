@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Website.Shared.Models.Admin
 {
-    public class AdminPostModel
+    public class AdminPostModel : BaseModel
     {
         
     }
