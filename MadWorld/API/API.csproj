@@ -27,6 +27,7 @@
     <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.0.0-rc6" />
     <PackageReference Include="OpenTelemetry.Exporter.Console" Version="1.1.0-rc1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -54,5 +55,6 @@
     <None Remove="OpenTelemetry.Instrumentation.Http" />
     <None Remove="OpenTelemetry.Exporter.Console" />
     <None Remove="Microsoft.AspNetCore.Mvc.Versioning" />
+    <None Remove="Swashbuckle.AspNetCore.Filters" />
   </ItemGroup>
 </Project>

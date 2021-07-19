@@ -39,6 +39,7 @@ using OpenTelemetry.Exporter;
 using OpenTelemetry.Instrumentation.AspNetCore;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using Swashbuckle.AspNetCore.Filters;
 using TwoFactorAuthNet;
 
 namespace API
@@ -90,20 +91,7 @@ namespace API
                     Scheme = "Bearer"
                 });
 
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                    Array.Empty<string>()
-                    }
-                });
+                c.OperationFilter<SecurityRequirementsOperationFilter>();
 
                 string apiDocumentationPath = Path.Combine(AppContext.BaseDirectory, "API.xml");
                 c.IncludeXmlComments(apiDocumentationPath);

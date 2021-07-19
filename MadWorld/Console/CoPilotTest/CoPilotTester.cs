@@ -14,6 +14,5 @@ namespace Console.CoPilotTest
         public double ConvertCelsiusToFahrenheit(double celsius) {
             return (celsius * 9 / 5) + 32;
         }
-
     }
 }
