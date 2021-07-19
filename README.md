@@ -21,4 +21,4 @@ My endpoints: [Mad-World API](https://www.mad-world.nl/api/swagger/)
 [NS data for Machine Learning](https://www.rijdendetreinen.nl/over/open-data)\
 [BlazorMonaco](https://github.com/serdarciplak/BlazorMonaco)\
 [TinyMCE](https://github.com/tinymce/tinymce-blazor)\
-[Github Copilot (Invite only)](https://github.com/github/copilot-preview)
+[Github Copilot (Invite only)](https://github.com/github/copilot-preview) 
